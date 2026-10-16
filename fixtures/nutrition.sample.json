@@ -1,0 +1,180 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "请求成功",
+  "data": {
+    "list": [
+      {
+        "foodName": "巨无霸",
+        "calories": 495,
+        "protein": 26,
+        "fat": 25,
+        "carbohydrate": 42,
+        "sodium": 950,
+        "calcium": 120
+      },
+      {
+        "foodName": "麦辣鸡腿堡",
+        "energy": 519,
+        "proteinG": 25,
+        "fatG": 27,
+        "carbohydrateG": 45,
+        "sodiumMg": 1100,
+        "calciumMg": 90
+      },
+      {
+        "foodName": "板烧鸡腿堡",
+        "calories": 445,
+        "protein": 27,
+        "fat": 19,
+        "carbohydrate": 44,
+        "sodium": 890,
+        "calcium": 110
+      },
+      {
+        "foodName": "双层吉士汉堡",
+        "energy": 437,
+        "proteinG": 24,
+        "fatG": 23,
+        "carbohydrateG": 33,
+        "sodiumMg": 900,
+        "calciumMg": 210
+      },
+      {
+        "foodName": "麦香鱼",
+        "calories": 336,
+        "protein": 15,
+        "fat": 16,
+        "carbohydrate": 33,
+        "sodium": 570,
+        "calcium": 130
+      },
+      {
+        "foodName": "麦乐鸡（5块）",
+        "energy": 228,
+        "proteinG": 14,
+        "fatG": 13,
+        "carbohydrateG": 12,
+        "sodiumMg": 480,
+        "calciumMg": 20
+      },
+      {
+        "foodName": "中薯条",
+        "calories": 337,
+        "protein": 4,
+        "fat": 16,
+        "carbohydrate": 43,
+        "sodium": 260,
+        "calcium": 20
+      },
+      {
+        "foodName": "大薯条",
+        "energy": 419,
+        "proteinG": 5,
+        "fatG": 20,
+        "carbohydrateG": 54,
+        "sodiumMg": 330,
+        "calciumMg": 25
+      },
+      {
+        "foodName": "中可乐",
+        "calories": 155,
+        "protein": 0,
+        "fat": 0,
+        "carbohydrate": 39,
+        "sodium": 15,
+        "calcium": 0
+      },
+      {
+        "foodName": "大可乐",
+        "energy": 194,
+        "proteinG": 0,
+        "fatG": 0,
+        "carbohydrateG": 49,
+        "sodiumMg": 19,
+        "calciumMg": 0
+      },
+      {
+        "foodName": "奥利奥麦旋风",
+        "calories": 287,
+        "protein": 6,
+        "fat": 10,
+        "carbohydrate": 43,
+        "sodium": 130,
+        "calcium": 190
+      },
+      {
+        "foodName": "原味圆筒冰淇淋",
+        "energy": 132,
+        "proteinG": 3,
+        "fatG": 4,
+        "carbohydrateG": 21,
+        "sodiumMg": 55,
+        "calciumMg": 100
+      },
+      {
+        "foodName": "香芋派",
+        "calories": 252,
+        "protein": 3,
+        "fat": 13,
+        "carbohydrate": 31,
+        "sodium": 180,
+        "calcium": 20
+      },
+      {
+        "foodName": "中杯美式",
+        "energy": 5,
+        "proteinG": 0,
+        "fatG": 0,
+        "carbohydrateG": 1,
+        "sodiumMg": 5,
+        "calciumMg": 5
+      },
+      {
+        "foodName": "中杯拿铁",
+        "calories": 116,
+        "protein": 6,
+        "fat": 6,
+        "carbohydrate": 9,
+        "sodium": 90,
+        "calcium": 210
+      },
+      {
+        "foodName": "吉士蛋麦满分",
+        "energy": 302,
+        "proteinG": 15,
+        "fatG": 15,
+        "carbohydrateG": 26,
+        "sodiumMg": 780,
+        "calciumMg": 260
+      },
+      {
+        "foodName": "猪柳蛋麦满分",
+        "calories": 393,
+        "protein": 21,
+        "fat": 24,
+        "carbohydrate": 28,
+        "sodium": 900,
+        "calcium": 230
+      },
+      {
+        "foodName": "热香饼",
+        "energy": 331,
+        "proteinG": 7,
+        "fatG": 11,
+        "carbohydrateG": 52,
+        "sodiumMg": 490,
+        "calciumMg": 160
+      },
+      {
+        "foodName": "满杯百香果",
+        "calories": 179,
+        "protein": 1,
+        "fat": 0,
+        "carbohydrate": 44,
+        "sodium": 25,
+        "calcium": 20
+      }
+    ]
+  }
+}

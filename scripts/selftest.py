@@ -18,7 +18,7 @@ import importlib.util
 import json
 import sys
 import tempfile
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -29,6 +29,16 @@ if str(ROOT) not in sys.path:
 import mcledger  # noqa: E402
 from mcledger.analytics import compute_metrics, money  # noqa: E402
 from mcledger.audit import LEVEL_ALERT, LEVEL_NOTICE, LEVEL_TIP, run_audit  # noqa: E402
+from mcledger.coupons import (  # noqa: E402
+    KIND_FREE_GIFT,
+    KIND_NTH_ITEM,
+    KIND_PRODUCT,
+    KIND_THRESHOLD,
+    KIND_UNKNOWN,
+    CouponPortfolio,
+    parse_coupon_rule,
+)
+from mcledger.habits import build_habit_report, extract_habits, project_annual_waste  # noqa: E402
 from mcledger.mcp_client import (  # noqa: E402
     MCPClient,
     MCPError,
@@ -50,12 +60,29 @@ from mcledger.models import (  # noqa: E402
     to_float,
     to_int,
 )
+from mcledger.nutrition import (  # noqa: E402
+    FitRequest,
+    build_nutrition_profile,
+    fit_meals,
+    parse_nutrition_foods,
+    total_nutrition,
+)
 from mcledger.personas import evaluate_personas, headline, select_personas  # noqa: E402
 from mcledger.report import (  # noqa: E402
     render_html,
     render_markdown_summary,
     write_json_snapshot,
     write_report,
+)
+from mcledger.saver import (  # noqa: E402
+    Menu,
+    MenuItem,
+    Wish,
+    WishItem,
+    advise_topup,
+    build_plans,
+    compare_bundle,
+    coupon_brief,
 )
 
 
@@ -944,6 +971,223 @@ def test_engineering_guards(t: Runner) -> None:
 
 
 # ==========================================================================
+# 7. 省钱助手 / 营养搭配 / 习惯年账
+# ==========================================================================
+
+SAVER_MENU = Menu(
+    source="mcp",
+    items=[
+        MenuItem("巨无霸", 25.5),
+        MenuItem("中薯条", 13.0),
+        MenuItem("中可乐", 10.0),
+        MenuItem("原味圆筒冰淇淋", 5.0),
+        MenuItem("板烧鸡腿堡", 23.5),
+    ],
+)
+
+
+def test_coupon_rules(t: Runner) -> None:
+    rule = parse_coupon_rule("满40减10")
+    t.eq("满减券类型", rule.kind, KIND_THRESHOLD)
+    t.close("满减门槛", rule.threshold, 40.0)
+    t.close("满减面额", rule.value, 10.0)
+    t.close("够门槛时减满额", rule.discount_for(45.0), 10.0)
+    t.close("不够门槛时不减", rule.discount_for(30.0), 0.0)
+    t.close("还差多少钱", rule.shortfall(30.0), 10.0)
+
+    # ⚠️ 危险回归：曾经把「第2杯半价」当成整单半价，会算出严重偏低的假价
+    t.close("第2杯半价绝不按整单五折算", parse_coupon_rule("第2杯半价").discount_for(100.0), 0.0)
+    t.eq("第2杯半价归为第N件优惠", parse_coupon_rule("第2杯半价").kind, KIND_NTH_ITEM)
+
+    # 折扣：95 折与 9.5 折都表示"付 95%"
+    t.close("95折 = 付 95%", parse_coupon_rule("任意消费95折").value, 0.95)
+    t.close("9.5折 = 付 95%", parse_coupon_rule("9.5折").value, 0.95)
+
+    # 适用餐品提取：必须先剥掉"立减X元"再取名字，否则会留下一个"立"字
+    t.eq("单品直降的适用范围", parse_coupon_rule("巨无霸立减4元").scope, ("巨无霸",))
+    t.check("买一送一归为买赠", parse_coupon_rule("中薯条买一送一").kind == KIND_FREE_GIFT)
+
+    # 门店名限定的是"哪家店"，不是"买哪个餐品"，必须当成全场券
+    t.check("门店券按全场处理", parse_coupon_rule("望京SOHO店专属：满30减6").is_general)
+
+    # 券名本身就是商品 —— 不能包装成"买一送一"这种没依据的说法
+    t.eq("商品券单独归类", parse_coupon_rule("王牌小食拼").kind, KIND_PRODUCT)
+    t.eq("空券名归为无法解析", parse_coupon_rule("").kind, KIND_UNKNOWN)
+
+    # 一次性券标记
+    t.check("新客券被标为一次性", parse_coupon_rule("新客立减8元").one_time)
+    t.check("普通券不是一次性", not parse_coupon_rule("满40减10").one_time)
+
+    portfolio = CouponPortfolio.from_names(["满40减10", "中薯条买一送一", "第2杯半价", "新客立减8元"])
+    t.eq("能算出金额的券数", len(portfolio.computable), 2)
+    t.eq("排除一次性后剩余券数", len(portfolio.reusable.rules), 3)
+    t.eq("识别出的一次性券", [r.raw for r in portfolio.one_time], ["新客立减8元"])
+
+    brief = "\n".join(coupon_brief(portfolio))
+    t.check("券的交代里说明了哪些算不出来", "算不出确定金额" in brief)
+
+
+def test_saver(t: Runner) -> None:
+    portfolio = CouponPortfolio.from_names(["满40减10", "巨无霸立减4元", "任意消费95折"])
+
+    wish = Wish(
+        items=[
+            WishItem("巨无霸", 1, 25.5),
+            WishItem("中薯条", 1, 13.0),
+            WishItem("中可乐", 1, 10.0),
+        ]
+    )
+    t.close("想点的原价", wish.gross, 48.5)
+
+    plans = build_plans(wish, portfolio)
+    t.check("生成了多个方案", len(plans) >= 3)
+    t.eq("最省的方案用满减", plans[0].coupon, "满40减10")
+    t.close("最省方案的实付", plans[0].payable, 38.5)
+    t.check("方案按实付升序", all(plans[i].payable <= plans[i + 1].payable for i in range(len(plans) - 1)))
+
+    # 凑单判断：加购花的钱 < 券面额才值得
+    cheap = Wish(items=[WishItem("巨无霸", 1, 25.5), WishItem("中可乐", 1, 10.0)])  # 35.5
+    advice = advise_topup(cheap, portfolio, SAVER_MENU)
+    t.check("差一点够满减时给出凑单建议", bool(advice), f"实际 {advice}")
+    if advice:
+        t.check("加 5 元圆筒换 10 元优惠 = 值得", advice[0].worth_it)
+        t.close("净省金额", advice[0].net_change, -5.0)
+        t.eq(
+            "推荐加购的是最便宜的补位商品",
+            advice[0].add_on.name if advice[0].add_on else None,
+            "原味圆筒冰淇淋",
+        )
+
+    # 差太多就别凑
+    small = Wish(items=[WishItem("巨无霸", 1, 25.5)])  # 25.5，差 14.5
+    advice2 = advise_topup(small, portfolio, SAVER_MENU)
+    t.check("差太多时明确劝退", bool(advice2) and not advice2[0].worth_it, f"实际 {advice2}")
+    if advice2:
+        t.close("劝退时的净多花金额", advice2[0].net_change, 13.5)
+
+    # 没有菜单时不编造商品
+    no_menu = advise_topup(small, portfolio, Menu())
+    t.check("没有菜单时不编造补位商品", bool(no_menu) and no_menu[0].add_on is None)
+
+    # 套餐 vs 单点
+    check = compare_bundle([MenuItem("巨无霸", 25.5), MenuItem("中薯条", 13.0)], 40.0, "超值套餐")
+    t.check("套餐比单点贵时会被识破", not check.bundle_is_cheaper)
+    check2 = compare_bundle([MenuItem("巨无霸", 25.5), MenuItem("中薯条", 13.0)], 30.0, "超值套餐")
+    t.check("套餐确实更便宜时也说清楚", check2.bundle_is_cheaper)
+
+
+def test_habits(t: Runner) -> None:
+    # 造 6 个一模一样的"周五午餐"，构成一个明确习惯
+    base = datetime(2026, 3, 6, 12, 30)  # 2026-03-06 是周五
+    orders = [
+        _mk_order(
+            f"H{i}",
+            base + timedelta(days=i * 7),
+            "dine_in",
+            "店",
+            [
+                OrderItem("巨无霸", 1, 25.5, 25.5),
+                OrderItem("原味圆筒冰淇淋", 1, 5.0, 5.0),
+            ],
+            30.5,
+            30.5,
+        )
+        for i in range(6)
+    ]
+    habits = extract_habits(orders, min_occurrences=3)
+    t.eq("找出 1 个习惯", len(habits), 1)
+    t.eq("习惯出现次数", habits[0].occurrences, 6)
+    t.eq("习惯指纹来自餐品组合（按名字排序）", habits[0].signature, ("原味圆筒冰淇淋", "巨无霸"))
+    t.eq("识别出是周五", habits[0].top_weekday, 4)
+    t.eq("识别出是午餐时段", habits[0].top_daypart, "午餐")
+    t.check("习惯描述可读", "周五" in habits[0].label and "午餐" in habits[0].label)
+
+    t.eq("只出现 2 次不算习惯", len(extract_habits(orders[:2], min_occurrences=3)), 0)
+
+    # ⚠️ 关键回归：年度账必须排除一次性券
+    # 新客券减 8 元比「满25减5」更划算，但它一辈子只能用一次。
+    # 如果不排除，一年的省钱金额会被算得虚高。
+    portfolio = CouponPortfolio.from_names(["新客立减8元", "到店取餐满25减5"])
+    report = build_habit_report(orders, portfolio, SAVER_MENU)
+    t.eq("报告里列出了被排除的一次性券", report.excluded_one_time, ["新客立减8元"])
+    t.check("有习惯数据", report.has_data)
+    if report.costs:
+        # 30.5 元用「满25减5」= 25.5；若误用新客券会变成 22.5
+        t.close("年度账用的是可复用的券而非新客券", report.costs[0].optimized_payable, 25.5)
+    notes = "\n".join(report.notes())
+    t.check("说明了年化方式", "年化方式" in notes)
+    t.check("说明了排除一次性券的原因", "一次性" in notes)
+
+    t.check("年化浪费金额为正", project_annual_waste(orders, 100.0) > 0)
+
+
+def test_nutrition(t: Runner) -> None:
+    # 两套字段名都要能认出来
+    mixed = {
+        "success": True,
+        "data": {
+            "list": [
+                {"foodName": "巨无霸", "calories": 495, "protein": 26, "fat": 25, "carbohydrate": 42},
+                {"foodName": "中薯条", "energy": 337, "proteinG": 4, "fatG": 16, "carbohydrateG": 43},
+            ]
+        },
+    }
+    table = parse_nutrition_foods(mixed)
+    t.eq("两套字段名都能解析", len(table), 2)
+    t.close("第一套命名", table["巨无霸"].calories, 495.0)
+    t.close("第二套命名", table["中薯条"].calories, 337.0)
+    t.close("蛋白质别名匹配", table["中薯条"].protein, 4.0)
+
+    total = total_nutrition([("巨无霸", 2), ("中薯条", 1)], table)
+    t.close("合计热量", total.calories, 495 * 2 + 337)
+    t.close("能对上营养表的件数", float(total.known_items), 3.0)
+    t.close("覆盖率满分", total.coverage, 1.0)
+
+    partial = total_nutrition([("巨无霸", 1), ("不存在的餐品", 1)], table)
+    t.close("对不上的会被记为未知", float(partial.unknown_items), 1.0)
+    t.close("覆盖率反映真实情况", partial.coverage, 0.5)
+
+    # 约束筛选
+    menu = Menu(
+        source="mcp",
+        items=[MenuItem("巨无霸", 25.5), MenuItem("中薯条", 13.0), MenuItem("中可乐", 10.0)],
+    )
+    menu_table = parse_nutrition_foods(
+        {"data": {"list": [
+            {"foodName": "巨无霸", "calories": 495, "protein": 26},
+            {"foodName": "中薯条", "calories": 337, "protein": 4},
+            {"foodName": "中可乐", "calories": 155, "protein": 0},
+        ]}}
+    )
+    fit = fit_meals(menu, menu_table, FitRequest(max_calories=200))
+    t.check("热量上限生效", all(o.total.calories <= 200 for o in fit.options), f"{fit.options}")
+
+    # 至少要有一样主食，避免推荐出"三杯饮料"这种荒唐组合
+    drink_menu = Menu(source="mcp", items=[MenuItem("中可乐", 10.0), MenuItem("满杯百香果", 12.0)])
+    drink_table = parse_nutrition_foods(
+        {"data": {"list": [
+            {"foodName": "中可乐", "calories": 155, "protein": 0},
+            {"foodName": "满杯百香果", "calories": 179, "protein": 1},
+        ]}}
+    )
+    t.eq("全是饮料时不推荐", len(fit_meals(drink_menu, drink_table, FitRequest()).options), 0)
+
+    # 个人画像
+    orders = [
+        _mk_order("N1", datetime(2026, 5, 1, 12, 0), "dine_in", "店",
+                  [OrderItem("巨无霸", 1, 25.5, 25.5)], 25.5, 25.5),
+        _mk_order("N2", datetime(2026, 5, 2, 20, 0), "dine_in", "店",
+                  [OrderItem("中薯条", 1, 13.0, 13.0)], 13.0, 13.0),
+    ]
+    profile = build_nutrition_profile(orders, table)
+    t.eq("画像覆盖订单数", profile.orders_covered, 2)
+    t.close("画像覆盖率", profile.coverage, 1.0)
+    t.close("平均每单热量", profile.avg_calories_per_order, (495 + 337) / 2)
+    t.check("画像有品类分布", bool(profile.by_category))
+    t.check("画像有描述文字", len(profile.describe()) >= 3)
+
+
+# ==========================================================================
 
 
 def main() -> int:
@@ -956,6 +1200,10 @@ def main() -> int:
         ("端到端", test_end_to_end),
         ("真实 MCP 契约", test_real_mcp_contract),
         ("工程健壮性守卫", test_engineering_guards),
+        ("券规则解析", test_coupon_rules),
+        ("省钱助手", test_saver),
+        ("习惯年账", test_habits),
+        ("营养搭配", test_nutrition),
     ):
         before = len(t.failures)
         fn(t)

@@ -6,10 +6,12 @@
 
 不只是告诉你花了多少 —— 而是告诉你，钱漏在哪。
 
+[**🔍 在线试玩（不用登录、不用 Token）**](https://excellence-wh.github.io/mcd-meal-ledger/) · [看示例年报](https://excellence-wh.github.io/mcd-meal-ledger/demo.html) · [源码](https://github.com/excellence-wh/mcd-meal-ledger)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies: 0](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](#为什么零依赖)
-[![Tests: 192](https://img.shields.io/badge/tests-192%20passed-success.svg)](./scripts/selftest.py)
+[![Tests: 261](https://img.shields.io/badge/tests-261%20passed-success.svg)](./scripts/selftest.py)
 [![ruff: 0 issues](https://img.shields.io/badge/ruff-0%20issues-brightgreen.svg)](./ruff.toml)
 [![mypy: clean](https://img.shields.io/badge/mypy-clean-brightgreen.svg)](./mypy.ini)
 [![MCP: McDonald's](https://img.shields.io/badge/MCP-mcd.cn-DA291C.svg)](https://open.mcd.cn/mcp)
@@ -27,6 +29,8 @@
 | **1. 事实** | 你在麦当劳花了 ¥4,177 | 123 单 / 覆盖 98 天 / 平均客单价 ¥33.96 / 整体折扣率 17.3% |
 | **2. 画像** | 无 | ⏳ 资深麦门老友、🔥 连击王、🍦 甜品治愈系 —— 每个标签都附数据依据 |
 | **3. 审计** | 无 | **26 单按原价结的，按你自己的折扣水平本可省约 ¥241.38（估算）** |
+| **4. 往前看** | 无 | 说一句「巨无霸+薯条+可乐」，当场算怎么点最省；为了凑满减加购到底划不划算 |
+| **5. 算到一年** | 无 | 从你的真实订单认出固定习惯，算出照这样点一年**大约白花多少钱** |
 
 第 3 条是重点。**普通的年度报告只统计过去，麦门账本审计漏洞。**
 
@@ -86,6 +90,23 @@ python scripts/run.py --out docs/mine.html --markdown
 ```
 
 3. 打开 `docs/mine.html` —— 这是你自己的麦门账本。
+
+### 三步之外的两种用法
+
+**当场比价**：说清楚想吃什么，它会算怎么点最省，并判断凑单划不划算。
+
+```bash
+python scripts/run.py --wish "巨无霸:1,中薯条:1,中可乐:1"
+# 最省：用券：满40减10，实付 ¥37.14，省 ¥10.00
+# · 还差 ¥4.50 才能用「满40减10」。加一件 原味圆筒冰淇淋（¥5.00）就够，
+#   减 ¥10.00 —— 净省 ¥5.00，值得加。
+```
+
+**按营养限制挑搭配**：给个热量和预算上限，穷举菜单找最省的一套。
+
+```bash
+python scripts/run.py --fit-calories 700 --fit-budget 40
+```
 
 ### 命令行参数
 
@@ -157,6 +178,10 @@ mcd-meal-ledger/
 │   ├── models.py                 宽容取值的归一化：脏数据 / 异形外壳 / 时间戳
 │   ├── mcp_client.py             Streamable HTTP + JSON-RPC 的极简 MCP 客户端
 │   ├── analytics.py              确定性统计引擎（含内联 SVG 图表）
+│   ├── coupons.py                券规则解析器（从券名反推门槛与面额）
+│   ├── saver.py                  省钱助手：比价 + 凑单值不值判断
+│   ├── habits.py                 从历史挖固定习惯，把账算到一年
+│   ├── nutrition.py              营养合计、约束筛选与个人饮食画像
 │   ├── personas.py               规则驱动、证据可追溯的消费人格引擎
 │   ├── audit.py                  优惠审计引擎 —— 找出钱漏在哪
 │   ├── report.py                 自包含 HTML + Markdown 年报生成
@@ -168,9 +193,10 @@ mcd-meal-ledger/
 │   ├── fetch_snapshot.py         从真实 MCP 拉数据快照（落盘到 .gitignore 目录）
 │   └── make_fixtures.py          生成脱敏样例数据（固定种子，可复现）
 │
-├── fixtures/                     脱敏样例数据（123 笔订单 + 8 张券）
+├── fixtures/                     脱敏样例数据（123 笔订单 + 8 张券 + 19 项营养）
 ├── skills/mcd-meal-ledger/       Skill 定义（SKILL.md）
 └── docs/
+    ├── index.html                在线演示页（含互动估算器，GitHub Pages 首页）
     ├── demo.html                 示例年报（离线样例生成）
     └── sample-metrics.json       中间结果 JSON
 ```
@@ -183,7 +209,7 @@ mcd-meal-ledger/
 都会得到相同结论：
 
 ```bash
-python scripts/selftest.py    # ✅ 192 passed, 0 failed  (共 192 项)
+python scripts/selftest.py    # ✅ 261 passed, 0 failed  (共 261 项)
 ruff check .                  # ✅ All checks passed!
 mypy mcledger scripts         # ✅ Success: no issues found in 12 source files
 ```
@@ -227,7 +253,7 @@ mypy mcledger scripts         # ✅ Success: no issues found in 12 source files
 
 ## MCP 接入
 
-本项目调用 **8 个**麦当劳 MCP Tool：
+本项目调用 **9 个**麦当劳 MCP Tool：
 
 | Tool | 用途 |
 |---|---|
@@ -239,6 +265,7 @@ mypy mcledger scripts         # ✅ Success: no issues found in 12 source files
 | `query-meals` | 门店菜单 |
 | `query-my-account` | 积分账户 |
 | `campaign-calendar` | 活动日历 |
+| `list-nutrition-foods` | 官方营养表（营养画像与搭配筛选依赖它） |
 
 > **一个关键经验：券必须从三路查全。** 麦麦省可领券、账户已有券、门店专属券
 > 是三路并集，**少查一路，用户就少省钱**。

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import html
 import json
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
@@ -23,8 +24,12 @@ from .analytics import (
     weekday_series_svg,
 )
 from .audit import AuditResult
+from .coupons import CouponPortfolio
+from .habits import HabitReport
 from .models import AccountPoints
+from .nutrition import DISCLAIMER, FitResult, NutritionProfile
 from .personas import Persona
+from .saver import TopUpAdvice
 
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
@@ -246,6 +251,153 @@ def _period_text(metrics: Metrics) -> str:
     return f"{first} ~ {last}" if first != last else first
 
 
+@dataclass
+class ReportExtras:
+    """报告的可选加强板块。
+
+    用一个小容器统一传，而不是往 render_html 上挂七八个参数 ——
+    那样每加一个能力就要改一次签名，调用方也得跟着改。
+    """
+
+    habits: HabitReport | None = None
+    portfolio: CouponPortfolio | None = None
+    topups: list[TopUpAdvice] = field(default_factory=list)
+    nutrition: NutritionProfile | None = None
+    meal_fit: FitResult | None = None
+    menu_source: str = ""
+
+
+_MENU_SOURCE_LABELS: dict[str, str] = {
+    "mcp": "这家店的实时菜单",
+    "history": "从你自己的历史订单里推出的价格（是过去的价，仅供参考）",
+    "fixture": "内置演示数据",
+}
+
+
+def _habits_card(habits: HabitReport | None) -> str:
+    """习惯年账 —— 本项目唯一别人做不了的板块。"""
+    if habits is None or not habits.has_data:
+        return ""
+
+    blocks: list[str] = []
+    for index, cost in enumerate(habits.costs, start=1):
+        badge = ""
+        if cost.has_saving:
+            badge = f'<span class="amt">≈ {money(cost.annual_savable)}/年</span>'
+        blocks.append(
+            '<div class="finding tip"><div class="ft">'
+            f"<span>第 {index} 个习惯</span>{badge}</div>"
+            f'<div class="fd">{_esc(cost.explain())}</div></div>'
+        )
+
+    notes = "".join(f'<div class="n" style="font-size:12px">{_esc(n)}</div>' for n in habits.notes())
+    return (
+        '<div class="card"><h2>照你这样点，一年大概花多少</h2>'
+        '<div class="fd" style="font-size:13.5px;color:#4A4A4A;margin-bottom:12px">'
+        f"{_esc(habits.headline())}</div>"
+        f"{''.join(blocks)}"
+        '<div style="margin-top:14px;padding-top:12px;border-top:1px dashed #F0E4CC">'
+        f"{notes}</div></div>"
+    )
+
+
+def _coupon_honesty_card(portfolio: CouponPortfolio | None, topups: list[TopUpAdvice]) -> str:
+    """把券的底细交代清楚：哪些算得出来、哪些算不出来、为什么。"""
+    if portfolio is None or not portfolio.rules:
+        return ""
+
+    rows: list[str] = []
+    for index, rule in enumerate(portfolio.rules, start=1):
+        rows.append(
+            f'<div class="rank"><div class="i">{index}</div>'
+            '<div style="flex:1">'
+            f'<div class="n">{_esc(rule.raw)}</div>'
+            f'<div class="q" style="text-align:left">{_esc(rule.describe())}</div>'
+            "</div></div>"
+        )
+
+    uncomputable = [r for r in portfolio.rules if not r.is_computable]
+    tail = ""
+    if uncomputable:
+        tail = (
+            f'<div class="warn">其中 {len(uncomputable)} 张券<b>算不出确定金额</b>，'
+            "本次没有计入优惠 —— 它们的优惠额取决于具体商品或购买件数，"
+            "而接口只返回券名。宁可少算，也不给你一个到店付不出来的价。</div>"
+        )
+
+    topup_html = ""
+    if topups:
+        tip_blocks: list[str] = []
+        for advice in topups[:3]:
+            level = "tip" if advice.worth_it else "notice"
+            badge = '<span class="amt">值得加</span>' if advice.worth_it else ""
+            tip_blocks.append(
+                f'<div class="finding {level}"><div class="ft">'
+                f"<span>{_esc(advice.coupon)}</span>{badge}</div>"
+                f'<div class="fd">{_esc(advice.explain())}</div></div>'
+            )
+        topup_html = (
+            '<div class="charttitle" style="margin-top:16px">凑单值不值</div>'
+            + "".join(tip_blocks)
+        )
+
+    return (
+        '<div class="card"><h2>你手上的券，能算清楚的有几张</h2>'
+        '<div class="fd" style="font-size:13.5px;color:#4A4A4A;margin-bottom:10px">'
+        f"一共 {len(portfolio.rules)} 张，其中 {len(portfolio.computable)} 张能算出确定金额。</div>"
+        f"{''.join(rows)}{tail}{topup_html}</div>"
+    )
+
+
+def _nutrition_card(
+    profile: NutritionProfile | None, fit: FitResult | None
+) -> str:
+    """营养画像：只讲事实，不给健康结论。"""
+    if profile is None or not profile.total.known_items:
+        return ""
+    lines = "".join(f'<div class="n" style="font-size:12.5px">{_esc(t)}</div>' for t in profile.describe())
+
+    cats = ""
+    if profile.by_category:
+        total_kcal = sum(v for _, v in profile.by_category) or 1.0
+        cats = "".join(
+            f'<div class="rank"><div class="n" style="flex:1">{_esc(name)}</div>'
+            f'<div class="q">{kcal:g} 大卡 · {kcal / total_kcal * 100:.0f}%</div></div>'
+            for name, kcal in profile.by_category[:5]
+        )
+        cats = f'<div class="charttitle" style="margin-top:14px">热量从哪来</div>{cats}'
+
+    fit_html = ""
+    if fit is not None and fit.has_options:
+        rows = "".join(
+            f'<div class="rank"><div class="i">{i}</div><div style="flex:1">'
+            f'<div class="n">{_esc(o.label)}</div>'
+            f'<div class="q" style="text-align:left">{_esc(o.total.describe())}</div></div>'
+            f'<div class="q">{money(o.price)}</div></div>'
+            for i, o in enumerate(fit.options[:5], start=1)
+        )
+        fit_html = (
+            '<div class="charttitle" style="margin-top:16px">按营养限制，最省的几套</div>'
+            f"{rows}"
+        )
+
+    return (
+        '<div class="card"><h2>你实际吃成什么样</h2>'
+        f"{lines}{cats}{fit_html}"
+        f'<div class="warn">{_esc(DISCLAIMER)}</div></div>'
+    )
+
+
+def _render_extras(extras: ReportExtras | None) -> str:
+    if extras is None:
+        return ""
+    return (
+        _habits_card(extras.habits)
+        + _coupon_honesty_card(extras.portfolio, extras.topups)
+        + _nutrition_card(extras.nutrition, extras.meal_fit)
+    )
+
+
 def render_html(
     metrics: Metrics,
     personas: list[Persona],
@@ -257,6 +409,7 @@ def render_html(
     generated_at: datetime | None = None,
     account: AccountPoints | None = None,
     promotions: list[str] | None = None,
+    extras: ReportExtras | None = None,
 ) -> str:
     """生成完整年报 HTML。"""
     generated_at = generated_at or datetime.now()
@@ -371,6 +524,8 @@ def render_html(
 
 {_promotions_card(promotions)}
 
+{_render_extras(extras)}
+
 <div class="card">
   <h2>你的账单，钱漏在哪</h2>
   <div class="graderow">
@@ -429,6 +584,7 @@ def render_markdown_summary(
     *,
     headline: str = "",
     account: AccountPoints | None = None,
+    extras: ReportExtras | None = None,
 ) -> str:
     """给 Agent / 终端用的 Markdown 摘要。"""
     if metrics.total_orders == 0:
@@ -482,6 +638,21 @@ def render_markdown_summary(
             f"- 已过期作废：**{account.expired:g}**",
             "",
         ]
+
+    if extras is not None and extras.habits is not None and extras.habits.has_data:
+        lines += ["", "### 照你这样点，一年大概花多少", ""]
+        lines.append(f"> {extras.habits.headline()}")
+        for cost in extras.habits.costs:
+            lines.append(f"- {cost.explain()}")
+        for note in extras.habits.notes():
+            lines.append(f"  - {note}")
+        lines.append("")
+
+    if extras is not None and extras.nutrition is not None and extras.nutrition.total.known_items:
+        lines += ["### 你实际吃成什么样", ""]
+        lines += [f"- {t}" for t in extras.nutrition.describe()]
+        lines.append(f"- {DISCLAIMER}")
+        lines.append("")
 
     lines += [
         f"### 你的账单，钱漏在哪"

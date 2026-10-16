@@ -383,6 +383,7 @@ class MCPBundle:
     meals_raw: Any = None
     campaigns_raw: Any = None
     account_raw: Any = None
+    nutrition_raw: Any = None
     tools_available: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     enriched: int = 0  # 实际补全详情的订单数
@@ -601,7 +602,13 @@ def fetch_bundle(
     except MCPError as exc:
         bundle.warnings.append(f"读取积分失败（{exc}）")
 
-    # 6) 活动日历
+    # 6) 官方营养表（营养画像与搭配筛选都依赖它）
+    try:
+        bundle.nutrition_raw = client.call_tool("list-nutrition-foods", {}).raw
+    except MCPError as exc:
+        bundle.warnings.append(f"读取营养数据失败（{exc}）")
+
+    # 7) 活动日历
     if include_campaigns:
         try:
             bundle.campaigns_raw = client.call_tool("campaign-calendar", {}).raw

@@ -4,11 +4,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from .analytics import compute_metrics
 from .audit import run_audit
+from .coupons import CouponPortfolio
+from .habits import HabitReport, build_habit_report, project_annual_waste
 from .mcp_client import (
     MCPAuthError,
     MCPClient,
@@ -24,14 +28,172 @@ from .models import (
     parse_account,
     parse_coupons,
     parse_orders,
+    to_int,
+)
+from .nutrition import (
+    FitRequest,
+    build_nutrition_profile,
+    fit_meals,
+    parse_nutrition_foods,
 )
 from .personas import headline, select_personas
 from .report import (
+    ReportExtras,
     render_html,
     render_markdown_summary,
     write_json_snapshot,
     write_report,
 )
+from .saver import (
+    Menu,
+    MenuItem,
+    Wish,
+    WishItem,
+    advise_topup,
+    build_plans,
+)
+
+NUTRITION_FIXTURE = "nutrition.sample.json"
+
+
+@dataclass
+class LoadedData:
+    """一次取数的结果。
+
+    用结构体而不是越来越长的元组 —— 六个以上返回值靠位置记忆，
+    迟早会有人把 account 和 promotions 传反，而且不会报错。
+    """
+
+    orders: list[Order] = field(default_factory=list)
+    coupons: list[Coupon] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+    source: str = ""
+    account: AccountPoints | None = None
+    promotions: list[str] = field(default_factory=list)
+    nutrition: dict = field(default_factory=dict)
+    menu_source: str = "history"
+
+
+def menu_from_orders(orders: list[Order]) -> Menu:
+    """从历史订单里推出一份"价格参考表"。
+
+    真实门店菜单只返回餐品编码、不返回名字；要拿到"名字 + 当前价格"
+    得对每件餐品单独查一次详情，成本很高。所以默认用历史订单里的
+    实际成交单价做参考 —— 好处是零额外请求，代价是价格是过去的。
+
+    这个来源会被如实标注出来，不会假装成实时价。
+    """
+    buckets: dict[str, list[float]] = {}
+    for order in orders:
+        for item in order.items:
+            if item.unit_price > 0:
+                buckets.setdefault(item.name, []).append(item.unit_price)
+    items = [MenuItem(name, sum(v) / len(v)) for name, v in buckets.items()]
+    return Menu(items=sorted(items, key=lambda i: i.name), source="history")
+
+
+def wish_from_text(text: str, menu: Menu) -> Wish:
+    """把「巨无霸:2,中薯条」这样的文本解析成想点清单。
+
+    价格优先取菜单里的；菜单里没有就填 0，上层会如实说明金额不完整。
+    """
+    items: list[WishItem] = []
+    for chunk in re.split(r"[,，;；]", text or ""):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        name, sep, qty_text = chunk.rpartition(":")
+        if not sep:
+            name, qty_text = chunk, "1"
+        qty = to_int(qty_text, default=1) or 1
+        hit = menu.find(name.strip())
+        items.append(
+            WishItem(name=name.strip(), qty=qty, unit_price=hit.price if hit else 0.0)
+        )
+    return Wish(items=items)
+
+
+def load_nutrition_table(fixture_dir: Path) -> dict:
+    """加载营养表。找不到就返回空表，让上层如实说"没有营养数据"。"""
+    path = fixture_dir / NUTRITION_FIXTURE
+    if not path.exists():
+        return {}
+    return parse_nutrition_foods(json.loads(path.read_text(encoding="utf-8")))
+
+
+def build_extras(
+    orders: list[Order],
+    coupon_names: list[str],
+    menu: Menu,
+    table: dict,
+    fit_request: FitRequest | None,
+) -> tuple[ReportExtras, CouponPortfolio, HabitReport]:
+    """把三个新板块需要的数据一次算好。"""
+    portfolio = CouponPortfolio.from_names(coupon_names)
+    habit_report = build_habit_report(orders, portfolio, menu)
+    profile = build_nutrition_profile(orders, table)
+    fit = fit_meals(menu, table, fit_request) if (fit_request and table and menu) else None
+
+    # 拿用户最常点的那个习惯当成"想吃什么"，给出凑单建议
+    topups = []
+    if habit_report.habits:
+        signature = habit_report.habits[0].signature
+        wish_items = []
+        for name in signature:
+            hit = menu.find(name)
+            wish_items.append(WishItem(name, 1, hit.price if hit else 0.0))
+        topups = advise_topup(Wish(items=wish_items), portfolio, menu)
+
+    extras = ReportExtras(
+        habits=habit_report,
+        portfolio=portfolio,
+        topups=topups,
+        nutrition=profile,
+        meal_fit=fit,
+        menu_source=menu.source,
+    )
+    return extras, portfolio, habit_report
+
+
+def _print_saver(args: argparse.Namespace, portfolio: CouponPortfolio, menu: Menu) -> None:
+    """现场比价：用户说想吃什么，当场算怎么点最省。"""
+    if not args.wish:
+        return
+    wish = wish_from_text(args.wish, menu)
+    if not wish:
+        return
+
+    print()
+    print(f"   你想点：{args.wish}（原价 {wish.gross:.2f} 元）")
+
+    unknown = [i.name for i in wish.items if i.unit_price <= 0]
+    if unknown:
+        print(f"   ⚠️  「{'、'.join(unknown)}」没有价格参考，下面的金额不完整")
+
+    plans = build_plans(wish, portfolio)
+    if plans:
+        best = plans[0]
+        if best.discount > 0:
+            print(f"   最省：{best.label}，实付 {best.payable:.2f} 元，省 {best.discount:.2f} 元")
+        else:
+            print("   没有能算出确定金额的券可用，按原价点就是最省的")
+        for plan in plans[1:4]:
+            print(f"     · 也可以：{plan.explain()}")
+
+    for advice in advise_topup(wish, portfolio, menu):
+        print(f"   · {advice.explain()}")
+
+
+def _print_fit(extras: ReportExtras) -> None:
+    """营养搭配：在用户给的限制下找最省的一套。"""
+    fit = extras.meal_fit
+    if fit is None:
+        return
+    print()
+    print(f"   营养搭配（穷举了 {fit.candidates_scanned} 种组合）：{fit.headline()}")
+    for option in fit.options[1:4]:
+        print(f"     · 也可以：{option.explain()}")
+
 
 DEFAULT_OUT = "docs/demo.html"
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
@@ -49,9 +211,7 @@ def _stderr_tracer(message: str) -> None:
 # --------------------------------------------------------------------------
 
 
-def load_offline(
-    fixture_dir: Path,
-) -> tuple[list[Order], list[Coupon], list[str], AccountPoints | None, list[str]]:
+def load_offline(fixture_dir: Path) -> LoadedData:
     """离线模式：读本地脱敏样例，保证无 Token 也能完整跑通。"""
     warnings: list[str] = []
     orders_file = fixture_dir / "orders.sample.json"
@@ -81,12 +241,19 @@ def load_offline(
     promotions = ["1+1随心配", "周一会员日", "早餐满减"]
 
     warnings.append("这次用的是内置演示数据，不是你的真实账单")
-    return orders, coupons, warnings, account, promotions
+    return LoadedData(
+        orders=orders,
+        coupons=coupons,
+        warnings=warnings,
+        source="内置演示数据",
+        account=account,
+        promotions=promotions,
+        nutrition=load_nutrition_table(fixture_dir),
+        menu_source="history",
+    )
 
 
-def load_online(
-    args: argparse.Namespace,
-) -> tuple[list[Order], list[Coupon], list[str], str, AccountPoints | None, list[str]]:
+def load_online(args: argparse.Namespace) -> LoadedData:
     """在线模式：真实调用麦当劳 MCP。"""
     client = MCPClient(trace=_stderr_tracer if args.verbose else None)
     bundle = fetch_bundle(
@@ -114,7 +281,22 @@ def load_online(
         warnings.append(f"已为 {bundle.enriched} 笔订单补齐了优惠明细")
     if not orders:
         warnings.append("没读到你的历史订单。如果你确实在麦当劳点过单，可能是账号没对上")
-    return orders, coupons, warnings, "你的麦当劳账户", account, promotions
+    # 营养表只认接口返回的真实数据 ——
+    # 拿内置样例冒充真实营养数据会让报告里的数字变成编的。
+    table = parse_nutrition_foods(bundle.nutrition_raw) if bundle.nutrition_raw else {}
+    if not table:
+        warnings.append("没读到官方营养数据，这次不算营养画像")
+
+    return LoadedData(
+        orders=orders,
+        coupons=coupons,
+        warnings=warnings,
+        source="你的麦当劳账户",
+        account=account,
+        promotions=promotions,
+        nutrition=table,
+        menu_source="history",
+    )
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -153,6 +335,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="调用 auto-bind-coupons 一键领券（会真实写入账户，默认关闭）",
     )
     parser.add_argument("--no-campaigns", action="store_true", help="跳过活动日历查询")
+    parser.add_argument(
+        "--wish",
+        default="",
+        help='想点什么，用逗号分隔，如 "巨无霸:2,中薯条" —— 会当场比价并判断凑单值不值',
+    )
+    parser.add_argument("--fit-calories", type=float, default=None, help="营养搭配的热量上限（大卡）")
+    parser.add_argument("--fit-protein", type=float, default=None, help="营养搭配的蛋白质下限（克）")
+    parser.add_argument("--fit-budget", type=float, default=None, help="营养搭配的价格上限（元）")
     parser.add_argument("-v", "--verbose", action="store_true", help="把每次 MCP 调用打印到 stderr")
     return parser
 
@@ -161,11 +351,7 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
 
     try:
-        if args.offline:
-            orders, coupons, warnings, account, promotions = load_offline(Path(args.fixtures))
-            source = "内置演示数据"
-        else:
-            orders, coupons, warnings, source, account, promotions = load_online(args)
+        data = load_offline(Path(args.fixtures)) if args.offline else load_online(args)
     except MCPAuthError as exc:
         print(f"❌ {exc}", file=sys.stderr)
         print("   想先看效果可以加 --offline 用内置样例跑一遍。", file=sys.stderr)
@@ -174,9 +360,28 @@ def main(argv: list[str] | None = None) -> int:
         print(f"❌ 取数失败：{exc}", file=sys.stderr)
         return 3
 
+    orders, coupons = data.orders, data.coupons
+    warnings, source = data.warnings, data.source
+    account, promotions = data.account, data.promotions
+    table = data.nutrition
+
     metrics = compute_metrics(orders, top_n=max(args.top, 12))
     personas = select_personas(metrics, limit=args.personas)
     audit = run_audit(orders, metrics, coupons, account)
+
+    # 省钱 / 营养两块共用一份菜单与营养表
+    menu = menu_from_orders(orders)
+    fit_request = None
+    if args.fit_calories or args.fit_protein or args.fit_budget:
+        fit_request = FitRequest(
+            max_calories=args.fit_calories,
+            min_protein=args.fit_protein,
+            max_price=args.fit_budget,
+        )
+    extras, portfolio, habit_report = build_extras(
+        orders, [c.name for c in coupons], menu, table, fit_request
+    )
+    annual_waste = project_annual_waste(orders, audit.estimated_missed)
 
     html_text = render_html(
         metrics,
@@ -187,6 +392,7 @@ def main(argv: list[str] | None = None) -> int:
         warnings=warnings,
         account=account,
         promotions=promotions,
+        extras=extras,
     )
     out_path = write_report(html_text, args.out)
 
@@ -256,9 +462,25 @@ def main(argv: list[str] | None = None) -> int:
         print()
         print(
             render_markdown_summary(
-                metrics, personas, audit, headline=headline(metrics), account=account
+                metrics,
+                personas,
+                audit,
+                headline=headline(metrics),
+                account=account,
+                extras=extras,
             )
         )
+
+    _print_saver(args, portfolio, menu)
+    _print_fit(extras)
+
+    if habit_report.has_data:
+        print()
+        print(f"   {habit_report.headline()}")
+        if annual_waste >= 1:
+            print(
+                f"   按你现在的消费节奏，光是把该用的券用上，一年大约能少浪费 {annual_waste:.2f} 元"
+            )
 
     for warning in warnings:
         print(f"   ⚠️  {warning}")

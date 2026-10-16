@@ -51,7 +51,7 @@
 
 ## 二、实际使用的 Tool
 
-本项目共调用 **8 个**麦当劳 MCP Tool，覆盖「订单 → 补全 → 券 → 菜单 → 积分 → 活动」六条数据线。
+本项目共调用 **9 个**麦当劳 MCP Tool，覆盖「订单 → 补全 → 券 → 菜单 → 积分 → 活动」六条数据线。
 
 | # | Tool | 用途 | 在本项目中的业务价值 |
 |:-:|---|---|---|
@@ -63,6 +63,7 @@
 | 6 | `query-meals` | 门店可售餐品菜单 | 提供餐品编码与标签（注意：它**不返回品类与名称**，见问题 ②） |
 | 7 | `query-my-account` | 积分账户 | 展示可用 / 临期 / **已过期作废**积分 |
 | 8 | `campaign-calendar` | 当月活动日历 | 说明当下有哪些活动可以和券搭配着用 |
+| 9 | `list-nutrition-foods` | 官方营养表 | 营养画像与「按热量筛搭配」的唯一数据源 |
 
 ### 选型说明：为什么是这 8 个
 
@@ -462,7 +463,7 @@ Tool `description`（也出现在错误响应里）：
 
 ## 八、可验证性
 
-- `scripts/selftest.py`：**192 项断言**，含专门的「真实 MCP 契约测试」区块 ——
+- `scripts/selftest.py`：**261 项断言**，含专门的「真实 MCP 契约测试」区块 ——
   用真实联调抓回来的原始报文作为夹具，锁死 `orderProductList` / `realTotalAmount` /
   `beType` 等关键字段名，防止回归。
 - `fixtures/` 内置脱敏样例数据（123 笔订单 + 8 张券），**没有 Token 也能完整跑通全流程**。
@@ -470,7 +471,7 @@ Tool `description`（也出现在错误响应里）：
 - HTML 产物为自包含内联样式与内联 SVG，**不引用任何外部资源**（已断言）。
 
 ```bash
-python scripts/selftest.py              # 192 passed, 0 failed
+python scripts/selftest.py              # 261 passed, 0 failed
 ruff check .                            # All checks passed!
 mypy mcledger scripts                   # Success: no issues found in 12 source files
 python scripts/run.py --offline         # 离线跑通完整年报

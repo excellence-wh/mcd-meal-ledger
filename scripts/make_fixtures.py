@@ -286,6 +286,68 @@ def build_coupons() -> dict:
     }
 
 
+# 每份餐品的三大营养素与矿物质：(蛋白质g, 脂肪g, 碳水g, 钠mg, 钙mg)
+# 热量沿用 MENU 里的值，不重复写一遍。
+_MACROS: dict[str, tuple[float, float, float, float, float]] = {
+    "巨无霸": (26, 25, 42, 950, 120),
+    "麦辣鸡腿堡": (25, 27, 45, 1100, 90),
+    "板烧鸡腿堡": (27, 19, 44, 890, 110),
+    "双层吉士汉堡": (24, 23, 33, 900, 210),
+    "麦香鱼": (15, 16, 33, 570, 130),
+    "麦乐鸡（5块）": (14, 13, 12, 480, 20),
+    "中薯条": (4, 16, 43, 260, 20),
+    "大薯条": (5, 20, 54, 330, 25),
+    "中可乐": (0, 0, 39, 15, 0),
+    "大可乐": (0, 0, 49, 19, 0),
+    "奥利奥麦旋风": (6, 10, 43, 130, 190),
+    "原味圆筒冰淇淋": (3, 4, 21, 55, 100),
+    "香芋派": (3, 13, 31, 180, 20),
+    "中杯美式": (0, 0, 1, 5, 5),
+    "中杯拿铁": (6, 6, 9, 90, 210),
+    "吉士蛋麦满分": (15, 15, 26, 780, 260),
+    "猪柳蛋麦满分": (21, 24, 28, 900, 230),
+    "热香饼": (7, 11, 52, 490, 160),
+    "满杯百香果": (1, 0, 44, 25, 20),
+}
+
+
+def build_nutrition() -> dict:
+    """营养表样例，外壳用真实接口那种 {success, data: {list: [...]}} 形态。
+
+    ⚠️ 字段名**刻意按奇偶交替混用两套命名**（calories/protein… 与
+    energy/proteinG…），用来验证 nutrition.parse_nutrition_foods 的
+    别名匹配是真的有效，而不是恰好撞上了唯一一种命名。
+    """
+    rows: list[dict] = []
+    for index, (name, _price, kcal, _category) in enumerate(MENU):
+        protein, fat, carbs, sodium, calcium = _MACROS.get(name, (0, 0, 0, 0, 0))
+        if index % 2 == 0:
+            rows.append(
+                {
+                    "foodName": name,
+                    "calories": kcal,
+                    "protein": protein,
+                    "fat": fat,
+                    "carbohydrate": carbs,
+                    "sodium": sodium,
+                    "calcium": calcium,
+                }
+            )
+        else:
+            rows.append(
+                {
+                    "foodName": name,
+                    "energy": kcal,
+                    "proteinG": protein,
+                    "fatG": fat,
+                    "carbohydrateG": carbs,
+                    "sodiumMg": sodium,
+                    "calciumMg": calcium,
+                }
+            )
+    return {"success": True, "code": 200, "message": "请求成功", "data": {"list": rows}}
+
+
 def _write_json(path: Path, payload: object) -> None:
     """统一用 LF + 结尾换行写盘。
 
@@ -304,6 +366,7 @@ def main() -> int:
     orders = build_orders()
     _write_json(FIXTURE_DIR / "orders.sample.json", orders)
     _write_json(FIXTURE_DIR / "coupons.sample.json", build_coupons())
+    _write_json(FIXTURE_DIR / "nutrition.sample.json", build_nutrition())
 
     # 汇总用真实的解析器算，而不是另写一套粗略求和 ——
     # 否则生成脚本打印的数字会和年报里的数字对不上，审查者会以为是 bug。
