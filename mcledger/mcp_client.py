@@ -16,13 +16,17 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import time
 import urllib.error
 import urllib.request
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Protocol
+
+from .models import rows_of, unwrap
 
 DEFAULT_ENDPOINT = "https://mcp.mcd.cn"
 TOKEN_ENV = "MCD_MCP_TOKEN"
@@ -61,6 +65,27 @@ class ToolCall:
     is_error: bool = False
 
 
+class ToolCaller(Protocol):
+    """取数层真正需要的最小客户端接口：只要会调工具就行。
+
+    拆成 Protocol 的好处有两个：
+      1. 测试可以传入轻量替身（无需真连网）；
+      2. 取数逻辑不依赖 MCPClient 的具体实现，将来换传输层不必改这里。
+    """
+
+    def call_tool(self, name: str, arguments: dict[str, Any] | None = None) -> ToolCall: ...
+
+
+class MCPToolClient(ToolCaller, Protocol):
+    """完整取数接口：在 ToolCaller 之上多一个「列出可用工具」。
+
+    单独拆出来是为了让轻量替身只需实现 call_tool 就能通过类型检查 ——
+    替身本来就不需要列工具。
+    """
+
+    def list_tools(self) -> list[str]: ...
+
+
 def _extract_payload(response: dict[str, Any]) -> tuple[Any, str, bool]:
     """从 MCP 工具响应中抽出可用的数据结构。
 
@@ -80,10 +105,11 @@ def _extract_payload(response: dict[str, Any]) -> tuple[Any, str, bool]:
 
     content = response.get("content")
     if isinstance(content, list):
-        chunks: list[str] = []
-        for block in content:
-            if isinstance(block, dict) and block.get("type") == "text":
-                chunks.append(str(block.get("text", "")))
+        chunks = [
+            str(block.get("text", ""))
+            for block in content
+            if isinstance(block, dict) and block.get("type") == "text"
+        ]
         text = "\n".join(chunks).strip()
         if text:
             try:
@@ -96,12 +122,18 @@ def _extract_payload(response: dict[str, Any]) -> tuple[Any, str, bool]:
 
 @dataclass
 class MCPClient:
-    """一个极简但完整的 MCP Streamable HTTP 客户端。"""
+    """一个极简但完整的 MCP Streamable HTTP 客户端。
+
+    trace 是可选的调用日志回调。刻意**不**在库里直接 print：
+    库一旦自己写 stdout，就会污染调用方的管道输出（例如
+    `run.py --json-out` 之后还要把结果喂给别的程序）。
+    想要日志的调用方自己传入一个写 stderr 的回调即可。
+    """
 
     endpoint: str = DEFAULT_ENDPOINT
     token: str = ""
     timeout: float = 30.0
-    verbose: bool = False
+    trace: Callable[[str], None] | None = None
 
     _session_id: str = field(default="", init=False, repr=False)
     _initialized: bool = field(default=False, init=False, repr=False)
@@ -112,6 +144,11 @@ class MCPClient:
     def __post_init__(self) -> None:
         if not self.token:
             self.token = os.environ.get(TOKEN_ENV, "").strip()
+
+    def _emit(self, message: str) -> None:
+        """向调用方提供的回调输出一条调用日志（未设置回调时静默）。"""
+        if self.trace is not None:
+            self.trace(message)
 
     # -- 基础 ----------------------------------------------------------
 
@@ -179,11 +216,11 @@ class MCPClient:
                     raise MCPRateLimitError(
                         "触发 MCP 限流（HTTP 429，上限 600 次/分钟）。请降低调用频率。", code=429
                     ) from exc
+                # 尽力读取错误响应体，读不到就只报状态码。
+                # 只吞网络/解码类异常 —— 这里不该掩盖真正的逻辑错误。
                 detail = ""
-                try:
+                with contextlib.suppress(OSError, ValueError):
                     detail = exc.read().decode("utf-8", "replace")[:300]
-                except Exception:  # pragma: no cover - 尽力而为
-                    pass
                 raise MCPError(f"HTTP {exc.code} 调用失败：{detail}", code=exc.code) from exc
             except urllib.error.URLError as exc:
                 if attempt < retries:
@@ -251,11 +288,10 @@ class MCPClient:
             },
         )
         self._initialized = True
-        # 部分实现要求显式发送 initialized 通知，失败不影响后续调用。
-        try:
+        # 部分实现要求显式发送 initialized 通知；服务端不认识这个方法时
+        # 会返回 JSON-RPC 错误，但那不影响后续 tools/call。
+        with contextlib.suppress(MCPError):
             self._rpc("notifications/initialized")
-        except MCPError:
-            pass
         return result if isinstance(result, dict) else {}
 
     def list_tools(self) -> list[str]:
@@ -297,9 +333,9 @@ class MCPClient:
             code = payload.get("code")
             message = f"code={code} {message}".strip()
 
-        if self.verbose:
+        if self.trace is not None:
             flag = f" ⚠️ {message[:120]}" if is_error else ""
-            print(f"[mcp] {name}({json.dumps(arguments, ensure_ascii=False)}){flag}")
+            self._emit(f"[mcp] {name}({json.dumps(arguments, ensure_ascii=False)}){flag}")
 
         return ToolCall(
             tool=name,
@@ -344,27 +380,7 @@ class MCPBundle:
     enriched: int = 0  # 实际补全详情的订单数
 
 
-def _unwrap(payload: Any) -> Any:
-    """剥掉 {success, code, message, data} 外层。"""
-    if isinstance(payload, dict) and "data" in payload:
-        return payload.get("data")
-    return payload
-
-
-def _rows_of(payload: Any, *keys: str) -> list[Any]:
-    """从可能嵌套的响应里取出列表。"""
-    node = _unwrap(payload)
-    if isinstance(node, list):
-        return node
-    if isinstance(node, dict):
-        for key in keys or ("list", "records", "items", "coupons", "orders"):
-            value = node.get(key)
-            if isinstance(value, list):
-                return value
-    return []
-
-
-def _fetch_orders(client: MCPClient, page_size: int, max_pages: int) -> tuple[list[Any], list[str]]:
+def _fetch_orders(client: ToolCaller, page_size: int, max_pages: int) -> tuple[list[Any], list[str]]:
     """拉取历史订单。
 
     真实联调结论：order-list 的 inputSchema 没有任何参数，
@@ -386,7 +402,7 @@ def _fetch_orders(client: MCPClient, page_size: int, max_pages: int) -> tuple[li
             warnings.append(f"order-list 返回业务错误：{call.text[:160]}")
             break
 
-        rows = _rows_of(call.raw)
+        rows = rows_of(call.raw)
         if not rows:
             break
 
@@ -418,7 +434,7 @@ def _fetch_orders(client: MCPClient, page_size: int, max_pages: int) -> tuple[li
 
 
 def _enrich_orders(
-    client: MCPClient, orders: list[Any], limit: int, warnings: list[str]
+    client: ToolCaller, orders: list[Any], limit: int, warnings: list[str]
 ) -> int:
     """逐单补全详情。
 
@@ -433,23 +449,33 @@ def _enrich_orders(
 
     合并策略：以详情为主体，从列表项补齐详情里没有的字段
     （orderType / beType / storeCode，详情里不带渠道信息）。
+
+    上限按**尝试次数**计，而不是成功次数 —— 否则接口持续失败时
+    （例如全局限流、订单号失效），enriched 永远为 0，上限就形同虚设，
+    会对成千上万笔订单逐条发起请求。
     """
     enriched = 0
+    attempted = 0
     for order in orders:
-        if enriched >= limit:
-            warnings.append(f"订单数超过补全上限 {limit}，其余订单未拉取详情，优惠审计可能不完整")
+        if attempted >= limit:
+            remaining = len(orders) - attempted
+            warnings.append(
+                f"订单补全已达上限 {limit} 单，剩余 {remaining} 单未拉取详情，"
+                "相关订单的原价与优惠金额缺失，优惠审计可能不完整"
+            )
             break
         if not isinstance(order, dict):
             continue
         order_id = order.get("orderId") or order.get("orderNo")
         if not order_id:
             continue
+        attempted += 1
         try:
             call = client.call_tool("query-order", {"orderId": str(order_id)})
         except MCPError as exc:
             warnings.append(f"query-order({str(order_id)[:16]}…) 失败：{exc}")
             continue
-        detail = _unwrap(call.raw)
+        detail = unwrap(call.raw)
         if not isinstance(detail, dict) or call.is_error:
             continue
 
@@ -487,7 +513,7 @@ def _dominant_channel_code(orders: list[Any]) -> tuple[int, int]:
 
 
 def fetch_bundle(
-    client: MCPClient,
+    client: MCPToolClient,
     *,
     order_pages: int = 3,
     page_size: int = 200,
@@ -575,64 +601,6 @@ def fetch_bundle(
     return bundle
 
 
-# --------------------------------------------------------------------------
-# 积分账户
-# --------------------------------------------------------------------------
-
-
-@dataclass
-class AccountPoints:
-    """积分账户快照。"""
-
-    available: float = 0.0
-    accumulative: float = 0.0
-    used: float = 0.0
-    expired: float = 0.0
-    frozen: float = 0.0
-    expiring_this_month: float = 0.0  # currentMouthExpirePoint（接口原字段名）
-    expiring_next_month: float = 0.0
-    expiring_last_month: float = 0.0
-    currency: str = "积分"
-
-    @property
-    def at_risk(self) -> float:
-        """即将过期、属于"负资产"的积分。"""
-        return round(self.expiring_this_month + self.expiring_next_month, 2)
-
-
-def parse_account(payload: Any) -> AccountPoints:
-    """解析 query-my-account 的返回。"""
-
-    def num(*keys: str) -> float:
-        node = _unwrap(payload)
-        if not isinstance(node, dict):
-            return 0.0
-        for key in keys:
-            if node.get(key) not in (None, ""):
-                try:
-                    return float(str(node[key]))
-                except (TypeError, ValueError):
-                    continue
-        return 0.0
-
-    currency = ""
-    node = _unwrap(payload)
-    if isinstance(node, dict):
-        currency = str(node.get("currency") or "")
-
-    return AccountPoints(
-        available=num("availablePoint", "availablePoints"),
-        accumulative=num("accumulativePoint", "accumulativePoints"),
-        used=num("usedPoint", "usedPoints"),
-        expired=num("expiredPoint", "expiredPoints"),
-        frozen=num("frozenPoint", "frozenPoints"),
-        expiring_this_month=num("currentMouthExpirePoint", "currentMonthExpirePoint"),
-        expiring_next_month=num("nextMouthExpirePoint", "nextMonthExpirePoint"),
-        expiring_last_month=num("lastMouthExpirePoint", "lastMonthExpirePoint"),
-        currency=currency or "积分",
-    )
-
-
 def _event_title(event: dict[str, Any]) -> str:
     """抽取活动标题。
 
@@ -662,7 +630,7 @@ def parse_campaign_titles(payload: Any, limit: int = 8) -> list[str]:
     每个日期节点带 `today` 标记。优先取 today 那一天的活动，
     取不到再退回全部日期。
     """
-    node = _unwrap(payload)
+    node = unwrap(payload)
     if not isinstance(node, dict):
         return []
 

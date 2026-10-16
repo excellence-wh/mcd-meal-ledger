@@ -13,12 +13,18 @@ from .mcp_client import (
     MCPAuthError,
     MCPClient,
     MCPError,
-    AccountPoints,
     fetch_bundle,
-    parse_account,
     parse_campaign_titles,
 )
-from .models import Coupon, dedupe_orders, parse_coupons, parse_orders
+from .models import (
+    AccountPoints,
+    Coupon,
+    Order,
+    dedupe_orders,
+    parse_account,
+    parse_coupons,
+    parse_orders,
+)
 from .personas import headline, select_personas
 from .report import (
     render_html,
@@ -31,12 +37,21 @@ DEFAULT_OUT = "docs/demo.html"
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 
 
+def _stderr_tracer(message: str) -> None:
+    """把 MCP 调用日志写到 stderr。
+
+    刻意不走 stdout —— 脚本的 stdout 要保持是"纯结果"，
+    这样 `run.py | jq` 之类的管道用法才不会被日志污染。
+    """
+    print(message, file=sys.stderr)
+
+
 # --------------------------------------------------------------------------
 
 
 def load_offline(
     fixture_dir: Path,
-) -> tuple[list, list[Coupon], list[str], object | None, list[str]]:
+) -> tuple[list[Order], list[Coupon], list[str], AccountPoints | None, list[str]]:
     """离线模式：读本地脱敏样例，保证无 Token 也能完整跑通。"""
     warnings: list[str] = []
     orders_file = fixture_dir / "orders.sample.json"
@@ -71,9 +86,9 @@ def load_offline(
 
 def load_online(
     args: argparse.Namespace,
-) -> tuple[list, list[Coupon], list[str], str, object | None, list[str]]:
+) -> tuple[list[Order], list[Coupon], list[str], str, AccountPoints | None, list[str]]:
     """在线模式：真实调用麦当劳 MCP。"""
-    client = MCPClient(verbose=args.verbose)
+    client = MCPClient(trace=_stderr_tracer if args.verbose else None)
     bundle = fetch_bundle(
         client,
         order_pages=args.pages,
@@ -140,7 +155,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="调用 auto-bind-coupons 一键领券（会真实写入账户，默认关闭）",
     )
     parser.add_argument("--no-campaigns", action="store_true", help="跳过活动日历查询")
-    parser.add_argument("-v", "--verbose", action="store_true", help="打印每次 MCP 调用")
+    parser.add_argument("-v", "--verbose", action="store_true", help="把每次 MCP 调用打印到 stderr")
     return parser
 
 

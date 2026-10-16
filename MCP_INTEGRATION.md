@@ -462,7 +462,7 @@ Tool `description`（也出现在错误响应里）：
 
 ## 八、可验证性
 
-- `scripts/selftest.py`：**169 项断言**，含专门的「真实 MCP 契约测试」区块 ——
+- `scripts/selftest.py`：**192 项断言**，含专门的「真实 MCP 契约测试」区块 ——
   用真实联调抓回来的原始报文作为夹具，锁死 `orderProductList` / `realTotalAmount` /
   `beType` 等关键字段名，防止回归。
 - `fixtures/` 内置脱敏样例数据（123 笔订单 + 8 张券），**没有 Token 也能完整跑通全流程**。
@@ -470,7 +470,9 @@ Tool `description`（也出现在错误响应里）：
 - HTML 产物为自包含内联样式与内联 SVG，**不引用任何外部资源**（已断言）。
 
 ```bash
-python scripts/selftest.py              # 169 passed, 0 failed
+python scripts/selftest.py              # 192 passed, 0 failed
+ruff check .                            # All checks passed!
+mypy mcledger scripts                   # Success: no issues found in 12 source files
 python scripts/run.py --offline         # 离线跑通完整年报
 python scripts/fetch_snapshot.py        # 用真实 Token 抓数据快照
 ```

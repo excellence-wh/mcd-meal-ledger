@@ -2,7 +2,7 @@
 
 为什么要有这个脚本而不是手写 JSON：
   1. 样例数据要足够真实（含跨月、跨渠道、跨时段、含原价单与优惠单）；
-  2. 它必须是**可复现**的 —— 固定随机种子，谁跑都一样；
+  2. 它必须是**可复现**的 —— 固定随机种子 + 确定性编码，谁跑都一样；
   3. 它还要刻意制造一些"脏数据"（缺字段、异形外壳、字符串金额），
      用来证明 models.py 的宽容取值真的扛得住。
 
@@ -13,14 +13,32 @@ from __future__ import annotations
 
 import json
 import random
+import sys
+import zlib
 from datetime import datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from mcledger.models import dedupe_orders, parse_orders  # noqa: E402
+
 FIXTURE_DIR = ROOT / "fixtures"
 
 SEED = 1024
 random.seed(SEED)
+
+
+def _product_code(name: str) -> str:
+    """确定性的餐品编码。
+
+    ⚠️ 这里不能用内置 hash()：Python 对字符串的 hash 带进程级随机化
+    （PYTHONHASHSEED），同一份代码两次运行会得到不同的值，
+    会让 fixtures 文件每次生成都不一样，"可复现"就成了一句空话。
+    crc32 是确定性的，跨进程、跨机器都稳定。
+    """
+    return f"MC{zlib.crc32(name.encode('utf-8')) % 90000 + 10000}"
 
 # 名称, 单价, 热量(kcal)，分类
 MENU: list[tuple[str, float, float, str]] = [
@@ -116,7 +134,7 @@ def _pick_items(rng: random.Random, *, big: bool) -> list[dict]:
         items.append(
             {
                 "productName": name,
-                "productCode": f"MC{abs(hash(name)) % 90000 + 10000}",
+                "productCode": _product_code(name),
                 "quantity": qty,
                 "unitPrice": unit,
                 "categoryName": category,
@@ -236,39 +254,65 @@ def build_orders() -> list[dict]:
     return orders
 
 
+def _coupon(cid: str, name: str, kind: str, expire: str, **extra: object) -> dict:
+    """构造一张样例券。"""
+    return {"couponId": cid, "name": name, "type": kind, "expireTime": expire, **extra}
+
+
 def build_coupons() -> dict:
+    """三路券池的样例：可领取 / 我已有 / 门店专属。"""
     return {
         "available": [
-            {"couponId": "A1001", "name": "满40减10", "type": "threshold", "threshold": 40, "value": 10, "expireTime": "2026-10-20 23:59:59"},
-            {"couponId": "A1002", "name": "中薯条买一送一", "type": "free_gift", "expireTime": "2026-10-22 23:59:59"},
-            {"couponId": "A1003", "name": "巨无霸立减4元", "type": "item_price", "value": 4, "expireTime": "2026-11-08 23:59:59"},
-            {"couponId": "A1004", "name": "麦乐送满39免配送费", "type": "threshold", "threshold": 39, "expireTime": "2026-10-19 23:59:59"},
-            {"couponId": "A1005", "name": "任意消费95折", "type": "percent", "value": 5, "expireTime": "2026-12-01 23:59:59"},
+            _coupon("A1001", "满40减10", "threshold", "2026-10-20 23:59:59", threshold=40, value=10),
+            _coupon("A1002", "中薯条买一送一", "free_gift", "2026-10-22 23:59:59"),
+            _coupon("A1003", "巨无霸立减4元", "item_price", "2026-11-08 23:59:59", value=4),
+            _coupon("A1004", "麦乐送满39免配送费", "threshold", "2026-10-19 23:59:59", threshold=39),
+            _coupon("A1005", "任意消费95折", "percent", "2026-12-01 23:59:59", value=5),
         ],
         "my": [
-            {"couponId": "M2001", "name": "到店取餐满25减5", "type": "threshold", "threshold": 25, "value": 5, "expireTime": "2026-10-18 23:59:59"},
-            {"couponId": "M2002", "name": "新客立减8元", "type": "item_price", "value": 8, "expireTime": "2026-11-30 23:59:59"},
+            _coupon("M2001", "到店取餐满25减5", "threshold", "2026-10-18 23:59:59", threshold=25, value=5),
+            _coupon("M2002", "新客立减8元", "item_price", "2026-11-30 23:59:59", value=8),
         ],
         "store": [
-            {"couponId": "S3001", "name": "望京SOHO店专属：满30减6", "type": "threshold", "threshold": 30, "value": 6, "expireTime": "2026-10-25 23:59:59"}
+            _coupon(
+                "S3001",
+                "望京SOHO店专属：满30减6",
+                "threshold",
+                "2026-10-25 23:59:59",
+                threshold=30,
+                value=6,
+            ),
         ],
     }
+
+
+def _write_json(path: Path, payload: object) -> None:
+    """统一用 LF + 结尾换行写盘。
+
+    必须显式指定 newline：Windows 下文本模式默认会把 \\n 转成 \\r\\n，
+    那样同一份代码在 Windows 与 Linux 上产出的 fixtures 字节不同，
+    "可复现"就又成了一句空话。
+    """
+    with path.open("w", encoding="utf-8", newline="\n") as fh:
+        fh.write(json.dumps(payload, ensure_ascii=False, indent=2))
+        fh.write("\n")
 
 
 def main() -> int:
     FIXTURE_DIR.mkdir(parents=True, exist_ok=True)
 
     orders = build_orders()
-    (FIXTURE_DIR / "orders.sample.json").write_text(
-        json.dumps(orders, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    (FIXTURE_DIR / "coupons.sample.json").write_text(
-        json.dumps(build_coupons(), ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    _write_json(FIXTURE_DIR / "orders.sample.json", orders)
+    _write_json(FIXTURE_DIR / "coupons.sample.json", build_coupons())
 
-    total_paid = sum(float(o.get("payAmount") or o.get("actualAmount") or 0) for o in orders)
+    # 汇总用真实的解析器算，而不是另写一套粗略求和 ——
+    # 否则生成脚本打印的数字会和年报里的数字对不上，审查者会以为是 bug。
+    parsed = dedupe_orders(parse_orders(orders))
+    total_paid = sum(o.paid for o in parsed)
+    total_gross = sum(o.gross for o in parsed)
+
     print(f"✅ 已生成 {len(orders)} 条脱敏订单 -> fixtures/orders.sample.json")
-    print(f"   脱敏实付合计约 ¥{total_paid:,.2f}")
+    print(f"   解析后实付合计 ¥{total_paid:,.2f}（原价 ¥{total_gross:,.2f}）")
     print("✅ 已生成券样例 -> fixtures/coupons.sample.json")
     return 0
 

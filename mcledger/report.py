@@ -22,7 +22,8 @@ from .analytics import (
     monthly_series_svg,
     weekday_series_svg,
 )
-from .audit import LEVEL_ALERT, LEVEL_NOTICE, LEVEL_TIP, AuditResult
+from .audit import AuditResult
+from .models import AccountPoints
 from .personas import Persona
 
 CSS = """
@@ -205,15 +206,15 @@ def _promotions_card(titles: list[str] | None) -> str:
     )
 
 
-def _points_card(account: object | None) -> str:
+def _points_card(account: AccountPoints | None) -> str:
     """积分板块。积分是会自然损耗的资产，值得单独一块。"""
     if account is None:
         return ""
-    available = float(getattr(account, "available", 0.0) or 0.0)
-    at_risk = float(getattr(account, "at_risk", 0.0) or 0.0)
-    expired = float(getattr(account, "expired", 0.0) or 0.0)
-    accumulative = float(getattr(account, "accumulative", 0.0) or 0.0)
-    currency = str(getattr(account, "currency", "") or "积分")
+    available = account.available
+    at_risk = account.at_risk
+    expired = account.expired
+    accumulative = account.accumulative
+    currency = account.currency or "积分"
     if not any((available, at_risk, expired, accumulative)):
         return ""
 
@@ -261,7 +262,7 @@ def render_html(
     source: str = "麦当劳 MCP",
     warnings: list[str] | None = None,
     generated_at: datetime | None = None,
-    account: object | None = None,
+    account: AccountPoints | None = None,
     promotions: list[str] | None = None,
 ) -> str:
     """生成完整年报 HTML。"""
@@ -329,10 +330,18 @@ def render_html(
 <div class="card">
   <h2>核心数字</h2>
   <div class="grid g4">
-    {_stat("订单总数", f"{metrics.total_orders} 单", f"覆盖 {metrics.active_days} 个下单日，首单至今 {metrics.span_days} 天")}
+    {_stat(
+        "订单总数",
+        f"{metrics.total_orders} 单",
+        f"覆盖 {metrics.active_days} 个下单日，首单至今 {metrics.span_days} 天",
+    )}
     {_stat("累计实付", money(metrics.total_paid), f"原价合计 {money(metrics.total_gross)}")}
     {_stat("累计省下", money(metrics.total_saved), f"整体折扣率 {metrics.save_rate * 100:.1f}%", "gold")}
-    {_stat("平均客单价", money(metrics.avg_order_value), f"平均每单 {metrics.avg_items_per_order:.1f} 份餐品")}
+    {_stat(
+        "平均客单价",
+        money(metrics.avg_order_value),
+        f"平均每单 {metrics.avg_items_per_order:.1f} 份餐品",
+    )}
     {missed_html}
   </div>
 </div>
@@ -419,19 +428,19 @@ def render_markdown_summary(
     audit: AuditResult,
     *,
     headline: str = "",
-    account: object | None = None,
+    account: AccountPoints | None = None,
 ) -> str:
     """给 Agent / 终端用的 Markdown 摘要。"""
     if metrics.total_orders == 0:
-        lines = ["## 麦门账本", "", "暂无订单数据。"]
-        if account is not None and getattr(account, "expired", 0):
-            lines.append(
-                f"- ⚠️ 账户已有 **{getattr(account, 'expired', 0):g} 积分过期作废**（已实现损失）"
+        empty: list[str] = ["## 麦门账本", "", "暂无订单数据。"]
+        if account is not None and account.expired:
+            empty.append(
+                f"- ⚠️ 账户已有 **{account.expired:g} 积分过期作废**（已实现损失）"
             )
         if audit.findings:
-            lines += ["", "### 账单审计", ""]
-            lines += [f"- **{f.title}** — {f.detail}" for f in audit.findings]
-        return "\n".join(lines)
+            empty += ["", "### 账单审计", ""]
+            empty += [f"- **{f.title}** — {f.detail}" for f in audit.findings]
+        return "\n".join(empty)
 
     lines: list[str] = ["## 麦门账本 · 消费简报", ""]
     if headline:
@@ -465,14 +474,12 @@ def render_markdown_summary(
             lines.append(f"{index}. {item.name} —— {item.qty} 份")
         lines.append("")
 
-    if account is not None and (
-        getattr(account, "available", 0) or getattr(account, "expired", 0)
-    ):
+    if account is not None and (account.available or account.expired):
         lines += [
             "### 积分账户",
-            f"- 可用积分：**{getattr(account, 'available', 0):g}**",
-            f"- 即将过期：{getattr(account, 'at_risk', 0):g}",
-            f"- 已过期作废：**{getattr(account, 'expired', 0):g}**",
+            f"- 可用积分：**{account.available:g}**",
+            f"- 即将过期：{account.at_risk:g}",
+            f"- 已过期作废：**{account.expired:g}**",
             "",
         ]
 
@@ -494,10 +501,16 @@ def render_markdown_summary(
 
 
 def write_report(html_text: str, output: str | Path) -> Path:
-    """写出 HTML，自动创建父目录。"""
+    """写出 HTML，自动创建父目录。
+
+    显式指定 newline="\\n"：Windows 的文本模式默认会把 \\n 转成 \\r\\n，
+    那样同一份输入在 Windows 与 Linux 上产出的文件字节数不同 ——
+    对一个以「确定性、可复现」为核心承诺的工具来说，这是不能接受的。
+    """
     path = Path(output)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(html_text, encoding="utf-8")
+    with path.open("w", encoding="utf-8", newline="\n") as fh:
+        fh.write(html_text)
     return path
 
 
@@ -505,5 +518,7 @@ def write_json_snapshot(payload: object, output: str | Path) -> Path:
     """把中间结果落盘为 JSON，便于复现与写进 MCP_INTEGRATION.md。"""
     path = Path(output)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    with path.open("w", encoding="utf-8", newline="\n") as fh:
+        fh.write(json.dumps(payload, ensure_ascii=False, indent=2))
+        fh.write("\n")
     return path

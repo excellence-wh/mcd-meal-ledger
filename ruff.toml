@@ -1,0 +1,60 @@
+# Ruff 配置
+#
+# 放进仓库的目的：让静态检查**可复现** —— 评审者 clone 下来执行
+# 同一条命令，能得到与作者完全一致的结果。
+#
+#   ruff check .
+#
+# 规则集刻意选得偏严（含 bugbear / ruff 专有规则），
+# 因为本项目把「确定性、可验证」当作核心承诺。
+
+target-version = "py310"
+line-length = 110
+
+[lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes：未定义名称、未使用导入/变量
+    "I",    # isort：导入顺序
+    "N",    # pep8-naming
+    "UP",   # pyupgrade：过时的写法
+    "B",    # flake8-bugbear：常见陷阱
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+    "RUF",  # Ruff 专有规则
+    "PIE",  # flake8-pie
+    "RET",  # flake8-return
+    "ARG",  # 未使用的参数
+    "PERF", # 性能相关
+    "A",    # 内建名称遮蔽
+    "BLE",  # 裸 except
+    "TRY",  # try/except 反模式
+    "EM",   # 异常信息写法
+    "T20",  # print 检测
+]
+
+ignore = [
+    # --- 中文项目的必要豁免 ---
+    # RUF001/002/003 检查"易混淆的 Unicode 字符"。本项目正文、注释与
+    # docstring 大量使用中文全角标点（（）、，。：「」…），这些是内容的一部分，
+    # 不是需要替换的歧义字符。对中文项目这三条属于纯误报。
+    "RUF001",
+    "RUF002",
+    "RUF003",
+
+    # --- 经过权衡的例外 ---
+    # TRY003 / EM101 / EM102 要求把异常信息先赋给变量，或为每类错误定义异常子类。
+    # 本项目是面向用户的命令行工具，异常信息本身就是写给用户看的说明文案；
+    # 真正的领域异常（MCPAuthError / MCPRateLimitError）已经单独定义了。
+    # 再为十几条提示各造一个异常类，只会增加阅读噪声，收益为负。
+    "TRY003",
+    "EM101",
+    "EM102",
+]
+
+[lint.per-file-ignores]
+# cli.py 与 scripts/ 是命令行入口，往 stdout 输出是其产品行为本身，
+# 不是调试残留。
+"mcledger/cli.py" = ["T201"]
+"scripts/*.py" = ["T201"]

@@ -50,6 +50,11 @@ def _summarize(payload: object, name: str) -> None:
         print(f"   {name}: 无数据")
 
 
+def _stderr_tracer(message: str) -> None:
+    """MCP 调用日志走 stderr，保持 stdout 是纯结果。"""
+    print(message, file=sys.stderr)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="拉取麦当劳 MCP 数据快照")
     parser.add_argument("--out", default="fixtures/live", help="快照输出目录")
@@ -59,7 +64,7 @@ def main() -> int:
     parser.add_argument("--bind-coupons", action="store_true", help="顺带调用一键领券（有副作用）")
     args = parser.parse_args()
 
-    client = MCPClient(verbose=True)
+    client = MCPClient(trace=_stderr_tracer)
     if not client.has_token:
         print("❌ 未检测到 MCD_MCP_TOKEN 环境变量。", file=sys.stderr)
         print("   请到 https://open.mcd.cn/mcp 手机号登录后在控制台领取。", file=sys.stderr)

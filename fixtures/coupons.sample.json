@@ -4,9 +4,9 @@
       "couponId": "A1001",
       "name": "满40减10",
       "type": "threshold",
+      "expireTime": "2026-10-20 23:59:59",
       "threshold": 40,
-      "value": 10,
-      "expireTime": "2026-10-20 23:59:59"
+      "value": 10
     },
     {
       "couponId": "A1002",
@@ -18,22 +18,22 @@
       "couponId": "A1003",
       "name": "巨无霸立减4元",
       "type": "item_price",
-      "value": 4,
-      "expireTime": "2026-11-08 23:59:59"
+      "expireTime": "2026-11-08 23:59:59",
+      "value": 4
     },
     {
       "couponId": "A1004",
       "name": "麦乐送满39免配送费",
       "type": "threshold",
-      "threshold": 39,
-      "expireTime": "2026-10-19 23:59:59"
+      "expireTime": "2026-10-19 23:59:59",
+      "threshold": 39
     },
     {
       "couponId": "A1005",
       "name": "任意消费95折",
       "type": "percent",
-      "value": 5,
-      "expireTime": "2026-12-01 23:59:59"
+      "expireTime": "2026-12-01 23:59:59",
+      "value": 5
     }
   ],
   "my": [
@@ -41,16 +41,16 @@
       "couponId": "M2001",
       "name": "到店取餐满25减5",
       "type": "threshold",
+      "expireTime": "2026-10-18 23:59:59",
       "threshold": 25,
-      "value": 5,
-      "expireTime": "2026-10-18 23:59:59"
+      "value": 5
     },
     {
       "couponId": "M2002",
       "name": "新客立减8元",
       "type": "item_price",
-      "value": 8,
-      "expireTime": "2026-11-30 23:59:59"
+      "expireTime": "2026-11-30 23:59:59",
+      "value": 8
     }
   ],
   "store": [
@@ -58,9 +58,9 @@
       "couponId": "S3001",
       "name": "望京SOHO店专属：满30减6",
       "type": "threshold",
+      "expireTime": "2026-10-25 23:59:59",
       "threshold": 30,
-      "value": 6,
-      "expireTime": "2026-10-25 23:59:59"
+      "value": 6
     }
   ]
 }

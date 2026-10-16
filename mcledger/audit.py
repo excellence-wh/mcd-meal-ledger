@@ -17,7 +17,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from .analytics import Metrics, money
-from .models import Coupon, Order
+from .models import AccountPoints, Coupon, Order
 
 # 审计结论的严重级别
 LEVEL_ALERT = "alert"  # 明确在漏钱
@@ -113,17 +113,17 @@ def run_audit(
     orders: list[Order],
     metrics: Metrics,
     coupons: list[Coupon] | None = None,
-    account: object | None = None,
+    account: AccountPoints | None = None,
 ) -> AuditResult:
     """执行完整审计。
 
-    account 可以是 mcp_client.AccountPoints（避免模块循环依赖，这里只做鸭子类型）。
+    account 为积分账户快照；传入后积分层面的审计结论才会生成。
     """
     result = AuditResult()
     if account is not None:
-        result.account_available = float(getattr(account, "available", 0.0) or 0.0)
-        result.account_at_risk = float(getattr(account, "at_risk", 0.0) or 0.0)
-        result.account_expired = float(getattr(account, "expired", 0.0) or 0.0)
+        result.account_available = account.available
+        result.account_at_risk = account.at_risk
+        result.account_expired = account.expired
 
     if not orders:
         # 没有订单时，积分层面的结论依然有效，不能一并丢掉
@@ -156,13 +156,11 @@ def run_audit(
     result.total_delivery_fee = round(sum(o.delivery_fee for o in orders), 2)
 
     # ---- 5. 汇总成 findings --------------------------------------------
-    result.findings = _build_findings(result, orders, metrics) + _build_points_findings(result)
+    result.findings = _build_findings(result, orders) + _build_points_findings(result)
     return result
 
 
-def _build_findings(
-    r: AuditResult, orders: list[Order], metrics: Metrics
-) -> list[AuditFinding]:
+def _build_findings(r: AuditResult, orders: list[Order]) -> list[AuditFinding]:
     findings: list[AuditFinding] = []
 
     # ① 原价单 → 最大的一条

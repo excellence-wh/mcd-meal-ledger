@@ -11,11 +11,13 @@
 
 from __future__ import annotations
 
-from collections import Counter, defaultdict
+from collections import defaultdict
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from datetime import datetime
+from itertools import pairwise
 
-from .models import CHANNEL_LABELS, Order, OrderItem, classify_item
+from .models import CHANNEL_LABELS, Order, classify_item
 
 WEEKDAY_NAMES = ("周一", "周二", "周三", "周四", "周五", "周六", "周日")
 
@@ -197,9 +199,11 @@ def compute_metrics(orders: list[Order], top_n: int = 12) -> Metrics:
     m.save_rate = round(m.total_saved / m.total_gross, 4) if m.total_gross > 0 else 0.0
 
     timed = [o for o in orders if o.created_at is not None]
-    if timed:
-        m.first_order = min(o.created_at for o in timed)
-        m.last_order = max(o.created_at for o in timed)
+    # 显式过滤一次，让类型检查器也能确定这里全是 datetime（而非 Optional）
+    stamps: list[datetime] = [o.created_at for o in orders if o.created_at is not None]
+    if stamps:
+        m.first_order = min(stamps)
+        m.last_order = max(stamps)
         m.active_days = len({o.day_key for o in timed})
         m.span_days = max((m.last_order - m.first_order).days + 1, 1)
 
@@ -323,22 +327,22 @@ def compute_metrics(orders: list[Order], top_n: int = 12) -> Metrics:
         m.best_order = max(orders, key=lambda o: (o.saved, -o.paid))
         m.worst_order = max(orders, key=lambda o: o.paid)
 
-    m.streaks = _compute_streaks(timed)
+    m.streaks = _compute_streaks(stamps)
     return m
 
 
-def _compute_streaks(timed_orders: list[Order]) -> StreakInfo:
+def _compute_streaks(stamps: list[datetime]) -> StreakInfo:
     """计算连续下单天数（最长连击 + 当前连击）。"""
     info = StreakInfo()
-    if not timed_orders:
+    if not stamps:
         return info
 
-    days = sorted({o.created_at.date() for o in timed_orders})
+    days = sorted({stamp.date() for stamp in stamps})
     longest = 1
     current_run = 1
     longest_end = days[0]
 
-    for prev, cur in zip(days, days[1:]):
+    for prev, cur in pairwise(days):
         if (cur - prev).days == 1:
             current_run += 1
         else:
@@ -350,10 +354,10 @@ def _compute_streaks(timed_orders: list[Order]) -> StreakInfo:
     info.longest = longest
     info.longest_end = longest_end.strftime("%Y-%m-%d")
 
-    # 当前连击：从最后一天往前数
+    # 当前连击：从最后一天往前数（later 是较晚的日期）
     tail = 1
-    for prev, cur in zip(reversed(days[:-1]), reversed(days)):
-        if (cur - prev).days == 1:
+    for later, earlier in pairwise(reversed(days)):
+        if (later - earlier).days == 1:
             tail += 1
         else:
             break
@@ -479,10 +483,3 @@ def _empty_chart(width: int, height: int, text: str) -> str:
         f'<text x="{width / 2}" y="{height / 2}" text-anchor="middle" font-size="13" '
         f'fill="#b3a68f">{text}</text></svg>'
     )
-
-
-def histogram_summary(counter: Counter[str], total: int) -> list[tuple[str, int, float]]:
-    """把 Counter 转成 (标签, 数量, 占比) 列表。"""
-    if total <= 0:
-        return []
-    return [(key, value, round(value / total, 4)) for key, value in counter.most_common()]

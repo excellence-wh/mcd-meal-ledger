@@ -13,9 +13,10 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any
 
 # --------------------------------------------------------------------------
 # 缺省值
@@ -82,20 +83,22 @@ def to_int(value: Any, default: int = 0) -> int:
     if isinstance(value, int):
         return value
     if isinstance(value, float):
-        return int(round(value))
+        return round(value)
     match = re.search(r"-?\d+(?:\.\d+)?", str(value).replace(",", ""))
     if not match:
         return default
     try:
-        return int(round(float(match.group(0))))
+        return round(float(match.group(0)))
     except ValueError:
         return default
 
 
 _DT_FORMATS = (
     "%Y-%m-%d %H:%M:%S",
+    "%Y-%m-%d %H:%M:%S.%f",
     "%Y-%m-%d %H:%M",
     "%Y-%m-%dT%H:%M:%S",
+    "%Y-%m-%dT%H:%M:%S.%f",
     "%Y-%m-%dT%H:%M",
     "%Y/%m/%d %H:%M:%S",
     "%Y/%m/%d %H:%M",
@@ -131,10 +134,12 @@ def parse_datetime(value: Any) -> datetime | None:
 
     normalized = text.replace("Z", "").split("+")[0].strip()
     normalized = normalized.replace("T", " ")
+    # strptime 逐一试探是探测未知格式的标准做法，这里刻意用异常控制流程：
+    # 格式表只有十来项，且全部失败时会自然落到 return None。
     for fmt in _DT_FORMATS:
         try:
             return datetime.strptime(normalized, fmt)
-        except ValueError:
+        except ValueError:  # noqa: PERF203
             continue
     return None
 
@@ -324,7 +329,16 @@ class Coupon:
 # 解析入口
 # --------------------------------------------------------------------------
 
-_CHANNEL_KEYS = ("channel", "orderChannel", "orderType", "mealType", "deliveryType", "type", "scene", "takeWay")
+_CHANNEL_KEYS = (
+    "channel",
+    "orderChannel",
+    "orderType",
+    "mealType",
+    "deliveryType",
+    "type",
+    "scene",
+    "takeWay",
+)
 _TIME_KEYS = ("createdAt", "createTime", "orderTime", "orderDate", "businessTime", "payTime", "time")
 _STORE_KEYS = ("storeName", "store.name", "store", "shopName", "restaurantName", "storeCode")
 _ID_KEYS = ("orderId", "orderNo", "id", "orderNumber", "tradeNo")
@@ -418,7 +432,8 @@ def _parse_components(raw: Mapping[str, Any]) -> list[tuple[str, int]]:
         label = pick(entry, "itemName", "name", "productName", "mealName")
         if not label:
             continue
-        parts.append((str(label).strip(), to_int(pick(entry, "itemQuantity", "quantity", "qty", "num"), default=1) or 1))
+        qty = to_int(pick(entry, "itemQuantity", "quantity", "qty", "num"), default=1) or 1
+        parts.append((str(label).strip(), qty))
     return parts
 
 
@@ -431,7 +446,9 @@ def _parse_item(raw: Mapping[str, Any]) -> OrderItem | None:
     if not name:
         return None
 
-    qty = to_int(pick(raw, "qty", "quantity", "num", "count", "amount"), default=1)
+    # 注意：这里刻意**不**把 "amount" 当作数量别名 —— 在不少订单结构里
+    # "amount" 表示金额，一旦误当数量会把 ¥25.5 解析成 26 份。
+    qty = to_int(pick(raw, "qty", "quantity", "num", "count"), default=1)
     if qty <= 0:
         qty = 1
 
@@ -449,10 +466,7 @@ def _parse_item(raw: Mapping[str, Any]) -> OrderItem | None:
         "totalPrice",
         "subtotal",
     )
-    if paid_total is None:
-        paid_amount = round(unit_price * qty, 2)
-    else:
-        paid_amount = to_float(paid_total)
+    paid_amount = round(unit_price * qty, 2) if paid_total is None else to_float(paid_total)
 
     calories_raw = pick(raw, "calories", "energy", "kcal", "calorie", "energyKcal")
     calories = to_float(calories_raw) if calories_raw is not None else None
@@ -646,3 +660,90 @@ def dedupe_orders(orders: Iterable[Order]) -> list[Order]:
         if order.order_id not in seen:
             seen[order.order_id] = order
     return sorted(seen.values(), key=lambda o: (o.created_at or datetime.min, o.order_id))
+
+
+# --------------------------------------------------------------------------
+# 响应外壳
+#
+# 麦当劳 MCP 的所有 Tool 都返回同一层包装：
+#   {success, code, message, datetime, traceId, data}
+# 这两函数把它剥掉并取出列表，供取数层与解析层共用。
+# --------------------------------------------------------------------------
+
+
+def unwrap(payload: Any) -> Any:
+    """剥掉 {success, code, message, data} 外层；不是该结构时原样返回。"""
+    if isinstance(payload, Mapping) and "data" in payload:
+        return payload.get("data")
+    return payload
+
+
+def rows_of(payload: Any, *keys: str) -> list[Any]:
+    """从可能嵌套的响应里取出列表（自动剥外壳 + 探测常见列表字段名）。"""
+    node = unwrap(payload)
+    if isinstance(node, list):
+        return node
+    if isinstance(node, Mapping):
+        for key in keys or ("list", "records", "items", "coupons", "orders"):
+            value = node.get(key)
+            if isinstance(value, list):
+                return value
+    return []
+
+
+# --------------------------------------------------------------------------
+# 积分账户
+#
+# 积分属于「会自然损耗的资产」：放着不用就在无声地亏。
+# 因此它是本项目独立审计的一类对象，值得有自己的模型。
+# --------------------------------------------------------------------------
+
+
+@dataclass
+class AccountPoints:
+    """积分账户快照。"""
+
+    available: float = 0.0
+    accumulative: float = 0.0
+    used: float = 0.0
+    expired: float = 0.0  # 已过期作废 —— 已实现的净损失
+    frozen: float = 0.0
+    expiring_this_month: float = 0.0  # 对应接口字段 currentMouthExpirePoint
+    expiring_next_month: float = 0.0
+    expiring_last_month: float = 0.0
+    currency: str = "积分"
+
+    @property
+    def at_risk(self) -> float:
+        """即将过期、属于「负资产」的积分。"""
+        return round(self.expiring_this_month + self.expiring_next_month, 2)
+
+
+def parse_account(payload: Any) -> AccountPoints:
+    """解析 query-my-account 的返回。
+
+    注意官方字段拼写就是 `currentMouthExpirePoint`（Mouth 而非 Month），
+    同时兼容拼写正确的变体，避免对方将来修正拼写后本项失效。
+    """
+    node = unwrap(payload)
+    node = node if isinstance(node, Mapping) else {}
+
+    def num(*keys: str) -> float:
+        for key in keys:
+            if node.get(key) not in (None, ""):
+                value = to_float(node[key], default=-1.0)
+                if value >= 0:
+                    return value
+        return 0.0
+
+    return AccountPoints(
+        available=num("availablePoint", "availablePoints"),
+        accumulative=num("accumulativePoint", "accumulativePoints"),
+        used=num("usedPoint", "usedPoints"),
+        expired=num("expiredPoint", "expiredPoints"),
+        frozen=num("frozenPoint", "frozenPoints"),
+        expiring_this_month=num("currentMouthExpirePoint", "currentMonthExpirePoint"),
+        expiring_next_month=num("nextMouthExpirePoint", "nextMonthExpirePoint"),
+        expiring_last_month=num("lastMouthExpirePoint", "lastMonthExpirePoint"),
+        currency=str(node.get("currency") or "积分"),
+    )

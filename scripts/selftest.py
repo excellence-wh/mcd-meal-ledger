@@ -14,24 +14,35 @@
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import sys
+import tempfile
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+import mcledger  # noqa: E402
 from mcledger.analytics import compute_metrics, money  # noqa: E402
-from mcledger.audit import LEVEL_ALERT, run_audit  # noqa: E402
-from mcledger.mcp_client import parse_account, parse_campaign_titles  # noqa: E402
+from mcledger.audit import LEVEL_ALERT, LEVEL_NOTICE, LEVEL_TIP, run_audit  # noqa: E402
+from mcledger.mcp_client import (  # noqa: E402
+    MCPClient,
+    MCPError,
+    ToolCall,
+    _enrich_orders,
+    parse_campaign_titles,
+)
 from mcledger.models import (  # noqa: E402
     Order,
     OrderItem,
     classify_item,
     dedupe_orders,
     normalize_channel,
+    parse_account,
     parse_coupons,
     parse_datetime,
     parse_orders,
@@ -40,7 +51,12 @@ from mcledger.models import (  # noqa: E402
     to_int,
 )
 from mcledger.personas import evaluate_personas, headline, select_personas  # noqa: E402
-from mcledger.report import render_html, render_markdown_summary  # noqa: E402
+from mcledger.report import (  # noqa: E402
+    render_html,
+    render_markdown_summary,
+    write_json_snapshot,
+    write_report,
+)
 
 
 class Runner:
@@ -222,8 +238,8 @@ def test_analytics(t: Runner) -> None:
     t.eq("单品榜首", top_names[0], "巨无霸")
     t.eq("巨无霸总数", m.top_items[0].qty, 4)
 
-    t.eq("省得最多的一单", m.best_order.order_id, "O4")
-    t.eq("花得最多的一单", m.worst_order.order_id, "O2")
+    t.eq("省得最多的一单", m.best_order.order_id if m.best_order else None, "O4")
+    t.eq("花得最多的一单", m.worst_order.order_id if m.worst_order else None, "O2")
 
     t.eq("空输入不炸", compute_metrics([]).total_orders, 0)
     t.eq("金额格式", money(1234.5), "¥1,234.50")
@@ -381,7 +397,8 @@ def test_end_to_end(t: Runner) -> None:
     t.check("HTML 含标题", "麦门账本" in html_a)
     t.check("HTML 含审计板块", "账单审计" in html_a)
     t.check("HTML 含免责声明", "非麦当劳官方产品" in html_a)
-    t.check("HTML 自包含（无外链脚本/样式）", "<script" not in html_a and "http" not in html_a.split("<footer>")[0].replace("http-equiv", ""))
+    head = html_a.split("<footer>")[0].replace("http-equiv", "")
+    t.check("HTML 自包含（无外链脚本/样式）", "<script" not in html_a and "http" not in head)
 
     md = render_markdown_summary(m, personas, audit, headline=headline(m))
     t.check("Markdown 摘要含核心数字", "累计实付" in md)
@@ -397,7 +414,7 @@ def test_end_to_end(t: Runner) -> None:
 # 那会让整份年报静默变成空壳，而且脱敏样例根本测不出来。
 # ==========================================================================
 
-REAL_ORDER_LIST = {
+REAL_ORDER_LIST: dict[str, Any] = {
     "success": True,
     "code": 200,
     "message": "请求成功",
@@ -449,7 +466,7 @@ REAL_ORDER_LIST = {
     },
 }
 
-REAL_ORDER_DETAIL = {
+REAL_ORDER_DETAIL: dict[str, Any] = {
     "success": True,
     "code": 200,
     "message": "请求成功",
@@ -484,7 +501,7 @@ REAL_ORDER_DETAIL = {
 }
 
 # 带优惠的真实结构变体：验证原价 / 实付 / 优惠 / 券 能被正确拆分
-REAL_DISCOUNTED_DETAIL = {
+REAL_DISCOUNTED_DETAIL: dict[str, Any] = {
     "success": True,
     "code": 200,
     "data": {
@@ -502,7 +519,7 @@ REAL_DISCOUNTED_DETAIL = {
     },
 }
 
-REAL_ACCOUNT = {
+REAL_ACCOUNT: dict[str, Any] = {
     "success": True,
     "code": 200,
     "data": {
@@ -516,7 +533,7 @@ REAL_ACCOUNT = {
     },
 }
 
-REAL_AVAILABLE_COUPONS = {
+REAL_AVAILABLE_COUPONS: dict[str, Any] = {
     "success": True,
     "code": 200,
     "data": [
@@ -728,6 +745,156 @@ def test_real_mcp_contract(t: Runner) -> None:
 
 
 # ==========================================================================
+# 6. 工程健壮性守卫
+#
+# 这一组守的是"非功能性但会静默退化"的东西：
+# 可复现性、库不得污染 stdout、资源上限是否真的生效。
+# 它们的共同点是：坏了也不会报错，只会让承诺变成空话。
+# ==========================================================================
+
+
+def test_engineering_guards(t: Runner) -> None:
+    # ---- 1. fixtures 可复现性 -------------------------------------------
+    spec = importlib.util.spec_from_file_location(
+        "make_fixtures", ROOT / "scripts" / "make_fixtures.py"
+    )
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    committed = json.loads((ROOT / "fixtures" / "orders.sample.json").read_text(encoding="utf-8"))
+    t.eq("夹具生成器产出与已提交文件完全一致（可复现）", mod.build_orders(), committed)
+
+    gen_src = (ROOT / "scripts" / "make_fixtures.py").read_text(encoding="utf-8")
+    t.check(
+        "生成器不使用内置 hash()（其随机化会破坏可复现性）",
+        "abs(hash(" not in gen_src,
+        "PYTHONHASHSEED 会让每次运行结果不同",
+    )
+    t.eq("餐品编码确定", mod._product_code("巨无霸"), mod._product_code("巨无霸"))
+
+    # ---- 2. 库不得直接 print（污染调用方 stdout）------------------------
+    lib_src = (ROOT / "mcledger" / "mcp_client.py").read_text(encoding="utf-8")
+    t.check(
+        "MCP 库内不含 print（日志必须经 trace 回调）",
+        "print(" not in lib_src,
+        "库自己写 stdout 会破坏 run.py --json-out | jq 之类的管道用法",
+    )
+    trace_log: list[str] = []
+    probe = MCPClient(token="dummy-token", trace=trace_log.append)
+    probe._emit("hello")
+    t.eq("trace 回调被正确调用", trace_log, ["hello"])
+    silent = MCPClient(token="dummy-token")
+    silent._emit("should be dropped")  # 无回调时必须静默，不抛异常
+    t.check("未设置 trace 时静默不报错", True)
+
+    # ---- 3. 补全的资源上限按"尝试次数"计 --------------------------------
+    class _FailingClient:
+        """模拟「接口持续失败」的 MCP 客户端（满足 ToolCaller 协议）。"""
+
+        def __init__(self) -> None:
+            self.calls = 0
+            self.tools: list[str] = []
+            self.arguments: list[dict | None] = []
+
+        def call_tool(self, name: str, arguments: dict | None = None) -> ToolCall:
+            self.calls += 1
+            self.tools.append(name)
+            self.arguments.append(arguments)
+            raise MCPError("模拟接口持续失败")
+
+    stub = _FailingClient()
+    warnings: list[str] = []
+    fake_orders = [{"orderId": f"X{i:03d}"} for i in range(50)]
+    enriched = _enrich_orders(stub, fake_orders, limit=5, warnings=warnings)
+    t.eq("补全失败时返回 0", enriched, 0)
+    t.eq("接口持续失败时仍只发起 5 次请求", stub.calls, 5)
+    t.eq("补全只调用 query-order 一个工具", set(stub.tools), {"query-order"})
+    t.eq("补全时正确传入 orderId", stub.arguments[0], {"orderId": "X000"})
+    t.check(
+        "达到上限时给出明确提示",
+        any("已达上限" in w for w in warnings),
+        f"warnings={warnings[:3]}",
+    )
+
+    # ---- 4. 金额字段不会被误当成数量 ------------------------------------
+    money_like = parse_orders(
+        [{"orderId": "Q1", "items": [{"name": "巨无霸", "amount": "25.5"}]}]
+    )[0]
+    t.eq("amount（金额）不会被误解析为 26 份", money_like.items[0].qty, 1)
+
+    # ---- 5. 时间解析覆盖微秒格式 ----------------------------------------
+    t.eq(
+        "parse_datetime 微秒格式",
+        parse_datetime("2026-03-05T12:30:00.123456Z"),
+        datetime(2026, 3, 5, 12, 30, 0, 123456),
+    )
+    t.eq(
+        "parse_datetime 带微秒的空格格式",
+        parse_datetime("2026-03-05 12:30:00.500000"),
+        datetime(2026, 3, 5, 12, 30, 0, 500000),
+    )
+
+    # ---- 6. 报告 CSS 与审计级别保持同步 ----------------------------------
+    # 审计结论的 level 会被直接当作 CSS 类名使用，两边一旦脱钩，
+    # 结论块就会静默失去配色。
+    report_src = (ROOT / "mcledger" / "report.py").read_text(encoding="utf-8")
+    for level in (LEVEL_ALERT, LEVEL_NOTICE, LEVEL_TIP):
+        t.check(
+            f"报告 CSS 覆盖审计级别 {level}",
+            f".finding.{level}" in report_src,
+            f"缺少 .finding.{level} 样式，结论块会失去配色",
+        )
+
+    # ---- 7. 仓库文本文件不得混用 CRLF ------------------------------------
+    crlf_files = [p.name for p in (ROOT / "mcledger").glob("*.py") if b"\r\n" in p.read_bytes()]
+    t.eq("mcledger 下无 CRLF 文件", crlf_files, [])
+
+    # ---- 8. 公开 API 必须完整可导入 --------------------------------------
+    # __all__ 里写了但实际不存在，是最容易悄悄发生的 API 事故：
+    # 文档/skill 里写的 `from mcledger import X` 会在别人机器上炸。
+    missing = [name for name in mcledger.__all__ if not hasattr(mcledger, name)]
+    t.eq("mcledger.__all__ 中的名字全部存在", missing, [])
+    exported = set(mcledger.__all__)
+    required = {
+        "AccountPoints",
+        "AuditResult",
+        "Coupon",
+        "Metrics",
+        "Order",
+        "OrderItem",
+        "Persona",
+        "classify_item",
+        "compute_metrics",
+        "dedupe_orders",
+        "evaluate_personas",
+        "headline",
+        "money",
+        "parse_account",
+        "parse_coupons",
+        "parse_orders",
+        "render_html",
+        "render_markdown_summary",
+        "run_audit",
+        "select_personas",
+        "write_report",
+    }
+    t.eq("公开 API 覆盖全部领域能力", sorted(required - exported), [])
+
+    # ---- 9. 生成物不得带平台相关行尾 --------------------------------------
+    # 若写盘时不指定 newline，Windows 会把 \n 转成 \r\n，
+    # 同一个输入在 Windows / Linux 上产出的文件字节就不同了。
+    with tempfile.TemporaryDirectory() as tmpdir:
+        html_path = Path(tmpdir) / "out.html"
+        json_path = Path(tmpdir) / "out.json"
+        write_report("<html>ok</html>", html_path)
+        write_json_snapshot({"a": 1}, json_path)
+        t.check("HTML 产物为 LF 行尾", b"\r\n" not in html_path.read_bytes())
+        t.check("JSON 产物为 LF 行尾", b"\r\n" not in json_path.read_bytes())
+        t.check("JSON 产物以换行结尾", json_path.read_bytes().endswith(b"\n"))
+
+
+# ==========================================================================
 
 
 def main() -> int:
@@ -739,6 +906,7 @@ def main() -> int:
         ("业务层 · 审计", test_audit),
         ("端到端", test_end_to_end),
         ("真实 MCP 契约", test_real_mcp_contract),
+        ("工程健壮性守卫", test_engineering_guards),
     ):
         before = len(t.failures)
         fn(t)

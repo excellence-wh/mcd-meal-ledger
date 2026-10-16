@@ -7,7 +7,7 @@
     "items": [
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -32,7 +32,7 @@
     "items": [
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -40,7 +40,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 9.1,
         "categoryName": "早餐",
@@ -48,7 +48,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -72,7 +72,7 @@
     "items": [
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -91,7 +91,7 @@
     "items": [
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -99,7 +99,7 @@
       },
       {
         "productName": "中杯美式",
-        "productCode": "MC90507",
+        "productCode": "MC81328",
         "quantity": 1,
         "unitPrice": 9.1,
         "categoryName": "咖啡",
@@ -126,7 +126,7 @@
     "items": [
       {
         "productName": "中杯美式",
-        "productCode": "MC90507",
+        "productCode": "MC81328",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "咖啡",
@@ -134,7 +134,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 2,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -158,7 +158,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -166,7 +166,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -185,7 +185,7 @@
     "items": [
       {
         "productName": "麦香鱼",
-        "productCode": "MC18481",
+        "productCode": "MC76726",
         "quantity": 1,
         "unitPrice": 16.5,
         "categoryName": "汉堡",
@@ -193,7 +193,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -201,7 +201,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 17.8,
         "categoryName": "汉堡",
@@ -209,7 +209,7 @@
       },
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -217,7 +217,7 @@
       },
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -241,7 +241,7 @@
     "items": [
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -249,7 +249,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 3.5,
         "categoryName": "甜品",
@@ -257,7 +257,7 @@
       },
       {
         "productName": "中杯拿铁",
-        "productCode": "MC25185",
+        "productCode": "MC94537",
         "quantity": 1,
         "unitPrice": 17.5,
         "categoryName": "咖啡",
@@ -265,7 +265,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -289,7 +289,7 @@
     "items": [
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 15.5,
         "categoryName": "小食",
@@ -297,7 +297,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -305,7 +305,7 @@
       },
       {
         "productName": "大可乐",
-        "productCode": "MC55490",
+        "productCode": "MC38836",
         "quantity": 1,
         "unitPrice": 8.0,
         "categoryName": "饮料",
@@ -329,7 +329,7 @@
     "items": [
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -337,7 +337,7 @@
       },
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 8.4,
         "categoryName": "饮料",
@@ -361,7 +361,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -369,7 +369,7 @@
       },
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "饮料",
@@ -396,7 +396,7 @@
     "items": [
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -404,7 +404,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -412,7 +412,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -439,7 +439,7 @@
     "items": [
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -447,7 +447,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -455,7 +455,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 16.4,
         "categoryName": "汉堡",
@@ -479,7 +479,7 @@
     "items": [
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -487,7 +487,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -511,7 +511,7 @@
     "items": [
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -519,7 +519,7 @@
       },
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -527,7 +527,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -535,7 +535,7 @@
       },
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -559,7 +559,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -567,7 +567,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -575,7 +575,7 @@
       },
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -602,7 +602,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -610,7 +610,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 2,
         "unitPrice": 9.4,
         "categoryName": "小食",
@@ -618,7 +618,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 9.4,
         "categoryName": "甜品",
@@ -626,7 +626,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -634,7 +634,7 @@
       },
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 15.5,
         "categoryName": "小食",
@@ -661,7 +661,7 @@
     "items": [
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -669,7 +669,7 @@
       },
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -696,7 +696,7 @@
     "items": [
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -720,7 +720,7 @@
     "items": [
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 10.8,
         "categoryName": "小食",
@@ -728,7 +728,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -736,7 +736,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -744,7 +744,7 @@
       },
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "饮料",
@@ -752,7 +752,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -776,7 +776,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -800,7 +800,7 @@
     "items": [
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 16.4,
         "categoryName": "汉堡",
@@ -808,7 +808,7 @@
       },
       {
         "productName": "中杯美式",
-        "productCode": "MC90507",
+        "productCode": "MC81328",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "咖啡",
@@ -816,7 +816,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -840,7 +840,7 @@
     "items": [
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -848,7 +848,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 2,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -856,7 +856,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -875,7 +875,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -883,7 +883,7 @@
       },
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -902,7 +902,7 @@
     "items": [
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -910,7 +910,7 @@
       },
       {
         "productName": "大可乐",
-        "productCode": "MC55490",
+        "productCode": "MC38836",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "饮料",
@@ -918,7 +918,7 @@
       },
       {
         "productName": "麦香鱼",
-        "productCode": "MC18481",
+        "productCode": "MC76726",
         "quantity": 1,
         "unitPrice": 16.5,
         "categoryName": "汉堡",
@@ -945,7 +945,7 @@
     "items": [
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "饮料",
@@ -953,7 +953,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -961,7 +961,7 @@
       },
       {
         "productName": "中杯拿铁",
-        "productCode": "MC25185",
+        "productCode": "MC94537",
         "quantity": 1,
         "unitPrice": 17.5,
         "categoryName": "咖啡",
@@ -989,7 +989,7 @@
     "items": [
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -997,7 +997,7 @@
       },
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -1022,7 +1022,7 @@
     "items": [
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -1030,7 +1030,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -1038,7 +1038,7 @@
       },
       {
         "productName": "大可乐",
-        "productCode": "MC55490",
+        "productCode": "MC38836",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "饮料",
@@ -1046,7 +1046,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 9.1,
         "categoryName": "小食",
@@ -1054,7 +1054,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -1062,7 +1062,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -1081,7 +1081,7 @@
     "items": [
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 16.4,
         "categoryName": "汉堡",
@@ -1089,7 +1089,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -1113,7 +1113,7 @@
     "items": [
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -1121,7 +1121,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -1129,7 +1129,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -1153,7 +1153,7 @@
     "items": [
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -1161,7 +1161,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -1188,7 +1188,7 @@
     "items": [
       {
         "productName": "麦香鱼",
-        "productCode": "MC18481",
+        "productCode": "MC76726",
         "quantity": 1,
         "unitPrice": 16.5,
         "categoryName": "汉堡",
@@ -1216,7 +1216,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -1224,7 +1224,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -1232,7 +1232,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -1259,7 +1259,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -1267,7 +1267,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -1275,7 +1275,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 9.1,
         "categoryName": "早餐",
@@ -1283,7 +1283,7 @@
       },
       {
         "productName": "中杯美式",
-        "productCode": "MC90507",
+        "productCode": "MC81328",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "咖啡",
@@ -1310,7 +1310,7 @@
     "items": [
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -1330,7 +1330,7 @@
     "items": [
       {
         "productName": "大可乐",
-        "productCode": "MC55490",
+        "productCode": "MC38836",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "饮料",
@@ -1338,7 +1338,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 2,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -1365,7 +1365,7 @@
     "items": [
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -1373,7 +1373,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -1381,7 +1381,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -1389,7 +1389,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -1397,7 +1397,7 @@
       },
       {
         "productName": "中杯拿铁",
-        "productCode": "MC25185",
+        "productCode": "MC94537",
         "quantity": 1,
         "unitPrice": 17.5,
         "categoryName": "咖啡",
@@ -1421,7 +1421,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -1429,7 +1429,7 @@
       },
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -1437,7 +1437,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -1464,7 +1464,7 @@
     "items": [
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -1491,7 +1491,7 @@
     "items": [
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -1499,7 +1499,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -1507,7 +1507,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -1531,7 +1531,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -1539,7 +1539,7 @@
       },
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 8.4,
         "categoryName": "饮料",
@@ -1563,7 +1563,7 @@
     "items": [
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -1571,7 +1571,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -1598,7 +1598,7 @@
     "items": [
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -1606,7 +1606,7 @@
       },
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -1614,7 +1614,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -1638,7 +1638,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -1663,7 +1663,7 @@
     "items": [
       {
         "productName": "中杯拿铁",
-        "productCode": "MC25185",
+        "productCode": "MC94537",
         "quantity": 1,
         "unitPrice": 17.5,
         "categoryName": "咖啡",
@@ -1671,7 +1671,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -1679,7 +1679,7 @@
       },
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "饮料",
@@ -1703,7 +1703,7 @@
     "items": [
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -1711,7 +1711,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -1735,7 +1735,7 @@
     "items": [
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -1743,7 +1743,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -1751,7 +1751,7 @@
       },
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -1778,7 +1778,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -1786,7 +1786,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -1810,7 +1810,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 2,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -1838,7 +1838,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -1846,7 +1846,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -1870,7 +1870,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -1878,7 +1878,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -1886,7 +1886,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -1910,7 +1910,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -1918,7 +1918,7 @@
       },
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -1926,7 +1926,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -1934,7 +1934,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -1953,7 +1953,7 @@
     "items": [
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 15.5,
         "categoryName": "小食",
@@ -1961,7 +1961,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 2,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -1969,7 +1969,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -1996,7 +1996,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -2004,7 +2004,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -2012,7 +2012,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -2037,7 +2037,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -2045,7 +2045,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -2053,7 +2053,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -2078,7 +2078,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -2086,7 +2086,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -2094,7 +2094,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -2102,7 +2102,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -2110,7 +2110,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -2134,7 +2134,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 3.5,
         "categoryName": "甜品",
@@ -2159,7 +2159,7 @@
     "items": [
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -2167,7 +2167,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 2,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -2175,7 +2175,7 @@
       },
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 15.5,
         "categoryName": "小食",
@@ -2199,7 +2199,7 @@
     "items": [
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -2207,7 +2207,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -2234,7 +2234,7 @@
     "items": [
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -2242,7 +2242,7 @@
       },
       {
         "productName": "大可乐",
-        "productCode": "MC55490",
+        "productCode": "MC38836",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "饮料",
@@ -2250,7 +2250,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 17.8,
         "categoryName": "汉堡",
@@ -2258,7 +2258,7 @@
       },
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 15.5,
         "categoryName": "小食",
@@ -2282,7 +2282,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -2290,7 +2290,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -2298,7 +2298,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -2325,7 +2325,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 2,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -2333,7 +2333,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -2341,7 +2341,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -2349,7 +2349,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -2377,7 +2377,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -2385,7 +2385,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -2393,7 +2393,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -2412,7 +2412,7 @@
     "items": [
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -2420,7 +2420,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -2428,7 +2428,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -2447,7 +2447,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -2455,7 +2455,7 @@
       },
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "饮料",
@@ -2463,7 +2463,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -2490,7 +2490,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -2498,7 +2498,7 @@
       },
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -2522,7 +2522,7 @@
     "items": [
       {
         "productName": "麦香鱼",
-        "productCode": "MC18481",
+        "productCode": "MC76726",
         "quantity": 1,
         "unitPrice": 16.5,
         "categoryName": "汉堡",
@@ -2530,7 +2530,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 2,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -2538,7 +2538,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -2562,7 +2562,7 @@
     "items": [
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -2570,7 +2570,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 9.1,
         "categoryName": "早餐",
@@ -2578,7 +2578,7 @@
       },
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -2605,7 +2605,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -2613,7 +2613,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 17.8,
         "categoryName": "汉堡",
@@ -2637,7 +2637,7 @@
     "items": [
       {
         "productName": "大可乐",
-        "productCode": "MC55490",
+        "productCode": "MC38836",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "饮料",
@@ -2645,7 +2645,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -2653,7 +2653,7 @@
       },
       {
         "productName": "中杯拿铁",
-        "productCode": "MC25185",
+        "productCode": "MC94537",
         "quantity": 1,
         "unitPrice": 17.5,
         "categoryName": "咖啡",
@@ -2680,7 +2680,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -2688,7 +2688,7 @@
       },
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 15.5,
         "categoryName": "小食",
@@ -2696,7 +2696,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -2704,7 +2704,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -2723,7 +2723,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -2731,7 +2731,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -2739,7 +2739,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -2767,7 +2767,7 @@
     "items": [
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -2775,7 +2775,7 @@
       },
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -2794,7 +2794,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -2802,7 +2802,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -2826,7 +2826,7 @@
     "items": [
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 15.5,
         "categoryName": "小食",
@@ -2834,7 +2834,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -2858,7 +2858,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -2866,7 +2866,7 @@
       },
       {
         "productName": "中杯美式",
-        "productCode": "MC90507",
+        "productCode": "MC81328",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "咖啡",
@@ -2874,7 +2874,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -2882,7 +2882,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -2902,7 +2902,7 @@
     "items": [
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -2910,7 +2910,7 @@
       },
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -2929,7 +2929,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -2957,7 +2957,7 @@
     "items": [
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -2982,7 +2982,7 @@
     "items": [
       {
         "productName": "大可乐",
-        "productCode": "MC55490",
+        "productCode": "MC38836",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "饮料",
@@ -2990,7 +2990,7 @@
       },
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -2998,7 +2998,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -3006,7 +3006,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -3025,7 +3025,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -3033,7 +3033,7 @@
       },
       {
         "productName": "大可乐",
-        "productCode": "MC55490",
+        "productCode": "MC38836",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "饮料",
@@ -3041,7 +3041,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -3049,7 +3049,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -3076,7 +3076,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 2,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -3103,7 +3103,7 @@
     "items": [
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -3111,7 +3111,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -3135,7 +3135,7 @@
     "items": [
       {
         "productName": "中杯美式",
-        "productCode": "MC90507",
+        "productCode": "MC81328",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "咖啡",
@@ -3143,7 +3143,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -3151,7 +3151,7 @@
       },
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -3159,7 +3159,7 @@
       },
       {
         "productName": "中杯拿铁",
-        "productCode": "MC25185",
+        "productCode": "MC94537",
         "quantity": 1,
         "unitPrice": 17.5,
         "categoryName": "咖啡",
@@ -3186,7 +3186,7 @@
     "items": [
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -3194,7 +3194,7 @@
       },
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -3218,7 +3218,7 @@
     "items": [
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -3226,7 +3226,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -3234,7 +3234,7 @@
       },
       {
         "productName": "中杯美式",
-        "productCode": "MC90507",
+        "productCode": "MC81328",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "咖啡",
@@ -3253,7 +3253,7 @@
     "items": [
       {
         "productName": "中杯美式",
-        "productCode": "MC90507",
+        "productCode": "MC81328",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "咖啡",
@@ -3261,7 +3261,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 9.4,
         "categoryName": "甜品",
@@ -3285,7 +3285,7 @@
     "items": [
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 15.7,
         "categoryName": "汉堡",
@@ -3293,7 +3293,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -3301,7 +3301,7 @@
       },
       {
         "productName": "麦香鱼",
-        "productCode": "MC18481",
+        "productCode": "MC76726",
         "quantity": 1,
         "unitPrice": 16.5,
         "categoryName": "汉堡",
@@ -3309,7 +3309,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -3333,7 +3333,7 @@
     "items": [
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -3341,7 +3341,7 @@
       },
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -3349,7 +3349,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -3368,7 +3368,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -3376,7 +3376,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -3403,7 +3403,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -3411,7 +3411,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -3419,7 +3419,7 @@
       },
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "饮料",
@@ -3427,7 +3427,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -3454,7 +3454,7 @@
     "items": [
       {
         "productName": "大可乐",
-        "productCode": "MC55490",
+        "productCode": "MC38836",
         "quantity": 1,
         "unitPrice": 8.0,
         "categoryName": "饮料",
@@ -3462,7 +3462,7 @@
       },
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "饮料",
@@ -3490,7 +3490,7 @@
     "items": [
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -3498,7 +3498,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -3506,7 +3506,7 @@
       },
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -3514,7 +3514,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -3533,7 +3533,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 3.5,
         "categoryName": "甜品",
@@ -3557,7 +3557,7 @@
     "items": [
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -3565,7 +3565,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 2,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -3573,7 +3573,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 2,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -3600,7 +3600,7 @@
     "items": [
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -3608,7 +3608,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -3616,7 +3616,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -3641,7 +3641,7 @@
     "items": [
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "饮料",
@@ -3661,7 +3661,7 @@
     "items": [
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -3669,7 +3669,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -3677,7 +3677,7 @@
       },
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 15.5,
         "categoryName": "小食",
@@ -3701,7 +3701,7 @@
     "items": [
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -3709,7 +3709,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -3717,7 +3717,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -3725,7 +3725,7 @@
       },
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -3744,7 +3744,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -3752,7 +3752,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -3760,7 +3760,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -3779,7 +3779,7 @@
     "items": [
       {
         "productName": "吉士蛋麦满分",
-        "productCode": "MC57819",
+        "productCode": "MC50523",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "早餐",
@@ -3804,7 +3804,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -3812,7 +3812,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -3831,7 +3831,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 2,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -3839,7 +3839,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -3847,7 +3847,7 @@
       },
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -3866,7 +3866,7 @@
     "items": [
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -3874,7 +3874,7 @@
       },
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 15.5,
         "categoryName": "小食",
@@ -3882,7 +3882,7 @@
       },
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -3890,7 +3890,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 15.7,
         "categoryName": "汉堡",
@@ -3898,7 +3898,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 17.8,
         "categoryName": "汉堡",
@@ -3922,7 +3922,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",
@@ -3930,7 +3930,7 @@
       },
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -3957,7 +3957,7 @@
     "items": [
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "饮料",
@@ -3965,7 +3965,7 @@
       },
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -3992,7 +3992,7 @@
     "items": [
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -4000,7 +4000,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -4008,7 +4008,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 7.0,
         "categoryName": "饮料",
@@ -4032,7 +4032,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -4040,7 +4040,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -4048,7 +4048,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -4056,7 +4056,7 @@
       },
       {
         "productName": "麦香鱼",
-        "productCode": "MC18481",
+        "productCode": "MC76726",
         "quantity": 1,
         "unitPrice": 16.5,
         "categoryName": "汉堡",
@@ -4080,7 +4080,7 @@
     "items": [
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -4088,7 +4088,7 @@
       },
       {
         "productName": "大薯条",
-        "productCode": "MC24023",
+        "productCode": "MC54107",
         "quantity": 1,
         "unitPrice": 15.5,
         "categoryName": "小食",
@@ -4112,7 +4112,7 @@
     "items": [
       {
         "productName": "中杯拿铁",
-        "productCode": "MC25185",
+        "productCode": "MC94537",
         "quantity": 1,
         "unitPrice": 17.5,
         "categoryName": "咖啡",
@@ -4120,7 +4120,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 7.0,
         "categoryName": "饮料",
@@ -4128,7 +4128,7 @@
       },
       {
         "productName": "大可乐",
-        "productCode": "MC55490",
+        "productCode": "MC38836",
         "quantity": 1,
         "unitPrice": 11.5,
         "categoryName": "饮料",
@@ -4152,7 +4152,7 @@
     "items": [
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -4180,7 +4180,7 @@
     "items": [
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -4204,7 +4204,7 @@
     "items": [
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -4212,7 +4212,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 2,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -4220,7 +4220,7 @@
       },
       {
         "productName": "满杯百香果",
-        "productCode": "MC92160",
+        "productCode": "MC18312",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "饮料",
@@ -4239,7 +4239,7 @@
     "items": [
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 23.5,
         "categoryName": "汉堡",
@@ -4247,7 +4247,7 @@
       },
       {
         "productName": "香芋派",
-        "productCode": "MC82701",
+        "productCode": "MC51033",
         "quantity": 1,
         "unitPrice": 7.5,
         "categoryName": "甜品",
@@ -4255,7 +4255,7 @@
       },
       {
         "productName": "中可乐",
-        "productCode": "MC72895",
+        "productCode": "MC32877",
         "quantity": 1,
         "unitPrice": 10.0,
         "categoryName": "饮料",
@@ -4263,7 +4263,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 1,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -4290,7 +4290,7 @@
     "items": [
       {
         "productName": "奥利奥麦旋风",
-        "productCode": "MC47512",
+        "productCode": "MC23228",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "甜品",
@@ -4298,7 +4298,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 9.1,
         "categoryName": "早餐",
@@ -4317,7 +4317,7 @@
     "items": [
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -4325,7 +4325,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -4333,7 +4333,7 @@
       },
       {
         "productName": "板烧鸡腿堡",
-        "productCode": "MC56604",
+        "productCode": "MC34465",
         "quantity": 1,
         "unitPrice": 16.4,
         "categoryName": "汉堡",
@@ -4341,7 +4341,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -4365,7 +4365,7 @@
     "items": [
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -4373,7 +4373,7 @@
       },
       {
         "productName": "麦辣鸡腿堡",
-        "productCode": "MC61280",
+        "productCode": "MC84118",
         "quantity": 1,
         "unitPrice": 22.5,
         "categoryName": "汉堡",
@@ -4381,7 +4381,7 @@
       },
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 2,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -4405,7 +4405,7 @@
     "items": [
       {
         "productName": "巨无霸",
-        "productCode": "MC52927",
+        "productCode": "MC23824",
         "quantity": 2,
         "unitPrice": 25.5,
         "categoryName": "汉堡",
@@ -4413,7 +4413,7 @@
       },
       {
         "productName": "双层吉士汉堡",
-        "productCode": "MC11610",
+        "productCode": "MC10971",
         "quantity": 1,
         "unitPrice": 17.0,
         "categoryName": "汉堡",
@@ -4440,7 +4440,7 @@
     "items": [
       {
         "productName": "热香饼",
-        "productCode": "MC55773",
+        "productCode": "MC75437",
         "quantity": 1,
         "unitPrice": 12.0,
         "categoryName": "早餐",
@@ -4448,7 +4448,7 @@
       },
       {
         "productName": "原味圆筒冰淇淋",
-        "productCode": "MC75954",
+        "productCode": "MC24781",
         "quantity": 1,
         "unitPrice": 5.0,
         "categoryName": "甜品",
@@ -4456,7 +4456,7 @@
       },
       {
         "productName": "猪柳蛋麦满分",
-        "productCode": "MC64206",
+        "productCode": "MC91052",
         "quantity": 2,
         "unitPrice": 13.0,
         "categoryName": "早餐",
@@ -4464,7 +4464,7 @@
       },
       {
         "productName": "麦乐鸡（5块）",
-        "productCode": "MC66194",
+        "productCode": "MC61457",
         "quantity": 1,
         "unitPrice": 13.5,
         "categoryName": "小食",
@@ -4491,7 +4491,7 @@
     "items": [
       {
         "productName": "中薯条",
-        "productCode": "MC61061",
+        "productCode": "MC79778",
         "quantity": 1,
         "unitPrice": 13.0,
         "categoryName": "小食",

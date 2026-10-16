@@ -14,8 +14,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 from .analytics import DAY_PARTS, WEEKDAY_NAMES, Metrics, money
 
@@ -162,21 +162,21 @@ def _r_store_loyal(m: Metrics):
 def _r_delivery_resident(m: Metrics):
     share = _channel_share(m, "delivery")
     if m.total_orders >= 3 and share >= 0.60:
-        return (share, f"麦乐送占 {share * 100:.0f}%，共 {int(round(share * m.total_orders))} 单")
+        return (share, f"麦乐送占 {share * 100:.0f}%，共 {round(share * m.total_orders)} 单")
     return None
 
 
 def _r_drive_thru_driver(m: Metrics):
     share = _channel_share(m, "drive_thru")
     if m.total_orders >= 4 and share >= 0.30:
-        return (share, f"得来速占 {share * 100:.0f}%，共 {int(round(share * m.total_orders))} 单")
+        return (share, f"得来速占 {share * 100:.0f}%，共 {round(share * m.total_orders)} 单")
     return None
 
 
 def _r_dine_in_local(m: Metrics):
     share = _channel_share(m, "dine_in")
     if m.total_orders >= 4 and share >= 0.70:
-        return (share, f"到店取餐占 {share * 100:.0f}%，共 {int(round(share * m.total_orders))} 单")
+        return (share, f"到店取餐占 {share * 100:.0f}%，共 {round(share * m.total_orders)} 单")
     return None
 
 
@@ -187,7 +187,8 @@ def _r_weekday_ritual(m: Metrics):
     if share >= 0.32:
         return (
             share,
-            f"{WEEKDAY_NAMES[m.peak_weekday]}是你的主场，{m.weekday[m.peak_weekday]}/{m.total_orders} 单，占 {share * 100:.0f}%",
+            f"{WEEKDAY_NAMES[m.peak_weekday]}是你的主场，"
+            f"{m.weekday[m.peak_weekday]}/{m.total_orders} 单，占 {share * 100:.0f}%",
         )
     return None
 
@@ -385,11 +386,11 @@ def headline(m: Metrics) -> str:
 
 
 __all__ = [
-    "Persona",
-    "RULES",
-    "evaluate_personas",
-    "select_personas",
-    "headline",
     "DAY_PARTS",
+    "RULES",
     "WEEKDAY_NAMES",
+    "Persona",
+    "evaluate_personas",
+    "headline",
+    "select_personas",
 ]

@@ -9,7 +9,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies: 0](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](#为什么零依赖)
-[![Tests: 169](https://img.shields.io/badge/tests-169%20passed-success.svg)](./scripts/selftest.py)
+[![Tests: 192](https://img.shields.io/badge/tests-192%20passed-success.svg)](./scripts/selftest.py)
+[![ruff: 0 issues](https://img.shields.io/badge/ruff-0%20issues-brightgreen.svg)](./ruff.toml)
+[![mypy: clean](https://img.shields.io/badge/mypy-clean-brightgreen.svg)](./mypy.ini)
 [![MCP: McDonald's](https://img.shields.io/badge/MCP-mcd.cn-DA291C.svg)](https://open.mcd.cn/mcp)
 
 </div>
@@ -148,6 +150,8 @@ mcd-meal-ledger/
 ├── mcp-config.example.json       脱敏 MCP 配置示例（仅环境变量占位符）
 ├── workbuddy.md                  WorkBuddy 开发对话记录
 ├── LICENSE                       MIT
+├── ruff.toml                     静态检查配置（豁免项均写明理由）
+├── mypy.ini                      类型检查配置
 │
 ├── mcledger/                     核心包（纯标准库，零依赖）
 │   ├── models.py                 宽容取值的归一化：脏数据 / 异形外壳 / 时间戳
@@ -173,22 +177,39 @@ mcd-meal-ledger/
 
 ---
 
-## 自测
+## 质量门禁
+
+三道门禁，全部可复现 —— 配置随仓库提供，任何人在任何机器上执行同一条命令
+都会得到相同结论：
 
 ```bash
-python scripts/selftest.py
-# ✅ 169 passed, 0 failed  (共 169 项)
+python scripts/selftest.py    # ✅ 192 passed, 0 failed  (共 192 项)
+ruff check .                  # ✅ All checks passed!
+mypy mcledger scripts         # ✅ Success: no issues found in 12 source files
 ```
 
-覆盖五层：
+> `ruff` 与 `mypy` 只是**开发期**工具，不属于项目依赖。
+> 本项目的**运行时依赖依然是 0** —— 只有 Python 标准库。
 
-1. **解析层** —— 脏数据（`"¥25.5元"`、毫秒时间戳、缺字段）、三种响应外壳、渠道文案归一化
-2. **统计层** —— 聚合结果与手工核算逐项对齐，空输入不崩溃
-3. **业务层** —— 人格规则判定、审计结论（含「全原价时不虚构金额」这条诚实性断言）
-4. **端到端** —— 离线样例跑通、HTML 产物**同一输入产出完全一致**（可复现性断言）
-5. **真实 MCP 契约** —— 用真实联调报文锁死
-   `orderProductList` / `realTotalAmount` / `beType` 编码映射 / 套餐拆解 / 积分字段，
-   防止未来"优化"别名表时把这些关键字段弄丢
+### 自测覆盖七层
+
+| 层 | 覆盖内容 |
+|---|---|
+| 解析层 | 脏数据（`"¥25.5元"`、毫秒时间戳、缺字段）、四种响应外壳、渠道文案归一化 |
+| 统计层 | 聚合结果与手工核算逐项对齐，空输入不崩溃 |
+| 业务层 · 人格 | 规则命中判定、证据文案、空数据不误判 |
+| 业务层 · 审计 | 审计结论正确性（含「无可参照折扣率时不虚构金额」这条诚实性断言） |
+| 端到端 | 离线样例跑通、HTML **同一输入产出完全一致**（可复现性断言） |
+| 真实 MCP 契约 | 用真实联调报文锁死 `orderProductList` / `realTotalAmount` / `beType` 编码映射 / 套餐拆解 / 积分字段 |
+| 工程健壮性守卫 | 夹具可复现性、库不得污染 stdout、请求上限真实生效、公开 API 完整、CSS 与审计级别同步、行尾一致 |
+
+最后一层守的是「功能正常但承诺可能是假的」那类问题。举两个真实例子：
+
+- 夹具生成脚本原本用内置 `hash()` 造餐品编码，而 Python 对字符串的哈希带
+  进程级随机化 —— 也就是说脚本里"谁跑都一样"的承诺**根本不成立**。现已改用
+  `crc32`，并用测试锁死。
+- 数量别名表里原本有 `amount`，但不少订单结构里 `amount` 表示**金额**，
+  `¥25.5` 会被解析成 **26 份**。这类错误不报错，只会让统计悄悄失真。
 
 ---
 
