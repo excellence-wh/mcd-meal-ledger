@@ -27,7 +27,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import mcledger  # noqa: E402
-from mcledger.analytics import compute_metrics, money  # noqa: E402
+from mcledger.analytics import compute_metrics, money, stores_from_orders  # noqa: E402
 from mcledger.audit import LEVEL_ALERT, LEVEL_NOTICE, LEVEL_TIP, run_audit  # noqa: E402
 from mcledger.coupons import (  # noqa: E402
     KIND_FREE_GIFT,
@@ -39,12 +39,17 @@ from mcledger.coupons import (  # noqa: E402
     parse_coupon_rule,
 )
 from mcledger.habits import build_habit_report, extract_habits, project_annual_waste  # noqa: E402
+from mcledger.ics import CalendarEvent, build_ics  # noqa: E402
 from mcledger.mcp_client import (  # noqa: E402
+    CENTS_PER_YUAN,
     MCPClient,
     MCPError,
     ToolCall,
     _enrich_orders,
+    parse_campaign_events,
     parse_campaign_titles,
+    parse_official_quote,
+    parse_stores,
 )
 from mcledger.models import (  # noqa: E402
     Order,
@@ -53,10 +58,12 @@ from mcledger.models import (  # noqa: E402
     dedupe_orders,
     normalize_channel,
     parse_account,
+    parse_compact_table,
     parse_coupons,
     parse_datetime,
     parse_orders,
     pick,
+    rows_of,
     to_float,
     to_int,
 )
@@ -64,6 +71,7 @@ from mcledger.nutrition import (  # noqa: E402
     FitRequest,
     build_nutrition_profile,
     fit_meals,
+    lookup_fact,
     parse_nutrition_foods,
     total_nutrition,
 )
@@ -83,6 +91,12 @@ from mcledger.saver import (  # noqa: E402
     build_plans,
     compare_bundle,
     coupon_brief,
+    menu_from_mcp,
+)
+from mcledger.wallet import (  # noqa: E402
+    parse_mall_orders,
+    parse_points_products,
+    parse_wallet,
 )
 
 
@@ -933,6 +947,13 @@ def test_engineering_guards(t: Runner) -> None:
         "query-my-account",
         "campaign-calendar",
         "auto-bind-coupons",
+        "calculate-price",
+        "list-nutrition-foods",
+        "mall-points-products",
+        "mall-order-list",
+        "query-lottery-info",
+        "query-my-prizes",
+        "query-nearby-stores",
         "tools/list",
         "streamablehttp",
         "JSON-RPC",
@@ -950,6 +971,22 @@ def test_engineering_guards(t: Runner) -> None:
 
     footer = report_src.split("<footer>")[1].split("</footer>")[0]
     t.eq("报告页脚里没有内部术语", [word for word in jargon if word in footer], [])
+
+    # ---- .gitattributes 必须保护两类「内容不能变」的文件 ----
+    # 这两条都不是洁癖：参赛声明被改动会让报名失败（已发生过的真实风险），
+    # .ics 的 CRLF 被改写会让导出的日历变成不合规文件 ——
+    # 而且**本地完全看不出来**（本地文件没被改），只有别人 clone 下来才会坏。
+    attrs = (ROOT / ".gitattributes").read_text(encoding="utf-8")
+    t.check(
+        "参赛声明被标记为不可做行尾转换",
+        any(line.strip().startswith("CONTEST_DECLARATION.md") and "-text" in line
+            for line in attrs.splitlines()),
+    )
+    t.check(
+        "导出的 .ics 被标记为不可做行尾转换（RFC 5545 要求 CRLF）",
+        any(line.strip().startswith("*.ics") and "-text" in line
+            for line in attrs.splitlines()),
+    )
     t.check(
         "报告正文不提命令行参数",
         "--offline" not in report_src,
@@ -1121,6 +1158,11 @@ def test_habits(t: Runner) -> None:
     t.check("年化浪费金额为正", project_annual_waste(orders, 100.0) > 0)
 
 
+def _fact_name(fact: object) -> str | None:
+    """取营养数据的名字；匹配不到时返回 None，方便直接断言。"""
+    return getattr(fact, "name", None)
+
+
 def test_nutrition(t: Runner) -> None:
     # 两套字段名都要能认出来
     mixed = {
@@ -1186,6 +1228,289 @@ def test_nutrition(t: Runner) -> None:
     t.check("画像有品类分布", bool(profile.by_category))
     t.check("画像有描述文字", len(profile.describe()) >= 3)
 
+    # ---- 紧凑表格格式：list-nutrition-foods 的真实返回形态 ----
+    # 为了省 token，接口把数组序列化成了一行表头 + 若干行数据的文本。
+    # 按 JSON 解析会安静地拿到 0 条 —— 营养画像整块消失却不报错。
+    compact = (
+        "[3]{productName,nutritionDescription,energyKj,energyKcal,protein,fat,"
+        "carbohydrate,sodium,calcium}:\n"
+        "  巨无霸,null,2145,513,27,26,42,961,120\n"
+        "  可乐中杯,null,616,147,0,0,37,10,0\n"
+        "  坏行,缺列\n"
+    )
+    rows = parse_compact_table(compact)
+    t.eq("紧凑表格解析出行数（列数不足的那行被丢掉）", len(rows), 2)
+    t.eq("紧凑表格的表头映射正确", rows[0].get("productName"), "巨无霸")
+    t.eq("null 被还原成 None（不是字符串 'null'）", rows[0].get("nutritionDescription"), None)
+    t.eq("数值列取到的是数值文本", rows[0].get("energyKcal"), "513")
+    t.eq("不是这个格式就返回空（绝不猜）", parse_compact_table("{\"a\":1}"), [])
+    t.eq("空字符串返回空", parse_compact_table(""), [])
+
+    table2 = parse_nutrition_foods({"data": compact})
+    t.eq("从紧凑表格能建出营养表", len(table2), 2)
+    t.close("紧凑表格的热量被正确读入", table2["巨无霸"].calories, 513.0)
+
+    # ---- 名字大小杯匹配 ----
+    # 营养表叫「可乐中杯」，菜单叫「可乐」—— 直接查字典会一条都匹配不上
+    t.eq("菜单名直接查表匹配不上（这就是原来的问题）", table2.get("可乐"), None)
+    hit = lookup_fact(table2, "可乐")
+    t.eq("放宽后能匹配到中杯", _fact_name(hit), "可乐中杯")
+    t.eq("完全一致时优先进口完全一致的", _fact_name(lookup_fact(table2, "巨无霸")), "巨无霸")
+    t.eq("匹配不上时返回 None（不硬套别的餐品）", lookup_fact(table2, "完全不存在的东西"), None)
+    t.eq("空名字返回 None", lookup_fact(table2, "  "), None)
+
+    # 多个候选时优先「中」规格，且结果稳定
+    sizes = parse_nutrition_foods(
+        {"data": "[3]{productName,energyKcal,protein,fat,carbohydrate,sodium,calcium}:\n"
+                 "  可乐小杯,100,0,0,25,5,0\n"
+                 "  可乐大杯,200,0,0,50,15,0\n"
+                 "  可乐中杯,147,0,0,37,10,0\n"}
+    )
+    t.eq("多个规格时优先取中杯", _fact_name(lookup_fact(sizes, "可乐")), "可乐中杯")
+    t.eq(
+        "同一输入重复调用结果一致",
+        _fact_name(lookup_fact(sizes, "可乐")),
+        _fact_name(lookup_fact(sizes, "可乐")),
+    )
+    total2 = total_nutrition([("巨无霸", 1), ("可乐", 1)], table2)
+    t.eq("名称对不上时不再被算作「未匹配」", total2.unknown_items, 0)
+    t.close("合计热量含匹配到的中杯可乐", total2.calories, 660.0)
+
+
+# ==========================================================================
+# 菜单 / 核价 / 积分钱包 / 日历导出
+# ==========================================================================
+
+# 真实 query-meals 的两层结构：categories[].meals[].code + meals{code: {...}}
+REAL_MENU = {
+    "success": True,
+    "code": 200,
+    "data": {
+        "categories": [
+            {"name": "人气\n热卖", "meals": [{"code": "1100", "tags": ["爆款"]}, {"code": "9900004064"}]},
+            {"name": "饮品", "meals": [{"code": "2111"}]},
+        ],
+        "meals": {
+            "1100": {"name": "巨无霸", "currentPrice": "26.5", "originalPrice": "0"},
+            "9900004064": {"name": "精选单人餐三件套", "currentPrice": "34.5", "originalPrice": "46.5"},
+            "2111": {"name": "可乐", "currentPrice": "9.5", "originalPrice": "9.5"},
+            # 存在但没有任何品类引用 —— 不能让它凭空消失
+            "9999": {"name": "未归类餐品", "currentPrice": "3.0", "originalPrice": "0"},
+        },
+    },
+}
+
+# 真实 calculate-price 的返回：**金额单位是分**
+REAL_QUOTE = {
+    "success": True,
+    "code": 200,
+    "data": {
+        "originalPrice": 5000,
+        "price": 5000,
+        "discount": 0,
+        "productList": [
+            {"productCode": "1100", "productName": "巨无霸", "quantity": 1,
+             "originalSubtotal": 2650, "subtotal": 2650},
+            {"productCode": "4810", "productName": "中薯条", "quantity": 1,
+             "originalSubtotal": 1400, "subtotal": 1400},
+            {"productCode": "9900008751", "productName": "可乐", "quantity": 1,
+             "originalSubtotal": 950, "subtotal": 950},
+        ],
+    },
+}
+
+# 真实的积分商城：data 是**数组本身**，价值写在商品名里
+REAL_POINTS = {
+    "success": True,
+    "data": [
+        {"spuName": "18.8元麦辣鸡腿汉堡两件套", "point": "50", "price": "0", "catName": "到店专用"},
+        {"spuName": "21.9元巨无霸可乐组合", "point": "800", "price": "0", "catName": "到店专用"},
+        {"spuName": "罗技键鼠套装", "point": "6666", "price": "0", "catName": "玩具"},
+        {"spuName": "麦当劳奇妙生日派对", "point": "0", "price": "50", "catName": "生日类派对"},
+    ],
+}
+
+
+def test_menu_and_quote(t: Runner) -> None:
+    """菜单两层 join 与官方核价 —— 都是最容易静默失效的地方。"""
+    menu = menu_from_mcp(REAL_MENU)
+    t.eq("菜单解析出全部餐品（含未被品类引用的）", len(menu.items), 4)
+    t.eq("菜单来源标记为门店实时", menu.source, "mcp")
+    t.check("实时菜单可用于凑单建议", menu.is_live)
+
+    big = menu.find("巨无霸")
+    t.eq("菜单里有真实名字与价格", (big.name, big.price) if big else None, ("巨无霸", 26.5))
+    t.eq("菜单带品类（且换行符被清理）", big.category if big else None, "人气 热卖")
+
+    combo = menu.find("精选单人餐三件套")
+    t.eq("套餐的标称原价被保留", combo.original_price if combo else None, 46.5)
+    t.close("菜单标称折扣可算", combo.menu_discount if combo else 0.0, 12.0)
+
+    cola = menu.find("可乐")
+    t.eq("原价不高于现价时视为无效", cola.original_price if cola else "x", None)
+
+    # 这条是本次修复的核心证据：旧写法按 data.list 取，一行都拿不到
+    naive = rows_of(REAL_MENU, "list", "records", "items")
+    t.eq("旧取法（找 list 键）确实拿 0 条 —— 静默失效的根源", len(naive), 0)
+    t.eq("空输入不崩溃", len(menu_from_mcp(None).items), 0)
+    t.eq("结构不对时返回空菜单而不是抛异常", len(menu_from_mcp({"data": "乱七八糟"}).items), 0)
+
+    # ---- 官方核价 ----
+    t.eq("核价单位常量是 100（忘了除就是 100 倍）", CENTS_PER_YUAN, 100)
+    quote = parse_official_quote(REAL_QUOTE)
+    t.check("核价能被解析", quote is not None)
+    if quote:
+        t.close("核价应付（分→元）", quote.payable, 50.0)
+        t.close("核价原价（分→元）", quote.original, 50.0)
+        t.close("三件加起来等于总价", sum(line.payable for line in quote.lines), 50.0)
+        t.eq("核价明细行数", len(quote.lines), 3)
+        t.eq("明细带餐品名", quote.lines[0].name, "巨无霸")
+        t.close("明细小计也换成元", quote.lines[0].payable, 26.5)
+        t.check("核价结果标记为有效", quote.is_valid)
+    t.eq("空核价返回 None", parse_official_quote(None), None)
+
+    # ---- 门店 ----
+    stores = parse_stores(
+        {"data": [{"storeCode": "1950564", "storeName": "麦当劳北京建外SOHO(A座)餐厅",
+                   "address": "东三环中路39号院", "longitude": 0.0, "latitude": 0.0,
+                   "businessStartTime": "07:00", "businessEndTime": "22:00"}]}
+    )
+    t.eq("门店解析出 1 家", len(stores), 1)
+    t.eq("门店名正确", stores[0]["name"] if stores else "", "麦当劳北京建外SOHO(A座)餐厅")
+    t.check(
+        "门店结构里不含经纬度（官方恒为 0.0，不能当地图坐标）",
+        "longitude" not in (stores[0] if stores else {}),
+    )
+    t.eq("空门店不崩溃", parse_stores(None), [])
+
+    # ---- 门店应当能从历史订单推出来（不依赖用户收藏过餐厅）----
+    own = stores_from_orders(
+        [
+            _mk_order("S1", datetime(2026, 1, 1, 12), "dine_in", "国贸店", [], 30.0, 30.0),
+            _mk_order("S2", datetime(2026, 1, 2, 12), "dine_in", "国贸店", [], 40.0, 40.0),
+            _mk_order("S3", datetime(2026, 1, 3, 12), "dine_in", "望京店", [], 25.0, 25.0),
+        ]
+    )
+    t.eq("门店去重并按单数排序", [s["name"] for s in own], ["国贸店", "望京店"])
+    t.eq("门店带上了点单次数与金额", own[0]["address"], "在这里点过 2 单 · ¥70.00")
+    no_store = [_mk_order("S4", None, "dine_in", "", [], 10.0, 10.0)]
+    t.eq("没有门店信息时不编造", stores_from_orders(no_store), [])
+
+
+def test_points_wallet(t: Runner) -> None:
+    """积分的账 —— 单位积分价值是这个项目独有的审计点。"""
+    wallet = parse_wallet(products_raw=REAL_POINTS)
+
+    t.eq("data 是数组也能解析出商品", len(wallet.products), 4)
+    t.eq("point=0 的花钱商品被区分出来", len(wallet.cash_only), 1)
+    t.eq("真正能用积分换的商品数", len(wallet.redeemable), 3)
+    t.eq("实物商品的每积分价值算不出", wallet.products[2].yuan_per_point, None)
+    t.check("实物被标记出来", wallet.products[2].physical)
+
+    ranked = wallet.rankable
+    t.eq("可排序的商品数（实物不计入）", len(ranked), 2)
+    t.eq("最划算的是名字里价值最高的那件", ranked[0].name, "18.8元麦辣鸡腿汉堡两件套")
+    t.close("每积分价值 = 18.8 / 50", ranked[0].yuan_per_point or 0.0, 0.376, tol=0.0005)
+    t.close("价值落差 = 0.376 / 0.027375", wallet.value_spread() or 0.0, 13.72, tol=0.02)
+    t.close("最便宜的一件要 50 积分", wallet.cheapest_requirement() or 0.0, 50.0)
+
+    # 换不起的时候要如实说，而不是假装能换
+    tiny = parse_account({"data": {"availablePoint": "46.5"}})
+    lines = wallet.advice(tiny)
+    t.check("积分不够时明确说换不了", any("暂时换不了" in x for x in lines))
+    t.check("并说明还差多少", any("3.5" in x for x in lines))
+
+    # ---- 抽奖：官方不公布概率，就不许估期望值 ----
+    lottery_raw = {
+        "data": {
+            "activityName": "麦麦积分抽奖",
+            "activityStatusText": "进行中",
+            "drawPoint": "24",
+            "availablePoint": "46.5",
+            "prizes": [{"name": "下单立减3元券"}, {"name": "30积分"}, {"name": "下单立减3元券"}],
+        }
+    }
+    lw = parse_wallet(lottery_raw=lottery_raw)
+    t.check("抽奖被识别为进行中", bool(lw.lottery and lw.lottery.is_open))
+    t.eq("够抽几次算得对（46.5 // 24）", lw.lottery.affordable_draws if lw.lottery else -1, 1)
+    t.eq("奖池去重保序", list(lw.lottery.prizes) if lw.lottery else [], ["下单立减3元券", "30积分"])
+    advice = lw.advice(tiny)
+    t.check("明确声明算不出期望值（不编概率）", any("算不出" in x for x in advice))
+    t.check(
+        "建议里不出现任何「期望能抽到多少元」这类数字",
+        not any("期望" in x for x in advice),
+    )
+
+    # ---- 商城订单：data[0].list 这层怪嵌套 ----
+    t.eq("真实观察到的空结构不崩溃",
+         parse_mall_orders({"data": [{"hasNext": False, "lastId": 0, "list": []}]}), [])
+    mall = parse_mall_orders(
+        {"data": [{"hasNext": False, "lastId": 0, "list": [
+            {"orderId": "M1001", "createTime": "2026-09-01 10:00:00",
+             "realTotalAmount": 45.0, "productName": "酸黄瓜吧唧礼盒"}
+        ]}]}
+    )
+    t.eq("商城订单从 data[0].list 解析出来", len(mall), 1)
+    t.close("商城订单金额", mall[0].paid if mall else 0.0, 45.0)
+    t.eq("商城订单标题", mall[0].title if mall else "", "酸黄瓜吧唧礼盒")
+    t.eq("直接解析商品列表也能用（data 是数组）", len(parse_points_products(REAL_POINTS)), 4)
+    # 按 data.list 直接取会落到那个分页对象上，一条真订单都拿不到
+    page_only = {"data": [{"hasNext": False, "list": []}]}
+    naive_orders = [
+        r for r in rows_of(page_only) if isinstance(r, dict) and r.get("orderId")
+    ]
+    t.eq("旧取法（按 data.list 取）拿不到真订单", naive_orders, [])
+
+
+def test_calendar_export(t: Runner) -> None:
+    """活动导出 .ics —— 格式错了日历软件会直接拒收。"""
+    events = [
+        CalendarEvent("2026-10-16", "1+1随心配"),
+        CalendarEvent("2026-10-17", "麦乐送满减日,第二份半价"),
+    ]
+    stamp = datetime(2026, 10, 16, 8, 0, 0)
+    text = build_ics(events, stamp=stamp)
+
+    t.check("有日历头与尾", text.startswith("BEGIN:VCALENDAR") and text.rstrip().endswith("END:VCALENDAR"))
+    t.eq("事件数量正确", text.count("BEGIN:VEVENT"), 2)
+    t.check("日期用整天格式（VALUE=DATE）", "DTSTART;VALUE=DATE:20261016" in text)
+    t.check("逗号被转义", "麦乐送满减日\\,第二份半价" in text)
+    t.check("用 CRLF 行尾（RFC 5545 要求）", "\r\n" in text)
+    t.check("时间戳按参数固定（结果可复现）", "DTSTAMP:20261016T080000Z" in text)
+    t.eq("同一活动两次导出字节一致（UID 稳定）", build_ics(events, stamp=stamp), text)
+
+    long_title = "长" * 60
+    folded = build_ics([CalendarEvent("2026-10-16", long_title)], stamp=stamp)
+    t.check(
+        "超长行按字节折行（中文字符 3 字节，按字符数折会超限）",
+        all(len(line.encode("utf-8")) <= 75 for line in folded.split("\r\n")),
+    )
+    t.eq("非法日期被跳过，不塞错日期进用户日历",
+         build_ics([CalendarEvent("bad-date", "x")], stamp=stamp).count("BEGIN:VEVENT"), 0)
+    t.check("空事件列表仍产出合法日历",
+          build_ics([], stamp=stamp).count("BEGIN:VCALENDAR") == 1)
+
+    # ---- 活动：往期不进日历，且事件要带日期 ----
+    campaigns = {
+        "data": {
+            "currentTime": "2026-10-16 12:00:00",
+            "dailyList": [
+                {"date": "2026-10-12", "today": False,
+                 "events": [{"activityTitle": "", "articleDto": {"title": "往期活动"}}]},
+                {"date": "2026-10-16", "today": True,
+                 "events": [{"activityTitle": "", "articleDto": {"title": "1+1随心配"}}]},
+                {"date": "2026-10-18", "today": False,
+                 "events": [{"activityTitle": "", "articleDto": {"title": "会员日"}}]},
+            ],
+        }
+    }
+    evs = parse_campaign_events(campaigns)
+    t.eq("事件数（今天 + 未来，不含往期）", len(evs), 2)
+    t.check("每条事件都带日期", all(e.date for e in evs))
+    t.eq("按日期升序", [e.date for e in evs], ["2026-10-16", "2026-10-18"])
+    t.eq("往期活动不进日历", any("往期" in e.title for e in evs), False)
+    t.eq("空活动不崩溃", parse_campaign_events(None), [])
+
 
 # ==========================================================================
 
@@ -1204,6 +1529,9 @@ def main() -> int:
         ("省钱助手", test_saver),
         ("习惯年账", test_habits),
         ("营养搭配", test_nutrition),
+        ("菜单与官方核价", test_menu_and_quote),
+        ("积分的账", test_points_wallet),
+        ("日历导出", test_calendar_export),
     ):
         before = len(t.failures)
         fn(t)

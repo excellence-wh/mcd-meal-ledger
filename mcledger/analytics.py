@@ -180,6 +180,41 @@ class Metrics:
 # --------------------------------------------------------------------------
 
 
+@dataclass
+class _StoreBucket:
+    """统计用的中间结构：一家门店点过几单、花了多少。"""
+
+    name: str
+    orders: int = 0
+    paid: float = 0.0
+
+
+def stores_from_orders(orders: list[Order]) -> list[dict[str, str]]:
+    """从历史订单统计「你在哪些门店点过单、各几单」。
+
+    这是最可靠的门店信息来源 —— 不依赖用户在 App 里收藏过餐厅
+    （官方「附近门店」接口在没收藏时会直接报错返回空）。
+    按单数从多到少排，最多给 6 家。
+    """
+    buckets: dict[str, _StoreBucket] = {}
+    for order in orders:
+        name = (order.store or "").strip()
+        if not name:
+            continue
+        bucket = buckets.setdefault(name, _StoreBucket(name=name))
+        bucket.orders += 1
+        bucket.paid += order.paid
+
+    ranked = sorted(buckets.values(), key=lambda b: (-b.orders, b.name))
+    return [
+        {
+            "name": bucket.name,
+            "address": f"在这里点过 {bucket.orders} 单 · {money(bucket.paid)}",
+        }
+        for bucket in ranked[:6]
+    ]
+
+
 def compute_metrics(orders: list[Order], top_n: int = 12) -> Metrics:
     """从订单列表计算全部指标。"""
     m = Metrics()

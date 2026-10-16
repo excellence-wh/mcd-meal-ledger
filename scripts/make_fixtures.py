@@ -348,6 +348,206 @@ def build_nutrition() -> dict:
     return {"success": True, "code": 200, "message": "请求成功", "data": {"list": rows}}
 
 
+# 演示菜单。
+#
+# ⚠️ 结构**刻意照抄真实接口的两层形态**：
+#     data.categories[].meals[].code  +  data.meals{code: {...}}
+# 因为这是最容易写错、且写错了完全不报错的地方 —— 只有把样例做成
+# 同样的形状，离线自测才可能拦住「菜单静默变空」这类回归。
+# 里面也刻意留了两件带 originalPrice 的套餐，用来验证「菜单标称原价」这条链路。
+_DEMO_MENU_ROWS: list[tuple[str, str, float, float, str]] = [
+    ("1100", "巨无霸", 26.5, 0.0, "人气热卖"),
+    ("1101", "麦辣鸡腿堡", 22.5, 0.0, "人气热卖"),
+    ("1102", "板烧鸡腿堡", 23.5, 0.0, "人气热卖"),
+    ("2110", "薯条", 14.0, 0.0, "小食甜品"),
+    ("2111", "可乐", 9.5, 0.0, "饮品"),
+    ("2112", "麦乐鸡", 13.5, 0.0, "小食甜品"),
+    ("2113", "圆筒冰淇淋", 5.0, 0.0, "小食甜品"),
+    ("2114", "香芋派", 7.5, 0.0, "小食甜品"),
+    ("3110", "吉士蛋麦满分", 11.5, 0.0, "早餐"),
+    # 带「标称原价」的套餐 —— 官方自己承认的折扣
+    ("9900004064", "精选单人餐三件套", 34.5, 46.5, "人气套餐"),
+    ("9900005466", "巨无霸三件套", 37.5, 50.5, "人气套餐"),
+    ("9900016073", "龙焰鸡腿堡三件套", 26.9, 48.0, "人气套餐"),
+]
+
+
+def build_menu() -> dict:
+    """演示菜单（两层结构，与真实接口一致）。"""
+    meals: dict[str, dict] = {}
+    grouped: dict[str, list[dict]] = {}
+    for code, name, price, original, category in _DEMO_MENU_ROWS:
+        meals[code] = {
+            "name": name,
+            "image": "",
+            "currentPrice": f"{price}",
+            "originalPrice": f"{original}" if original else "0",
+            "canWithOrder": False,
+        }
+        grouped.setdefault(category, []).append({"code": code})
+    return {
+        "success": True,
+        "code": 200,
+        "message": "请求成功",
+        "data": {
+            "categories": [{"name": k, "meals": v} for k, v in grouped.items()],
+            "meals": meals,
+        },
+    }
+
+
+# 演示用的积分商城商品。
+#
+# 刻意留下**价值写在商品名里**的形态（price 恒为 0）—— 这正是真实数据的样子，
+# 也是「单位积分价值」唯一的数据来源。同时刻意制造一个很大的价值落差，
+# 用来验证排序与「换错就亏多少倍」这条结论。
+_DEMO_POINTS_PRODUCTS: list[tuple[str, str, str, str, str]] = [
+    ("18.8元麦辣鸡腿汉堡两件套", "50", "0", "到店专用", ""),
+    ("6.9元香芋派/菠萝派任选", "50", "0", "到店专用", ""),
+    ("10.9元指定小食任选", "100", "0", "到店专用", ""),
+    ("18.8元2份麦辣鸡翅", "200", "0", "到店专用", ""),
+    ("16.9元中薯麦乐鸡组合", "200", "0", "到店专用", ""),
+    ("22.9元2份板烧鸡腿堡", "500", "0", "到店专用", ""),
+    ("21.9元巨无霸可乐组合", "800", "0", "到店专用", ""),
+    ("28.8元巨无霸四件套", "800", "0", "到店专用", ""),
+    ("酸黄瓜吧唧礼盒", "800", "0", "玩具", ""),
+    ("罗技键鼠套装", "6666", "0", "玩具", ""),
+    # point=0 的条目是**用钱买**的，不是积分商品 —— 必须能被正确区分出来
+    ("麦当劳奇妙生日派对", "0", "50", "生日类派对", "一场给孩子办的生日会"),
+]
+
+
+def build_points_products() -> dict:
+    """演示积分商城。
+
+    注意 ``data`` 直接是数组（真实的接口就是这样），
+    不是 ``{list: [...]}`` —— 按后者取会得到 0 条且不报错。
+    """
+    rows = [
+        {
+            "spuName": name,
+            "spuId": index + 1,
+            "spuImage": "",
+            "point": points,
+            "shopId": 2,
+            "selling": selling,
+            "catName": category,
+            "status": 2,
+            "price": cash,
+        }
+        for index, (name, points, cash, category, selling) in enumerate(_DEMO_POINTS_PRODUCTS)
+    ]
+    return {"success": True, "code": 200, "message": "请求成功", "data": rows}
+
+
+def build_lottery() -> dict:
+    """演示积分抽奖。奖项**只给名字、不给概率** —— 真实接口就是这样。"""
+    prizes = [
+        "下单立减3元券",
+        "下单立减2元券",
+        "下单立减1元券",
+        "麦辣三件套5折券",
+        "板烧三件套5折券",
+        "麦旋风5折券",
+        "30积分",
+    ]
+    return {
+        "success": True,
+        "code": 200,
+        "message": "请求成功",
+        "data": {
+            "status": {"code": "SUCCESS", "message": "成功"},
+            "activityCode": "dtx2",
+            "activityStatusText": "进行中",
+            "activityName": "麦麦积分抽奖",
+            "drawPoint": "24",
+            "drawTypeText": "消耗积分抽奖",
+            "availablePoint": "46.5",
+            "drawDecision": {
+                "resourceEligible": True,
+                "nextConsumption": {
+                    "type": "POINTS",
+                    "points": "24",
+                    "chances": 0,
+                    "text": "本次将消耗 24 积分",
+                },
+            },
+            "prizes": [{"name": n, "imageUrl": "", "typeText": "优惠券"} for n in prizes],
+        },
+    }
+
+
+def build_my_prizes() -> dict:
+    """我抽到过的奖品。结构照真实接口。"""
+    return {
+        "success": True,
+        "code": 200,
+        "message": "请求成功",
+        "data": {
+            "status": {"code": "SUCCESS", "message": "成功"},
+            "prizes": [{"prizeName": "下单立减2元券", "statusText": "已使用"}],
+            "pageNum": 1,
+            "pageSize": 10,
+            "hasMore": False,
+            "truncated": False,
+        },
+    }
+
+
+def build_mall_orders() -> dict:
+    """麦麦商城订单。
+
+    ⚠️ 保留**真实观察到的空结构**：``data`` 是数组，数组里一层分页对象
+    （``hasNext`` / ``lastId`` / ``list``）。本项目联调所用的账号确实没有
+    商城订单，所以这里如实留空，不编造条目。
+    """
+    return {
+        "success": True,
+        "code": 200,
+        "message": "请求成功",
+        "data": [{"hasNext": False, "lastId": 0, "list": []}],
+    }
+
+
+def build_campaigns() -> dict:
+    """活动日历。
+
+    结构照真实的 ``data.dailyList[].events[].articleDto.title``，
+    并且刻意让 ``activityTitle`` 为空（真实数据就是这样）——
+    只有这样，离线测试才可能拦住「活动标题全空」这类静默失效。
+    """
+    today = "2026-10-16"
+
+    def _day(date: str, is_today: bool, titles: list[str]) -> dict:
+        return {
+            "date": date,
+            "today": is_today,
+            "events": [
+                {
+                    "activityTitle": "",  # 真实数据里恒为空
+                    "activityStage": 3,
+                    "articleDto": {"title": t},
+                }
+                for t in titles
+            ],
+        }
+
+    return {
+        "success": True,
+        "code": 200,
+        "message": "请求成功",
+        "data": {
+            "currentTime": f"{today} 12:00:00",
+            "dailyList": [
+                _day(today, True, ["1+1随心配", "超值 9.9 元早餐两件套"]),
+                _day("2026-10-17", False, ["麦乐送满减日"]),
+                _day("2026-10-18", False, ["会员日 1 元加购"]),
+            ],
+            "subscribedEvents": [],
+        },
+    }
+
+
 def _write_json(path: Path, payload: object) -> None:
     """统一用 LF + 结尾换行写盘。
 
@@ -367,6 +567,12 @@ def main() -> int:
     _write_json(FIXTURE_DIR / "orders.sample.json", orders)
     _write_json(FIXTURE_DIR / "coupons.sample.json", build_coupons())
     _write_json(FIXTURE_DIR / "nutrition.sample.json", build_nutrition())
+    _write_json(FIXTURE_DIR / "menu.sample.json", build_menu())
+    _write_json(FIXTURE_DIR / "points-products.sample.json", build_points_products())
+    _write_json(FIXTURE_DIR / "lottery.sample.json", build_lottery())
+    _write_json(FIXTURE_DIR / "my-prizes.sample.json", build_my_prizes())
+    _write_json(FIXTURE_DIR / "mall-orders.sample.json", build_mall_orders())
+    _write_json(FIXTURE_DIR / "campaigns.sample.json", build_campaigns())
 
     # 汇总用真实的解析器算，而不是另写一套粗略求和 ——
     # 否则生成脚本打印的数字会和年报里的数字对不上，审查者会以为是 bug。
@@ -377,6 +583,7 @@ def main() -> int:
     print(f"✅ 已生成 {len(orders)} 条脱敏订单 -> fixtures/orders.sample.json")
     print(f"   解析后实付合计 ¥{total_paid:,.2f}（原价 ¥{total_gross:,.2f}）")
     print("✅ 已生成券样例 -> fixtures/coupons.sample.json")
+    print("✅ 已生成菜单 / 积分商城 / 抽奖 / 商城订单样例")
     return 0
 
 

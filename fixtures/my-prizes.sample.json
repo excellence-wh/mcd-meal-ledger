@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "请求成功",
+  "data": {
+    "status": {
+      "code": "SUCCESS",
+      "message": "成功"
+    },
+    "prizes": [
+      {
+        "prizeName": "下单立减2元券",
+        "statusText": "已使用"
+      }
+    ],
+    "pageNum": 1,
+    "pageSize": 10,
+    "hasMore": false,
+    "truncated": false
+  }
+}

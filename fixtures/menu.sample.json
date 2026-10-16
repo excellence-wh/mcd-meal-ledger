@@ -1,0 +1,156 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "请求成功",
+  "data": {
+    "categories": [
+      {
+        "name": "人气热卖",
+        "meals": [
+          {
+            "code": "1100"
+          },
+          {
+            "code": "1101"
+          },
+          {
+            "code": "1102"
+          }
+        ]
+      },
+      {
+        "name": "小食甜品",
+        "meals": [
+          {
+            "code": "2110"
+          },
+          {
+            "code": "2112"
+          },
+          {
+            "code": "2113"
+          },
+          {
+            "code": "2114"
+          }
+        ]
+      },
+      {
+        "name": "饮品",
+        "meals": [
+          {
+            "code": "2111"
+          }
+        ]
+      },
+      {
+        "name": "早餐",
+        "meals": [
+          {
+            "code": "3110"
+          }
+        ]
+      },
+      {
+        "name": "人气套餐",
+        "meals": [
+          {
+            "code": "9900004064"
+          },
+          {
+            "code": "9900005466"
+          },
+          {
+            "code": "9900016073"
+          }
+        ]
+      }
+    ],
+    "meals": {
+      "1100": {
+        "name": "巨无霸",
+        "image": "",
+        "currentPrice": "26.5",
+        "originalPrice": "0",
+        "canWithOrder": false
+      },
+      "1101": {
+        "name": "麦辣鸡腿堡",
+        "image": "",
+        "currentPrice": "22.5",
+        "originalPrice": "0",
+        "canWithOrder": false
+      },
+      "1102": {
+        "name": "板烧鸡腿堡",
+        "image": "",
+        "currentPrice": "23.5",
+        "originalPrice": "0",
+        "canWithOrder": false
+      },
+      "2110": {
+        "name": "薯条",
+        "image": "",
+        "currentPrice": "14.0",
+        "originalPrice": "0",
+        "canWithOrder": false
+      },
+      "2111": {
+        "name": "可乐",
+        "image": "",
+        "currentPrice": "9.5",
+        "originalPrice": "0",
+        "canWithOrder": false
+      },
+      "2112": {
+        "name": "麦乐鸡",
+        "image": "",
+        "currentPrice": "13.5",
+        "originalPrice": "0",
+        "canWithOrder": false
+      },
+      "2113": {
+        "name": "圆筒冰淇淋",
+        "image": "",
+        "currentPrice": "5.0",
+        "originalPrice": "0",
+        "canWithOrder": false
+      },
+      "2114": {
+        "name": "香芋派",
+        "image": "",
+        "currentPrice": "7.5",
+        "originalPrice": "0",
+        "canWithOrder": false
+      },
+      "3110": {
+        "name": "吉士蛋麦满分",
+        "image": "",
+        "currentPrice": "11.5",
+        "originalPrice": "0",
+        "canWithOrder": false
+      },
+      "9900004064": {
+        "name": "精选单人餐三件套",
+        "image": "",
+        "currentPrice": "34.5",
+        "originalPrice": "46.5",
+        "canWithOrder": false
+      },
+      "9900005466": {
+        "name": "巨无霸三件套",
+        "image": "",
+        "currentPrice": "37.5",
+        "originalPrice": "50.5",
+        "canWithOrder": false
+      },
+      "9900016073": {
+        "name": "龙焰鸡腿堡三件套",
+        "image": "",
+        "currentPrice": "26.9",
+        "originalPrice": "48.0",
+        "canWithOrder": false
+      }
+    }
+  }
+}

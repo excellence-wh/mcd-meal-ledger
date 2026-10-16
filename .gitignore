@@ -19,6 +19,8 @@ docs/mine*.json
 docs/*-mine.html
 docs/live-*
 docs/*-private.html
+# 用自己的真实活动导出的日历（演示用的 demo-events.ics 不忽略）
+docs/mcd-events.ics
 
 # ---- 密钥 / 环境 ----
 .env

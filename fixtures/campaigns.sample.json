@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "请求成功",
+  "data": {
+    "currentTime": "2026-10-16 12:00:00",
+    "dailyList": [
+      {
+        "date": "2026-10-16",
+        "today": true,
+        "events": [
+          {
+            "activityTitle": "",
+            "activityStage": 3,
+            "articleDto": {
+              "title": "1+1随心配"
+            }
+          },
+          {
+            "activityTitle": "",
+            "activityStage": 3,
+            "articleDto": {
+              "title": "超值 9.9 元早餐两件套"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-10-17",
+        "today": false,
+        "events": [
+          {
+            "activityTitle": "",
+            "activityStage": 3,
+            "articleDto": {
+              "title": "麦乐送满减日"
+            }
+          }
+        ]
+      },
+      {
+        "date": "2026-10-18",
+        "today": false,
+        "events": [
+          {
+            "activityTitle": "",
+            "activityStage": 3,
+            "articleDto": {
+              "title": "会员日 1 元加购"
+            }
+          }
+        ]
+      }
+    ],
+    "subscribedEvents": []
+  }
+}

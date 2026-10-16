@@ -20,10 +20,12 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 
 from .analytics import money
 from .coupons import KIND_THRESHOLD, CouponPortfolio
+from .models import to_float, unwrap
 
 # --------------------------------------------------------------------------
 # 菜单
@@ -32,14 +34,32 @@ from .coupons import KIND_THRESHOLD, CouponPortfolio
 
 @dataclass(frozen=True)
 class MenuItem:
-    """菜单上的一件商品。"""
+    """菜单上的一件商品。
+
+    门店实时菜单除了现价，还会给一个「标称原价」。两者之差就是官方
+    自己承认的折扣幅度 —— 这是判断「我这一单到底买贵没有」的基准，
+    所以单独留一个字段，不要和现价混在一起。
+    """
 
     name: str
     price: float
     code: str | None = None
+    original_price: float | None = None  # 菜单标称原价；无或不高于现价时为 None
+    category: str | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "price", round(float(self.price), 2))
+        if self.original_price is not None:
+            original = round(float(self.original_price), 2)
+            # 原价不高于现价时视为无效 —— 有些门店会把两者填成同一个数
+            object.__setattr__(self, "original_price", original if original > self.price else None)
+
+    @property
+    def menu_discount(self) -> float:
+        """官方标称的折扣金额（现价与原价之差）。"""
+        if self.original_price is None:
+            return 0.0
+        return round(self.original_price - self.price, 2)
 
 
 @dataclass
@@ -74,6 +94,68 @@ class Menu:
         """按名字里的关键词找商品（取最便宜的匹配）。"""
         hits = [i for i in self.items if keyword and keyword in i.name]
         return min(hits, key=lambda i: (i.price, i.name)) if hits else None
+
+
+def menu_from_mcp(payload: object) -> Menu:
+    """把门店实时菜单解析成 Menu。
+
+    真实接口是**两层结构**（2026-10-16 联调确认）：
+
+    - ``data.categories[]`` —— 每个品类是 ``{name, meals: [{code, tags}]}``，
+      这里只有编码和标签；
+    - ``data.meals{code}`` —— 编码 → ``{name, currentPrice, originalPrice, image}``，
+      名字和价格都在这一层。
+
+    必须把第二层的价格 join 回第一层的品类顺序，才拿得到「名字 + 价格 + 品类」。
+    只按 ``data.list`` 之类的键名取会**一行都取不到，而且不报错** ——
+    菜单会静默变空，下游的比价与凑单全部退化成「没有数据」。
+    这个 bug 在本项目里真实存在过，所以专门补了契约测试锁住结构。
+    """
+    node = unwrap(payload)
+    if not isinstance(node, dict):
+        return Menu(items=[], source="mcp")
+
+    catalog = node.get("meals")
+    if not isinstance(catalog, dict):
+        catalog = {}
+
+    items: list[MenuItem] = []
+    seen: set[str] = set()
+
+    def _add(code: str, category: str | None) -> bool:
+        detail = catalog.get(code)
+        if not isinstance(detail, dict):
+            return False
+        name = str(detail.get("name") or "").strip()
+        if not name or code in seen:
+            return False
+        seen.add(code)
+        original = to_float(detail.get("originalPrice"))
+        items.append(
+            MenuItem(
+                name=name,
+                price=to_float(detail.get("currentPrice")),
+                code=code,
+                original_price=original if original > 0 else None,
+                category=category,
+            )
+        )
+        return True
+
+    for category in node.get("categories") or []:
+        if not isinstance(category, dict):
+            continue
+        cat_name = re.sub(r"\s+", " ", str(category.get("name") or "")).strip() or None
+        for entry in category.get("meals") or []:
+            if isinstance(entry, dict):
+                _add(str(entry.get("code") or "").strip(), cat_name)
+
+    # 兜底：菜单里存在、但没有任何品类引用的餐品也要收进来，
+    # 否则它们会凭空消失（用户会觉得「这家店怎么没有巨无霸」）。
+    for code in catalog:
+        _add(str(code), None)
+
+    return Menu(items=items, source="mcp")
 
 
 # --------------------------------------------------------------------------

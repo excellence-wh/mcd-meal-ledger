@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 from itertools import combinations, product
 
 from .analytics import money
-from .models import Order, classify_item, pick, rows_of, to_float, unwrap
+from .models import Order, classify_item, decode_rows, pick, to_float, unwrap
 from .saver import Menu
 
 # 分类里算"主食"的品类 —— 用来避免推荐出"三杯饮料"这种荒唐组合
@@ -116,10 +116,14 @@ class NutritionTotal:
 
 
 def _rows(payload: object) -> list[dict]:
-    """从可能嵌套的响应里取出营养数据行。"""
-    rows = rows_of(payload, "list", "records", "foods", "items", "nutritionList", "data")
+    """从可能嵌套的响应里取出营养数据行。
+
+    ⚠️ 真实返回是**紧凑表格字符串**（见 ``models.parse_compact_table``），
+    不是 JSON。只按 JSON 取会安静地拿到 0 条，整块营养画像凭空消失。
+    """
+    rows = decode_rows(payload, "list", "records", "foods", "items", "nutritionList")
     if rows:
-        return [r for r in rows if isinstance(r, dict)]
+        return rows
     node = unwrap(payload)
     if isinstance(node, dict) and node and all(isinstance(v, dict) for v in node.values()):
         # 也可能是 { 餐品名: {营养...} } 的字典形态
@@ -151,13 +155,57 @@ def parse_nutrition_foods(payload: object) -> dict[str, NutritionFact]:
 # --------------------------------------------------------------------------
 
 
+# 营养表里的名字常带杯型/规格后缀（「可乐中杯」「可乐大杯」），
+# 而订单与菜单里写的是「可乐」。对不上就直接跳过会让营养画像凭空少一半，
+# 所以按下面这套**确定性规则**逐级放宽匹配。
+_SIZE_WORDS: tuple[str, ...] = ("中杯", "中", "小杯", "小", "大杯", "大", "迷你")
+
+
+def _size_rank(key: str) -> int:
+    """越小越优先：中杯 > 小杯 > 大杯 > 迷你 > 无规格后缀。"""
+    for index, word in enumerate(_SIZE_WORDS):
+        if key.endswith(word):
+            return index
+    return len(_SIZE_WORDS)
+
+
+def lookup_fact(table: dict[str, NutritionFact], name: str) -> NutritionFact | None:
+    """在营养表里找一件餐品的营养数据。
+
+    匹配顺序：
+
+    1. 完全一致；
+    2. 表里的键以该名字开头（``可乐`` → ``可乐中杯``）——
+       有多个候选时优先取「中」规格、其次最短，保证同样输入永远同样结果；
+    3. 表里的键出现在名字中间。
+
+    三级都不中就打住，返回 ``None`` —— 宁可不计入，也不硬套一个别的餐品。
+    """
+    key = (name or "").strip()
+    if not key:
+        return None
+    exact = table.get(key)
+    if exact is not None:
+        return exact
+
+    prefixed = sorted(
+        (k for k in table if k.startswith(key) and len(k) > len(key)),
+        key=lambda k: (_size_rank(k), len(k), k),
+    )
+    if prefixed:
+        return table[prefixed[0]]
+
+    contained = sorted((k for k in table if key in k), key=lambda k: (len(k), k))
+    return table[contained[0]] if contained else None
+
+
 def total_nutrition(
     entries: list[tuple[str, int]], table: dict[str, NutritionFact]
 ) -> NutritionTotal:
     """按（餐品名, 份数）合计营养。对不上营养表的会被计入 unknown_items。"""
     total = NutritionTotal()
     for name, qty in entries:
-        fact = table.get(name)
+        fact = lookup_fact(table, name)
         if fact is None or not fact.has_data:
             total.unknown_items += qty
             continue
@@ -260,7 +308,7 @@ def fit_meals(
     # 只考虑既能对上营养表、又能拿到价格的餐品
     priced: list[tuple[str, float, NutritionFact, str]] = []
     for item in menu.items:
-        fact = table.get(item.name)
+        fact = lookup_fact(table, item.name)
         if fact is None or not fact.has_data or item.price <= 0:
             continue
         priced.append((item.name, item.price, fact, classify_item(item.name)))
@@ -394,7 +442,7 @@ def build_nutrition_profile(
                 else [(item.name, item.qty)]
             )
             for name, qty in entries:
-                fact = table.get(name)
+                fact = lookup_fact(table, name)
                 if fact is None or not fact.has_data:
                     continue
                 kcal = fact.calories * qty

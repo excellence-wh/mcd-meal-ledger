@@ -6,19 +6,26 @@ import argparse
 import json
 import re
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .analytics import compute_metrics
+from .analytics import compute_metrics, stores_from_orders
 from .audit import run_audit
 from .coupons import CouponPortfolio
 from .habits import HabitReport, build_habit_report, project_annual_waste
+from .ics import CalendarEvent, build_ics, write_ics
 from .mcp_client import (
+    CampaignEvent,
     MCPAuthError,
     MCPClient,
     MCPError,
+    OfficialQuote,
     fetch_bundle,
+    parse_campaign_events,
     parse_campaign_titles,
+    parse_stores,
+    quote_official_price,
 )
 from .models import (
     AccountPoints,
@@ -51,7 +58,9 @@ from .saver import (
     WishItem,
     advise_topup,
     build_plans,
+    menu_from_mcp,
 )
+from .wallet import PointsWallet, parse_wallet
 
 NUTRITION_FIXTURE = "nutrition.sample.json"
 
@@ -70,8 +79,32 @@ class LoadedData:
     source: str = ""
     account: AccountPoints | None = None
     promotions: list[str] = field(default_factory=list)
+    events: list[CampaignEvent] = field(default_factory=list)
     nutrition: dict = field(default_factory=dict)
-    menu_source: str = "history"
+    # 真实门店菜单。拿不到就为 None，上层会退回到「用历史订单均价」并如实标注。
+    menu: Menu | None = None
+    wallet: PointsWallet = field(default_factory=PointsWallet)
+    stores: list[dict[str, str]] = field(default_factory=list)
+    store_code: str = ""
+    # 官方核价器：给一批商品编码，让官方算价。离线模式下为 None。
+    quoter: Callable[[list[dict]], OfficialQuote | None] | None = None
+
+
+def build_quoter(
+    client: MCPClient, store_code: str, order_type: int, be_type: int
+) -> Callable[[list[dict]], OfficialQuote | None]:
+    """把官方核价包成一个可调用的函数，供省钱助手做闭环核价。"""
+
+    def _quote(items: list[dict]) -> OfficialQuote | None:
+        return quote_official_price(
+            client,
+            store_code=store_code,
+            order_type=order_type,
+            be_type=be_type,
+            items=items,
+        )
+
+    return _quote
 
 
 def menu_from_orders(orders: list[Order]) -> Menu:
@@ -121,14 +154,47 @@ def load_nutrition_table(fixture_dir: Path) -> dict:
     return parse_nutrition_foods(json.loads(path.read_text(encoding="utf-8")))
 
 
+# 钱包三本账的样例文件。缺哪个就跳过哪个，不编数据。
+WALLET_FIXTURES: dict[str, str] = {
+    "products_raw": "points-products.sample.json",
+    "lottery_raw": "lottery.sample.json",
+    "prizes_raw": "my-prizes.sample.json",
+    "mall_orders_raw": "mall-orders.sample.json",
+}
+
+MENU_FIXTURE = "menu.sample.json"
+
+
+def load_wallet_fixtures(fixture_dir: Path) -> PointsWallet:
+    """离线模式的钱包样例。"""
+    payloads: dict[str, object] = {}
+    for key, filename in WALLET_FIXTURES.items():
+        path = fixture_dir / filename
+        payloads[key] = json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+    return parse_wallet(**payloads)
+
+
+def load_menu_fixture(fixture_dir: Path) -> Menu | None:
+    """离线模式的演示菜单（结构照抄真实接口的两层形态）。"""
+    path = fixture_dir / MENU_FIXTURE
+    if not path.exists():
+        return None
+    menu = menu_from_mcp(json.loads(path.read_text(encoding="utf-8")))
+    menu.source = "fixture"
+    return menu if menu.items else None
+
+
 def build_extras(
     orders: list[Order],
     coupon_names: list[str],
     menu: Menu,
     table: dict,
     fit_request: FitRequest | None,
+    *,
+    wallet: PointsWallet | None = None,
+    stores: list[dict[str, str]] | None = None,
 ) -> tuple[ReportExtras, CouponPortfolio, HabitReport]:
-    """把三个新板块需要的数据一次算好。"""
+    """把几个新板块需要的数据一次算好。"""
     portfolio = CouponPortfolio.from_names(coupon_names)
     habit_report = build_habit_report(orders, portfolio, menu)
     profile = build_nutrition_profile(orders, table)
@@ -151,11 +217,18 @@ def build_extras(
         nutrition=profile,
         meal_fit=fit,
         menu_source=menu.source,
+        wallet=wallet or PointsWallet(),
+        stores=stores or [],
     )
     return extras, portfolio, habit_report
 
 
-def _print_saver(args: argparse.Namespace, portfolio: CouponPortfolio, menu: Menu) -> None:
+def _print_saver(
+    args: argparse.Namespace,
+    portfolio: CouponPortfolio,
+    menu: Menu,
+    quoter: Callable[[list[dict]], OfficialQuote | None] | None = None,
+) -> None:
     """现场比价：用户说想吃什么，当场算怎么点最省。"""
     if not args.wish:
         return
@@ -182,6 +255,26 @@ def _print_saver(args: argparse.Namespace, portfolio: CouponPortfolio, menu: Men
 
     for advice in advise_topup(wish, portfolio, menu):
         print(f"   · {advice.explain()}")
+
+    # 官方核价：把上面这些"我们的估算"交给麦当劳自己算一遍。
+    # 只有拿到门店实时菜单（才有商品编码）时才能做。
+    if quoter is not None and menu.is_live:
+        codes: list[dict] = []
+        for item in wish.items:
+            hit = menu.find(item.name)
+            if hit is not None and hit.code:
+                codes.append({"productCode": hit.code, "quantity": item.qty})
+        if codes:
+            quote = quoter(codes)
+            if quote is not None and quote.is_valid:
+                if quote.discount > 0:
+                    detail = f"，原价 {quote.original:.2f} 元，省 {quote.discount:.2f} 元"
+                else:
+                    detail = ""
+                print(
+                    f"   官方核价：应付 {quote.payable:.2f} 元{detail}"
+                    " —— 这个价是麦当劳自己算的，不是我们估的"
+                )
 
 
 def _print_fit(extras: ReportExtras) -> None:
@@ -238,9 +331,17 @@ def load_offline(fixture_dir: Path) -> LoadedData:
     account = AccountPoints(
         available=46.5, accumulative=61.5, expired=15.0, currency="麦享会积分"
     )
-    promotions = ["1+1随心配", "周一会员日", "早餐满减"]
+    campaigns_file = fixture_dir / "campaigns.sample.json"
+    campaigns_raw: object = (
+        json.loads(campaigns_file.read_text(encoding="utf-8"))
+        if campaigns_file.exists()
+        else None
+    )
+    promotions = parse_campaign_titles(campaigns_raw) if campaigns_raw else []
+    events = parse_campaign_events(campaigns_raw) if campaigns_raw else []
 
     warnings.append("这次用的是内置演示数据，不是你的真实账单")
+    demo_menu = load_menu_fixture(fixture_dir)
     return LoadedData(
         orders=orders,
         coupons=coupons,
@@ -248,8 +349,13 @@ def load_offline(fixture_dir: Path) -> LoadedData:
         source="内置演示数据",
         account=account,
         promotions=promotions,
+        events=events,
         nutrition=load_nutrition_table(fixture_dir),
-        menu_source="history",
+        menu=demo_menu,
+        wallet=load_wallet_fixtures(fixture_dir),
+        stores=stores_from_orders(orders),
+        store_code="",
+        quoter=None,
     )
 
 
@@ -275,6 +381,7 @@ def load_online(args: argparse.Namespace) -> LoadedData:
 
     account = parse_account(bundle.account_raw)
     promotions = parse_campaign_titles(bundle.campaigns_raw)
+    events = parse_campaign_events(bundle.campaigns_raw)
 
     warnings = list(bundle.warnings)
     if bundle.enriched:
@@ -287,6 +394,32 @@ def load_online(args: argparse.Namespace) -> LoadedData:
     if not table:
         warnings.append("没读到官方营养数据，这次不算营养画像")
 
+    # 真实门店菜单：这才是「你现在去吃要多少钱」的正确基准。
+    # 拿不到就退回历史均价，并如实说明价格是过去的。
+    parsed_menu = menu_from_mcp(bundle.meals_raw) if bundle.meals_raw else None
+    menu = parsed_menu if (parsed_menu and parsed_menu.items) else None
+    if menu is None:
+        warnings.append("没读到门店实时菜单，比价改用它给出的历史成交价，可能已经过期")
+
+    wallet = parse_wallet(
+        products_raw=bundle.points_products_raw,
+        lottery_raw=bundle.lottery_raw,
+        prizes_raw=bundle.my_prizes_raw,
+        mall_orders_raw=bundle.mall_orders_raw,
+    )
+    # 门店以「你自己点过单的店」为主 —— 官方「附近门店」接口在用户
+    # 没有收藏餐厅时会直接返回失败，只靠它会得到一张空卡片。
+    own_stores = stores_from_orders(orders)
+    seen_stores = {s["name"] for s in own_stores}
+    stores = own_stores + [
+        s for s in parse_stores(bundle.stores_raw) if s["name"] not in seen_stores
+    ]
+    quoter = (
+        build_quoter(client, bundle.store_code, bundle.order_type, bundle.be_type)
+        if menu and bundle.store_code
+        else None
+    )
+
     return LoadedData(
         orders=orders,
         coupons=coupons,
@@ -294,8 +427,13 @@ def load_online(args: argparse.Namespace) -> LoadedData:
         source="你的麦当劳账户",
         account=account,
         promotions=promotions,
+        events=events,
         nutrition=table,
-        menu_source="history",
+        menu=menu,
+        wallet=wallet,
+        stores=stores,
+        store_code=bundle.store_code,
+        quoter=quoter,
     )
 
 
@@ -336,6 +474,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--no-campaigns", action="store_true", help="跳过活动日历查询")
     parser.add_argument(
+        "--ics-out",
+        default="",
+        help="把最近的活动导出成 .ics 日历文件，可导入手机日历（如 mcd-events.ics）",
+    )
+    parser.add_argument(
         "--wish",
         default="",
         help='想点什么，用逗号分隔，如 "巨无霸:2,中薯条" —— 会当场比价并判断凑单值不值',
@@ -369,8 +512,9 @@ def main(argv: list[str] | None = None) -> int:
     personas = select_personas(metrics, limit=args.personas)
     audit = run_audit(orders, metrics, coupons, account)
 
-    # 省钱 / 营养两块共用一份菜单与营养表
-    menu = menu_from_orders(orders)
+    # 省钱 / 营养两块共用一份菜单与营养表。
+    # 优先用门店真实菜单；拿不到才退回「从历史订单推出来的均价」。
+    menu = data.menu or menu_from_orders(orders)
     fit_request = None
     if args.fit_calories or args.fit_protein or args.fit_budget:
         fit_request = FitRequest(
@@ -379,7 +523,13 @@ def main(argv: list[str] | None = None) -> int:
             max_price=args.fit_budget,
         )
     extras, portfolio, habit_report = build_extras(
-        orders, [c.name for c in coupons], menu, table, fit_request
+        orders,
+        [c.name for c in coupons],
+        menu,
+        table,
+        fit_request,
+        wallet=data.wallet,
+        stores=data.stores,
     )
     annual_waste = project_annual_waste(orders, audit.estimated_missed)
 
@@ -395,6 +545,17 @@ def main(argv: list[str] | None = None) -> int:
         extras=extras,
     )
     out_path = write_report(html_text, args.out)
+
+    if args.ics_out:
+        ics_events = [
+            CalendarEvent(date=e.date, title=e.title, note="来自麦当劳活动日历")
+            for e in data.events
+        ]
+        if ics_events:
+            ics_path = write_ics(build_ics(ics_events), args.ics_out)
+            print(f"   活动日历已导出：{ics_path}（可以导进手机日历）")
+        else:
+            print("   没读到带日期的活动，这次不导出日历")
 
     if args.json_out:
         write_json_snapshot(
@@ -471,8 +632,15 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
 
-    _print_saver(args, portfolio, menu)
+    _print_saver(args, portfolio, menu, data.quoter)
     _print_fit(extras)
+
+    wallet_lines = data.wallet.advice(account)
+    if wallet_lines:
+        print()
+        print("   积分的账：")
+        for line in wallet_lines:
+            print(f"     · {line}")
 
     if habit_report.has_data:
         print()

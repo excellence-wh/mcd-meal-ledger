@@ -12,6 +12,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
@@ -689,6 +690,93 @@ def rows_of(payload: Any, *keys: str) -> list[Any]:
             if isinstance(value, list):
                 return value
     return []
+
+
+# --------------------------------------------------------------------------
+# 紧凑表格文本
+#
+# 麦当劳 MCP 的部分接口（list-nutrition-foods 就是）为了省 token，
+# 把一个数组序列化成了一段**紧凑文本**，而不是 JSON：
+#
+#     [160]{productName,nutritionDescription,energyKj,energyKcal,protein,...}:
+#       猪柳麦满分,null,1288,308,16,16,24,781,213
+#       猪柳蛋麦满分,null,1618,387,23,21,25,846,243
+#
+# 第一行是「行数 + 表头」，之后每行一条记录（缩进两个空格）。
+# 按 JSON 解析会**安静地得到 0 条** —— 整块营养画像凭空消失却不报错。
+# 这是本项目第 6 个「只在真实数据上才暴露」的问题。
+# --------------------------------------------------------------------------
+
+_COMPACT_HEADER = re.compile(r"^\[(?P<count>\d+)\]\{(?P<fields>[^}]*)\}:\s*$")
+
+_NULL_WORDS = frozenset({"", "null", "none", "n/a", "na", "-", "--"})
+
+
+def parse_compact_table(text: str) -> list[dict[str, Any]]:
+    """解析上述紧凑表格文本。不是这个格式就返回空列表，绝不猜。"""
+    if not isinstance(text, str) or not text.strip():
+        return []
+    lines = [line for line in text.splitlines() if line.strip()]
+    if not lines:
+        return []
+
+    head = _COMPACT_HEADER.match(lines[0].strip())
+    if head is None:
+        return []
+    fields = [f.strip() for f in head.group("fields").split(",") if f.strip()]
+    if not fields:
+        return []
+
+    rows: list[dict[str, Any]] = []
+    for line in lines[1:]:
+        cells = [cell.strip() for cell in line.strip().split(",")]
+        # 列数不足的行跳过：宁可少一行，也不要一行错位的脏数据
+        if len(cells) < len(fields):
+            continue
+        rows.append(
+            {
+                name: (None if cells[index].lower() in _NULL_WORDS else cells[index])
+                for index, name in enumerate(fields)
+            }
+        )
+    return rows
+
+
+def decode_rows(payload: Any, *keys: str) -> list[dict[str, Any]]:
+    """宽容地把各种**真实形态**的返回取成「字典列表」。
+
+    覆盖三种形态：
+
+    1. ``{"data": {"list": [...]}}`` —— 常规 JSON 嵌套
+    2. ``{"data": [...]}`` —— data 直接就是数组
+    3. ``{"data": "[160]{a,b}:\\n 1,2"}`` —— 紧凑表格字符串
+
+    只写成第 1 种，会在后两种上安静地拿到 0 条。
+    """
+    node = unwrap(payload)
+    if isinstance(node, str):
+        stripped = node.strip()
+        if stripped.startswith("[") and not _COMPACT_HEADER.match(stripped):
+            # 可能是被序列化成字符串的 JSON 数组
+            try:
+                decoded = json.loads(stripped)
+            except (json.JSONDecodeError, ValueError):
+                decoded = None
+            if isinstance(decoded, list):
+                return [row for row in decoded if isinstance(row, dict)]
+        compact = parse_compact_table(node)
+        if compact:
+            return compact
+        try:
+            decoded_any = json.loads(stripped)
+        except (json.JSONDecodeError, ValueError):
+            return []
+        if isinstance(decoded_any, list):
+            return [row for row in decoded_any if isinstance(row, dict)]
+        return []
+
+    rows = rows_of(payload, *keys) if keys else rows_of(payload)
+    return [row for row in rows if isinstance(row, dict)]
 
 
 # --------------------------------------------------------------------------

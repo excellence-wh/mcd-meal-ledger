@@ -30,6 +30,7 @@ from .models import AccountPoints
 from .nutrition import DISCLAIMER, FitResult, NutritionProfile
 from .personas import Persona
 from .saver import TopUpAdvice
+from .wallet import PointsWallet
 
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
@@ -265,6 +266,8 @@ class ReportExtras:
     nutrition: NutritionProfile | None = None
     meal_fit: FitResult | None = None
     menu_source: str = ""
+    wallet: PointsWallet = field(default_factory=PointsWallet)
+    stores: list[dict[str, str]] = field(default_factory=list)
 
 
 _MENU_SOURCE_LABELS: dict[str, str] = {
@@ -388,6 +391,94 @@ def _nutrition_card(
     )
 
 
+def _wallet_card(wallet: PointsWallet | None) -> str:
+    """积分的账 —— 点餐之外，你的积分还从哪里流出。
+
+    这块最有价值的是**单位积分价值排行**：同样花积分，换错东西
+    价值能差十几倍，而官方从不会告诉你这件事。
+    """
+    if wallet is None or not wallet.has_data:
+        return ""
+
+    blocks: list[str] = []
+    ranked = wallet.rankable
+
+    if ranked:
+        best_rate = ranked[0].yuan_per_point or 0.0
+        rows: list[str] = []
+        for index, product in enumerate(ranked[:6], start=1):
+            rate = product.yuan_per_point or 0.0
+            width = (rate / best_rate * 100) if best_rate else 0.0
+            rows.append(
+                f'<div class="rank"><div class="i">{index}</div>'
+                f'<div style="flex:1"><div class="n">{_esc(product.name)}</div>'
+                f'<div class="bar"><span style="width:{width:.0f}%"></span></div></div>'
+                f'<div class="q">{product.points:g} 分 · 每分 {rate:.4f} 元</div></div>'
+            )
+        blocks.append(
+            '<div class="charttitle">换什么最划算（每 1 积分能换回多少钱）</div>' + "".join(rows)
+        )
+        spread = wallet.value_spread()
+        if spread is not None and spread >= 1.5:
+            blocks.append(
+                '<div class="finding notice"><div class="ft">'
+                f"<span>换错就亏 {spread:g} 倍</span></div>"
+                f'<div class="fd">同样是花积分，最划算的比最不划算的高 {spread:g} 倍。'
+                "换之前先比一眼这个数。</div></div>"
+            )
+        blocks.append(
+            '<div class="fd" style="font-size:12px;color:#A2947C;margin-top:8px">'
+            "按今天的兑换价算的，活动价会变，换之前再看一眼。</div>"
+        )
+
+    lottery = wallet.lottery
+    if lottery is not None and lottery.is_open:
+        pool = "、".join(lottery.prizes[:6]) or "（奖池为空）"
+        blocks.append(
+            '<div class="finding tip"><div class="ft">'
+            f"<span>{_esc(lottery.activity_name or '积分抽奖')}</span>"
+            f'<span class="amt">{lottery.draw_points:g} 分/次</span></div>'
+            f'<div class="fd">你现在够抽 {lottery.affordable_draws} 次。奖池里有：{_esc(pool)}</div>'
+            '<div class="fa">官方只公布了奖池、没公布各奖概率，所以算不出平均能抽到多少。</div>'
+            "</div>"
+        )
+
+    if wallet.mall_orders:
+        total = round(sum(o.paid for o in wallet.mall_orders), 2)
+        blocks.append(
+            '<div class="finding tip"><div class="ft"><span>商城订单</span>'
+            f'<span class="amt">{money(total)}</span></div>'
+            f'<div class="fd">{len(wallet.mall_orders)} 笔 —— 周边、派对这类，'
+            "不算在点餐账单里</div></div>"
+        )
+
+    if not blocks:
+        return ""
+    return '<div class="card"><h2>积分的账</h2>' + "".join(blocks) + "</div>"
+
+
+def _stores_card(stores: list[dict[str, str]] | None) -> str:
+    """你在哪些门店点过单。"""
+    if not stores:
+        return ""
+    rows: list[str] = []
+    for store in stores[:6]:
+        note = store.get("address") or ""
+        if not note:
+            hours = store.get("open") or ""
+            note = hours
+        rows.append(
+            f'<div class="rank"><div class="n" style="flex:1">{_esc(store.get("name", ""))}'
+            f'<div style="font-size:11.5px;color:#A2947C;font-weight:400">{_esc(note)}</div>'
+            "</div></div>"
+        )
+    return (
+        '<div class="card"><h2>你在哪些门店点过</h2>'
+        '<div style="font-size:12.5px;color:#9A8B72;margin-bottom:10px">'
+        "同一件餐品在不同门店的价格可能不一样</div>" + "".join(rows) + "</div>"
+    )
+
+
 def _render_extras(extras: ReportExtras | None) -> str:
     if extras is None:
         return ""
@@ -395,6 +486,8 @@ def _render_extras(extras: ReportExtras | None) -> str:
         _habits_card(extras.habits)
         + _coupon_honesty_card(extras.portfolio, extras.topups)
         + _nutrition_card(extras.nutrition, extras.meal_fit)
+        + _wallet_card(extras.wallet)
+        + _stores_card(extras.stores)
     )
 
 
@@ -652,6 +745,19 @@ def render_markdown_summary(
         lines += ["### 你实际吃成什么样", ""]
         lines += [f"- {t}" for t in extras.nutrition.describe()]
         lines.append(f"- {DISCLAIMER}")
+        lines.append("")
+
+    if extras is not None and extras.wallet.has_data:
+        wallet = extras.wallet
+        lines += ["### 积分的账", ""]
+        lines += [f"- {line}" for line in wallet.advice(account)]
+        if wallet.rankable:
+            lines += ["", "换什么最划算：", ""]
+            for product in wallet.rankable[:5]:
+                lines.append(
+                    f"{product.points:g} 积分 → {money(product.cash_value or 0)}"
+                    f"（每分 {product.yuan_per_point or 0:.4f} 元）｜{product.name}"
+                )
         lines.append("")
 
     lines += [

@@ -5,6 +5,12 @@
 # 禁止 Git 对它做任何换行符转换（CRLF 转换会改动内容，导致报名失败）。
 CONTEST_DECLARATION.md -text
 
+# ⚠️ 同样关键：iCalendar（RFC 5545）规定行尾必须是 CRLF。
+# 上面 `* text=auto eol=lf` 会把 .ics 的 CRLF 改写成 LF，
+# 导出的日历文件就变成不合规的了 —— 而且本地检查不出来（本地文件没被改），
+# 只有别人 clone 下来才会坏。所以这里显式禁止转换。
+*.ics -text
+
 # 二进制资源
 *.png binary
 *.jpg binary

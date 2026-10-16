@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
-from .models import rows_of, unwrap
+from .models import rows_of, to_float, to_int, unwrap
 
 DEFAULT_ENDPOINT = "https://mcp.mcd.cn"
 TOKEN_ENV = "MCD_MCP_TOKEN"
@@ -384,6 +384,16 @@ class MCPBundle:
     campaigns_raw: Any = None
     account_raw: Any = None
     nutrition_raw: Any = None
+    # 钱包三本账（点餐之外的积分与现金流向）
+    points_products_raw: Any = None
+    lottery_raw: Any = None
+    my_prizes_raw: Any = None
+    mall_orders_raw: Any = None
+    # 门店维度
+    stores_raw: Any = None
+    store_code: str = ""  # 本次取数所用的门店编码
+    order_type: int = DEFAULT_ORDER_TYPE
+    be_type: int = DEFAULT_BE_TYPE
     tools_available: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     enriched: int = 0  # 实际补全详情的订单数
@@ -561,10 +571,13 @@ def fetch_bundle(
             bundle.warnings.append(f"自动领券没成功（{exc}）")
 
     order_type_code, be_type_code = _dominant_channel_code(orders)
+    bundle.order_type = order_type_code
+    bundle.be_type = be_type_code
     effective_store = store_code or next(
         (str(o.get("storeCode")) for o in orders if isinstance(o, dict) and o.get("storeCode")),
         None,
     )
+    bundle.store_code = effective_store or ""
 
     for tool in COUPON_SOURCES:
         args: dict[str, Any] = {}
@@ -615,7 +628,190 @@ def fetch_bundle(
         except MCPError as exc:
             bundle.warnings.append(f"读取近期活动失败（{exc}）")
 
+    # 8) 钱包的三本账 —— 点餐之外的积分与现金流向。
+    #    原先只算点餐订单，这三样一笔没算，报告里的「账本」是残缺的。
+    def _wallet_field(field_name: str, tool: str, args: dict[str, Any]) -> None:
+        """取一路钱包数据。某一路失败只记一条警告，不影响其余几路。"""
+        try:
+            setattr(bundle, field_name, client.call_tool(tool, args).raw)
+        except MCPError as exc:
+            bundle.warnings.append(f"读取积分与商城记录失败（{exc}）")
+
+    for field_name, tool, args in (
+        ("points_products_raw", "mall-points-products", {}),
+        ("lottery_raw", "query-lottery-info", {}),
+        ("my_prizes_raw", "query-my-prizes", {"pageSize": "50"}),
+        ("mall_orders_raw", "mall-order-list", {"size": 10}),
+    ):
+        _wallet_field(field_name, tool, args)
+
+    # 9) 门店（用于「同一餐品的跨门店比价」）。
+    #    注意：官方返回的 longitude / latitude 恒为 0.0，不能当地图坐标用。
+    try:
+        bundle.stores_raw = client.call_tool(
+            "query-nearby-stores", {"beType": be_type_code, "searchType": 1}
+        ).raw
+    except MCPError as exc:
+        bundle.warnings.append(f"读取门店列表失败（{exc}）")
+
     return bundle
+
+
+def parse_stores(payload: Any) -> list[dict[str, str]]:
+    """解析 query-nearby-stores。
+
+    只保留能确定拿到的字段。官方返回里 ``longitude`` / ``latitude`` 实测
+    恒为 ``0.0``，所以**不把它们当作坐标使用**，避免在地图上标出一个假位置。
+    """
+    stores: list[dict[str, str]] = []
+    for row in rows_of(payload):
+        if not isinstance(row, dict):
+            continue
+        code = str(row.get("storeCode") or "").strip()
+        name = str(row.get("storeName") or "").strip()
+        if not code or not name:
+            continue
+        stores.append(
+            {
+                "code": code,
+                "name": name,
+                "address": str(row.get("address") or "").strip(),
+                "open": f"{row.get('businessStartTime') or ''}-{row.get('businessEndTime') or ''}".strip("-"),
+            }
+        )
+    return stores
+
+
+# --------------------------------------------------------------------------
+# 官方核价
+# --------------------------------------------------------------------------
+
+# ⚠️ calculate-price 的金额单位是**分**，不是元。
+# 巨无霸返回 2650 表示 ¥26.50。忘记除以 100 会让所有价格放大 100 倍 ——
+# 而且接口不会报错，只会安静地给出一份"看起来很正常"的天价账单。
+CENTS_PER_YUAN = 100
+
+
+@dataclass(frozen=True)
+class OfficialLine:
+    """官方核价结果里的一行商品。"""
+
+    name: str
+    quantity: int
+    original: float  # 元
+    payable: float  # 元
+
+
+@dataclass
+class OfficialQuote:
+    """麦当劳官方算出的价格。
+
+    这是我们能拿到的**最权威**的价格 —— 不是估算，是官方自己算的。
+    有了它，「省了多少」就可以从"我们推测"变成"官方确认"。
+    """
+
+    original: float = 0.0  # 元
+    payable: float = 0.0  # 元
+    discount: float = 0.0  # 元
+    lines: list[OfficialLine] = field(default_factory=list)
+
+    @property
+    def is_valid(self) -> bool:
+        return self.payable > 0
+
+
+def _cents_to_yuan(value: Any) -> float:
+    """分 → 元。"""
+    return round(to_float(value) / CENTS_PER_YUAN, 2)
+
+
+def parse_official_quote(payload: Any) -> OfficialQuote | None:
+    """解析 calculate-price 的返回。
+
+    真实结构（2026-10-16 联调确认）：``data`` 下是
+    ``originalPrice`` / ``price`` / ``discount`` / ``productList[]``，
+    **所有金额都是分**。
+    """
+    node = unwrap(payload)
+    if not isinstance(node, dict) or not node:
+        return None
+
+    lines: list[OfficialLine] = []
+    for row in node.get("productList") or []:
+        if not isinstance(row, dict):
+            continue
+        name = str(row.get("productName") or "").strip()
+        lines.append(
+            OfficialLine(
+                name=name or "（未命名）",
+                quantity=to_int(row.get("quantity"), default=1),
+                original=_cents_to_yuan(row.get("originalSubtotal")),
+                payable=_cents_to_yuan(row.get("subtotal")),
+            )
+        )
+
+    payable = _cents_to_yuan(node.get("price"))
+    original = _cents_to_yuan(node.get("originalPrice"))
+    if original <= 0:
+        original = round(sum(line.original for line in lines), 2)
+    discount = _cents_to_yuan(node.get("discount"))
+    if discount <= 0:
+        discount = round(max(original - payable, 0.0), 2)
+
+    if payable <= 0 and original <= 0 and not lines:
+        return None
+    return OfficialQuote(original=original, payable=payable, discount=discount, lines=lines)
+
+
+def quote_official_price(
+    client: MCPToolClient,
+    *,
+    store_code: str,
+    order_type: int,
+    be_type: int,
+    items: list[dict[str, Any]],
+    coupon_id: str | None = None,
+) -> OfficialQuote | None:
+    """让官方算一次价。
+
+    ``items`` 里每项至少要有 ``productCode`` 与 ``quantity``。
+    ``coupon_id`` 只对**已经领到账户里**的券有效 —— 未领取的券
+    （麦麦省里可领的）官方不返回它的 id，想核价得先领券，
+    那是有副作用的写操作，本项目绝不代替用户执行。
+    """
+    if not store_code or not items:
+        return None
+
+    payload_items: list[dict[str, Any]] = []
+    for item in items:
+        code = str(item.get("productCode") or "").strip()
+        if not code:
+            continue
+        row: dict[str, Any] = {
+            "productCode": code,
+            "quantity": max(to_int(item.get("quantity"), default=1), 1),
+        }
+        if coupon_id:
+            row["couponId"] = str(coupon_id)
+        payload_items.append(row)
+    if not payload_items:
+        return None
+
+    try:
+        call = client.call_tool(
+            "calculate-price",
+            {
+                "storeCode": store_code,
+                "orderType": order_type,
+                "beType": be_type,
+                "items": payload_items,
+            },
+        )
+    except MCPError:
+        return None
+    if call.is_error:
+        return None
+    return parse_official_quote(call.raw)
 
 
 def _event_title(event: dict[str, Any]) -> str:
@@ -640,24 +836,89 @@ def _event_title(event: dict[str, Any]) -> str:
     return ""
 
 
-def parse_campaign_titles(payload: Any, limit: int = 8) -> list[str]:
-    """从 campaign-calendar 里抽出活动标题。
+@dataclass(frozen=True)
+class CampaignEvent:
+    """一条有日期的活动 —— 有了日期才能导进日历。"""
 
-    真实结构：data.dailyList[].events[].articleDto.title，
-    每个日期节点带 `today` 标记。优先取 today 那一天的活动，
-    取不到再退回全部日期。
+    date: str  # YYYY-MM-DD
+    title: str
+    stage: str = ""
+
+
+def _campaign_days(payload: Any) -> tuple[list[dict[str, Any]], str]:
+    """取出日期节点列表，以及「今天是哪一天」。
+
+    今天优先看 ``today: true`` 标记；标记缺失时退回 ``currentTime``。
+    有了「今天」这个基准，才能把往期活动剔除出去。
     """
     node = unwrap(payload)
     if not isinstance(node, dict):
+        return [], ""
+    days = [d for d in (node.get("dailyList") or []) if isinstance(d, dict)]
+    today = next(
+        (str(d.get("date") or "").strip()[:10] for d in days if d.get("today") is True),
+        "",
+    )
+    if not today:
+        stamp = str(node.get("currentTime") or "").strip()[:10]
+        today = stamp if len(stamp) == 10 else ""
+    return days, today
+
+
+def parse_campaign_events(payload: Any, limit: int = 40) -> list[CampaignEvent]:
+    """抽出**今天及以后**的活动，按日期排序。
+
+    这是导出到日历用的口径：往期活动不该进日历，只有还没发生的才值得提醒。
+    真实结构是 ``data.dailyList[].events[].articleDto.title``。
+    """
+    days, today = _campaign_days(payload)
+    if not days:
         return []
 
-    days = [d for d in (node.get("dailyList") or []) if isinstance(d, dict)]
-    # 有明确的 "今天" 节点时，只看今天 —— 混入「往期回顾」会误导用户
-    today_days = [d for d in days if d.get("today") is True]
-    ordered = today_days if today_days else days
+    usable = [
+        day for day in days if not today or str(day.get("date") or "").strip()[:10] >= today
+    ]
+    usable.sort(key=lambda day: str(day.get("date") or "").strip()[:10])
 
+    events: list[CampaignEvent] = []
+    seen: set[tuple[str, str]] = set()
+    for day in usable:
+        date = str(day.get("date") or day.get("dateText") or "").strip()[:10]
+        if not date:
+            continue
+        for event in day.get("events") or []:
+            if not isinstance(event, dict):
+                continue
+            title = _event_title(event)
+            key = (date, title)
+            if not title or key in seen:
+                continue
+            seen.add(key)
+            events.append(
+                CampaignEvent(
+                    date=date,
+                    title=title,
+                    stage=str(event.get("activityStageText") or "").strip(),
+                )
+            )
+            if len(events) >= limit:
+                return events
+    return events
+
+
+def parse_campaign_titles(payload: Any, limit: int = 8) -> list[str]:
+    """从 campaign-calendar 里抽出活动标题（去重、保序）。
+
+    **只看「今天」**：报告里的这一块讲的是「现在有什么活动」，
+    混入往期回顾会让用户以为活动还在进行。
+    """
+    days, _ = _campaign_days(payload)
+    if not days:
+        return []
+
+    chosen = [d for d in days if d.get("today") is True] or days
     titles: list[str] = []
-    for day in ordered:
+    for day in chosen:
         for event in day.get("events") or []:
             if not isinstance(event, dict):
                 continue

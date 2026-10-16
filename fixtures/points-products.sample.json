@@ -1,0 +1,128 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "请求成功",
+  "data": [
+    {
+      "spuName": "18.8元麦辣鸡腿汉堡两件套",
+      "spuId": 1,
+      "spuImage": "",
+      "point": "50",
+      "shopId": 2,
+      "selling": "",
+      "catName": "到店专用",
+      "status": 2,
+      "price": "0"
+    },
+    {
+      "spuName": "6.9元香芋派/菠萝派任选",
+      "spuId": 2,
+      "spuImage": "",
+      "point": "50",
+      "shopId": 2,
+      "selling": "",
+      "catName": "到店专用",
+      "status": 2,
+      "price": "0"
+    },
+    {
+      "spuName": "10.9元指定小食任选",
+      "spuId": 3,
+      "spuImage": "",
+      "point": "100",
+      "shopId": 2,
+      "selling": "",
+      "catName": "到店专用",
+      "status": 2,
+      "price": "0"
+    },
+    {
+      "spuName": "18.8元2份麦辣鸡翅",
+      "spuId": 4,
+      "spuImage": "",
+      "point": "200",
+      "shopId": 2,
+      "selling": "",
+      "catName": "到店专用",
+      "status": 2,
+      "price": "0"
+    },
+    {
+      "spuName": "16.9元中薯麦乐鸡组合",
+      "spuId": 5,
+      "spuImage": "",
+      "point": "200",
+      "shopId": 2,
+      "selling": "",
+      "catName": "到店专用",
+      "status": 2,
+      "price": "0"
+    },
+    {
+      "spuName": "22.9元2份板烧鸡腿堡",
+      "spuId": 6,
+      "spuImage": "",
+      "point": "500",
+      "shopId": 2,
+      "selling": "",
+      "catName": "到店专用",
+      "status": 2,
+      "price": "0"
+    },
+    {
+      "spuName": "21.9元巨无霸可乐组合",
+      "spuId": 7,
+      "spuImage": "",
+      "point": "800",
+      "shopId": 2,
+      "selling": "",
+      "catName": "到店专用",
+      "status": 2,
+      "price": "0"
+    },
+    {
+      "spuName": "28.8元巨无霸四件套",
+      "spuId": 8,
+      "spuImage": "",
+      "point": "800",
+      "shopId": 2,
+      "selling": "",
+      "catName": "到店专用",
+      "status": 2,
+      "price": "0"
+    },
+    {
+      "spuName": "酸黄瓜吧唧礼盒",
+      "spuId": 9,
+      "spuImage": "",
+      "point": "800",
+      "shopId": 2,
+      "selling": "",
+      "catName": "玩具",
+      "status": 2,
+      "price": "0"
+    },
+    {
+      "spuName": "罗技键鼠套装",
+      "spuId": 10,
+      "spuImage": "",
+      "point": "6666",
+      "shopId": 2,
+      "selling": "",
+      "catName": "玩具",
+      "status": 2,
+      "price": "0"
+    },
+    {
+      "spuName": "麦当劳奇妙生日派对",
+      "spuId": 11,
+      "spuImage": "",
+      "point": "0",
+      "shopId": 2,
+      "selling": "一场给孩子办的生日会",
+      "catName": "生日类派对",
+      "status": 2,
+      "price": "50"
+    }
+  ]
+}

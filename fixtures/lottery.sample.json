@@ -1,0 +1,63 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "请求成功",
+  "data": {
+    "status": {
+      "code": "SUCCESS",
+      "message": "成功"
+    },
+    "activityCode": "dtx2",
+    "activityStatusText": "进行中",
+    "activityName": "麦麦积分抽奖",
+    "drawPoint": "24",
+    "drawTypeText": "消耗积分抽奖",
+    "availablePoint": "46.5",
+    "drawDecision": {
+      "resourceEligible": true,
+      "nextConsumption": {
+        "type": "POINTS",
+        "points": "24",
+        "chances": 0,
+        "text": "本次将消耗 24 积分"
+      }
+    },
+    "prizes": [
+      {
+        "name": "下单立减3元券",
+        "imageUrl": "",
+        "typeText": "优惠券"
+      },
+      {
+        "name": "下单立减2元券",
+        "imageUrl": "",
+        "typeText": "优惠券"
+      },
+      {
+        "name": "下单立减1元券",
+        "imageUrl": "",
+        "typeText": "优惠券"
+      },
+      {
+        "name": "麦辣三件套5折券",
+        "imageUrl": "",
+        "typeText": "优惠券"
+      },
+      {
+        "name": "板烧三件套5折券",
+        "imageUrl": "",
+        "typeText": "优惠券"
+      },
+      {
+        "name": "麦旋风5折券",
+        "imageUrl": "",
+        "typeText": "优惠券"
+      },
+      {
+        "name": "30积分",
+        "imageUrl": "",
+        "typeText": "优惠券"
+      }
+    ]
+  }
+}

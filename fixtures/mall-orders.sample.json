@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "code": 200,
+  "message": "请求成功",
+  "data": [
+    {
+      "hasNext": false,
+      "lastId": 0,
+      "list": []
+    }
+  ]
+}
