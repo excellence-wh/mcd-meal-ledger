@@ -169,28 +169,28 @@ def _build_findings(r: AuditResult, orders: list[Order]) -> list[AuditFinding]:
         findings.append(
             AuditFinding(
                 level=LEVEL_ALERT,
-                title=f"{r.full_price_orders} 单没用任何优惠",
+                title=f"有 {r.full_price_orders} 单没用任何优惠",
                 detail=(
-                    f"这 {r.full_price_orders} 单合计实付 {money(r.full_price_paid)}，"
-                    f"而你其余订单的平均折扣率是 {rate_pct:.1f}%。"
-                    f"若按你自己的这个水平，这部分本可省约 {money(r.estimated_missed)}（估算）。"
+                    f"这 {r.full_price_orders} 单一共花了 {money(r.full_price_paid)}。"
+                    f"你其他订单平均能省下 {rate_pct:.1f}%，"
+                    f"按这个水平算，这些单本来还能省约 {money(r.estimated_missed)}（估算）。"
                 ),
                 amount=r.estimated_missed,
-                action="下次点单前先跑一次麦麦省一键领券，再让助手比价下单。",
+                action="下次点单前，先去麦麦省把能领的券都领了，再下单。",
             )
         )
     elif r.full_price_orders >= 2 and r.baseline_discount_rate == 0:
         findings.append(
             AuditFinding(
                 level=LEVEL_ALERT,
-                title="全部订单均为原价",
+                title="每一单都是原价买的",
                 detail=(
-                    f"{r.full_price_orders} 单全部按原价结算，合计 {money(r.full_price_paid)}，"
-                    "历史记录中查不到任何优惠使用痕迹。因为还没有可参照的折扣水平，"
-                    "这里不估算金额 —— 但可领的券是现成的。"
+                    f"这 {r.full_price_orders} 单全是原价买的，一共 {money(r.full_price_paid)}，"
+                    "一笔优惠都没用上。因为你还没有用过任何优惠，"
+                    "我没法估算能省多少 —— 但能领的券就摆在那里。"
                 ),
                 amount=0.0,
-                action="麦麦省里有可领的券，点餐前先领券是最直接的一步。",
+                action="麦麦省里就有能领的券，点单前顺手领一下是最直接的省钱办法。",
             )
         )
 
@@ -199,25 +199,25 @@ def _build_findings(r: AuditResult, orders: list[Order]) -> list[AuditFinding]:
         findings.append(
             AuditFinding(
                 level=LEVEL_NOTICE,
-                title=f"有 {r.unbindable_coupons} 张券可领但未领取",
+                title=f"有 {r.unbindable_coupons} 张券能领，但你还没领",
                 detail=(
-                    f"麦麦省当前有 {r.unbindable_coupons} 张券处于可领取状态。"
-                    "券躺在券池里不会自己跳到你的账户，需要在点餐前领取才会生效。"
+                    f"麦麦省里有 {r.unbindable_coupons} 张券可以领，你现在还没领。"
+                    "券不会自己跑到你账户里，得点单前领了才有用。"
                 ),
-                action="用 auto-bind-coupons 一键领取全部可用券。",
+                action="去麦麦省把能领的券都领了，领了才用得上。",
             )
         )
 
     # ③ 即将过期的券
     if r.expiring_coupons:
         names = "、".join(c.name for c in r.expiring_coupons[:3])
-        more = f" 等 {len(r.expiring_coupons)} 张" if len(r.expiring_coupons) > 3 else ""
+        more = f"等 {len(r.expiring_coupons)} 张" if len(r.expiring_coupons) > 3 else ""
         findings.append(
             AuditFinding(
                 level=LEVEL_NOTICE,
-                title=f"{len(r.expiring_coupons)} 张券 7 天内到期",
-                detail=f"「{names}」{more}即将失效，过期即作废、无法找回。",
-                action="优先在近期点单中核销这些券。",
+                title=f"{len(r.expiring_coupons)} 张券一周内就要过期",
+                detail=f"「{names}」{more}就要过期了，过期就作废，找不回来。",
+                action="最近几次点单先把这些券用掉，过期就作废了。",
             )
         )
 
@@ -227,9 +227,9 @@ def _build_findings(r: AuditResult, orders: list[Order]) -> list[AuditFinding]:
         findings.append(
             AuditFinding(
                 level=LEVEL_TIP,
-                title="常点餐品从未走过优惠",
+                title="你常点的几样，从来没用优惠买过",
                 detail=f"{detail} 是你的高频单品，但历史订单里它们从未出现在任何优惠单中。",
-                action="查询门店券池，看是否有针对该单品的单品券或组合价。",
+                action="看看这家店有没有针对这几样的单品券或者套餐价。",
             )
         )
 
@@ -238,12 +238,12 @@ def _build_findings(r: AuditResult, orders: list[Order]) -> list[AuditFinding]:
         findings.append(
             AuditFinding(
                 level=LEVEL_TIP,
-                title=f"配送费累计 {money(r.total_delivery_fee)}",
+                title=f"配送费花了 {money(r.total_delivery_fee)}",
                 detail=(
-                    f"外送订单累计支付配送费 {money(r.total_delivery_fee)}。"
-                    "到店取餐与得来速不计配送费，部分满额订单也可减免。"
+                    f"光是外送的配送费，你一共就付了 {money(r.total_delivery_fee)}。"
+                    "自己去店里拿或者开车取餐都不收这笔钱，点够一定金额也能免。"
                 ),
-                action="非必要外送时，比较一下到店取餐的实际差价。",
+                action="不是非叫外送不可的时候，可以比比自己去店里拿便宜多少。",
             )
         )
 
@@ -257,13 +257,13 @@ def _build_findings(r: AuditResult, orders: list[Order]) -> list[AuditFinding]:
             findings.append(
                 AuditFinding(
                     level=LEVEL_TIP,
-                    title=f"最大一笔原价单：{money(worst.paid)}",
+                    title=f"最大的一笔原价单：{money(worst.paid)}",
                     detail=(
-                        f"{when} 在「{worst.store or '未知门店'}」的这笔订单未使用任何优惠，"
-                        f"按你的平均折扣水平估算多花约 {money(potential)}。"
+                        f"{when} 在「{worst.store or '某家店'}」的这一单没用任何优惠，"
+                        f"按你平时的省钱水平算，多花了约 {money(potential)}。"
                     ),
                     amount=potential,
-                    action="大额订单优先考虑用券，优惠绝对值也最大。",
+                    action="金额大的单子更值得用券，省下来的也是最多的。",
                 )
             )
 
@@ -284,13 +284,13 @@ def _build_points_findings(r: AuditResult) -> list[AuditFinding]:
         findings.append(
             AuditFinding(
                 level=LEVEL_ALERT,
-                title=f"已有 {r.account_expired:g} 积分过期作废",
+                title=f"有 {r.account_expired:g} 分积分过期没了",
                 detail=(
-                    f"账户历史上有 {r.account_expired:g} 积分已经过期失效。"
-                    "积分属于会自然损耗的资产，放着不用就是净损失，且过期后无法追回。"
+                    f"你有 {r.account_expired:g} 分积分已经过期作废了。"
+                    "积分不会一直留着，放着不用就过期，过期了找不回来。"
                 ),
                 amount=0.0,
-                action="在积分到期前到麦麦商城兑换，或用于积分抽奖。",
+                action="趁积分还没到期，去麦麦商城换点东西，或者用来抽奖。",
             )
         )
 
@@ -300,10 +300,10 @@ def _build_points_findings(r: AuditResult) -> list[AuditFinding]:
                 level=LEVEL_NOTICE,
                 title=f"{r.account_at_risk:g} 积分即将到期",
                 detail=(
-                    f"当前有 {r.account_at_risk:g} 积分将在最近一两个月内到期，"
-                    f"账户可用积分共 {r.account_available:g}。"
+                    f"你有 {r.account_at_risk:g} 分积分最近一两个月就要到期了，"
+                    f"账户里一共还有 {r.account_available:g} 分。"
                 ),
-                action="优先核销即将到期的部分，避免重复上次的过期损失。",
+                action="先把快到期的用掉，别又白白浪费一次。",
             )
         )
     elif r.account_available > 0 and r.account_expired <= 0:
@@ -312,11 +312,11 @@ def _build_points_findings(r: AuditResult) -> list[AuditFinding]:
                 level=LEVEL_TIP,
                 title=f"账户有 {r.account_available:g} 可用积分",
                 detail=(
-                    f"当前可用积分 {r.account_available:g}，暂无临期压力。"
-                    "建议定期关注到期时间，避免积累过多后集中失效。"
+                    f"你现在有 {r.account_available:g} 分积分，暂时没有快到期的。"
+                    "平时留意一下到期时间，别攒太多了一起过期。"
                 ),
                 amount=0.0,
-                action="到麦麦商城看看积分能换什么，通常存在比放任过期更好的选择。",
+                action="去麦麦商城看看积分能换什么，总比放着过期强。",
             )
         )
     return findings

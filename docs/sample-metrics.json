@@ -1,5 +1,5 @@
 {
-  "source": "本地脱敏样例",
+  "source": "内置演示数据",
   "orders": [
     {
       "orderId": "MC202601060001",
@@ -3011,32 +3011,32 @@
     "findings": [
       {
         "level": "alert",
-        "title": "26 单没用任何优惠",
+        "title": "有 26 单没用任何优惠",
         "amount": 241.38
       },
       {
         "level": "notice",
-        "title": "有 6 张券可领但未领取",
+        "title": "有 6 张券能领，但你还没领",
         "amount": 0.0
       },
       {
         "level": "notice",
-        "title": "4 张券 7 天内到期",
+        "title": "4 张券一周内就要过期",
         "amount": 0.0
       },
       {
         "level": "tip",
-        "title": "最大一笔原价单：¥84.60",
+        "title": "最大的一笔原价单：¥84.60",
         "amount": 18.65
       },
       {
         "level": "tip",
-        "title": "配送费累计 ¥189.00",
+        "title": "配送费花了 ¥189.00",
         "amount": 0.0
       },
       {
         "level": "alert",
-        "title": "已有 15 积分过期作废",
+        "title": "有 15 分积分过期没了",
         "amount": 0.0
       }
     ]

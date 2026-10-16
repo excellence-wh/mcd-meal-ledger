@@ -72,7 +72,7 @@ def load_offline(
             for source, payload in raw_coupons.items():
                 coupons.extend(parse_coupons(payload, source=source))
     else:
-        warnings.append("未找到 coupons.sample.json，跳过券审计")
+        warnings.append("没找到券的演示数据，这次不检查优惠券")
 
     # 样例里也给一份积分快照与活动，保证离线模式能覆盖这两条分支
     account = AccountPoints(
@@ -80,7 +80,7 @@ def load_offline(
     )
     promotions = ["1+1随心配", "周一会员日", "早餐满减"]
 
-    warnings.append("当前为离线样例模式，数据为脱敏假数据")
+    warnings.append("这次用的是内置演示数据，不是你的真实账单")
     return orders, coupons, warnings, account, promotions
 
 
@@ -111,12 +111,10 @@ def load_online(
 
     warnings = list(bundle.warnings)
     if bundle.enriched:
-        warnings.append(
-            f"已通过 query-order 补全 {bundle.enriched} 单详情（原价 / 优惠金额 / 用券）"
-        )
+        warnings.append(f"已为 {bundle.enriched} 笔订单补齐了优惠明细")
     if not orders:
-        warnings.append("order-list 未返回任何订单，请确认账号下有历史订单记录")
-    return orders, coupons, warnings, "麦当劳 MCP 实时数据", account, promotions
+        warnings.append("没读到你的历史订单。如果你确实在麦当劳点过单，可能是账号没对上")
+    return orders, coupons, warnings, "你的麦当劳账户", account, promotions
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -165,7 +163,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.offline:
             orders, coupons, warnings, account, promotions = load_offline(Path(args.fixtures))
-            source = "本地脱敏样例"
+            source = "内置演示数据"
         else:
             orders, coupons, warnings, source, account, promotions = load_online(args)
     except MCPAuthError as exc:
@@ -241,19 +239,26 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"✅ 年报已生成：{out_path}")
     print(
-        f"   订单 {metrics.total_orders} 单 · 实付 {metrics.total_paid:.2f} 元 · "
-        f"省下 {metrics.total_saved:.2f} 元 · 优惠利用率 {audit.coupon_utilization * 100:.0f}%"
+        f"   一共 {metrics.total_orders} 单，花了 {metrics.total_paid:.2f} 元，"
+        f"省下 {metrics.total_saved:.2f} 元，"
+        f"其中 {audit.coupon_utilization * 100:.0f}% 的订单用上了优惠"
     )
-    if getattr(account, "available", 0) or getattr(account, "expired", 0):
-        print(
-            f"   积分 {getattr(account, 'available', 0):g} 可用 · "
-            f"{getattr(account, 'at_risk', 0):g} 即将过期 · "
-            f"{getattr(account, 'expired', 0):g} 已过期作废"
-        )
+    if account is not None and (account.available or account.expired):
+        # 为 0 的项就不提了 —— 说"0 分快到期了"只会让人困惑
+        parts = [f"积分还剩 {account.available:g} 分"]
+        if account.at_risk > 0:
+            parts.append(f"{account.at_risk:g} 分快到期了")
+        if account.expired > 0:
+            parts.append(f"已经有 {account.expired:g} 分过期作废")
+        print("   " + "，".join(parts))
 
     if args.markdown:
         print()
-        print(render_markdown_summary(metrics, personas, audit, headline=headline(metrics)))
+        print(
+            render_markdown_summary(
+                metrics, personas, audit, headline=headline(metrics), account=account
+            )
+        )
 
     for warning in warnings:
         print(f"   ⚠️  {warning}")

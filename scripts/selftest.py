@@ -342,7 +342,7 @@ def test_audit(t: Runner) -> None:
     t.check("存在告警级结论", any(f.level == LEVEL_ALERT for f in a.findings))
     t.check("等级属于 SABCD", a.grade in ("S", "A", "B", "C", "D"), f"实际 {a.grade}")
 
-    # 全部原价 → 应出现"全部订单均为原价"
+    # 全部原价 → 应出现「每一单都是原价买的」这条结论
     full = [
         _mk_order(f"F{i}", datetime(2026, 8, 1 + i, 12, 0), "dine_in", "店",
                   [OrderItem("巨无霸", 1, 25.5, 25.5)], 25.5, 25.5)
@@ -395,14 +395,14 @@ def test_end_to_end(t: Runner) -> None:
     t.check("HTML 非空", len(html_a) > 5000, f"实际 {len(html_a)} 字符")
     t.eq("同输入产出完全一致（可复现）", html_a, html_b)
     t.check("HTML 含标题", "麦门账本" in html_a)
-    t.check("HTML 含审计板块", "账单审计" in html_a)
+    t.check("HTML 含账单板块", "钱漏在哪" in html_a)
     t.check("HTML 含免责声明", "非麦当劳官方产品" in html_a)
     head = html_a.split("<footer>")[0].replace("http-equiv", "")
     t.check("HTML 自包含（无外链脚本/样式）", "<script" not in html_a and "http" not in head)
 
     md = render_markdown_summary(m, personas, audit, headline=headline(m))
     t.check("Markdown 摘要含核心数字", "累计实付" in md)
-    t.check("Markdown 摘要含审计", "账单优化" in md or "账单审计" in md)
+    t.check("Markdown 摘要含账单板块", "钱漏在哪" in md)
 
 
 # ==========================================================================
@@ -711,7 +711,7 @@ def test_real_mcp_contract(t: Runner) -> None:
     )
     t.check(
         "结论含可领未领券",
-        any("可领" in f.title for f in ra.findings),
+        any("能领" in f.title for f in ra.findings),
         f"实际结论：{[f.title for f in ra.findings]}",
     )
 
@@ -740,8 +740,8 @@ def test_real_mcp_contract(t: Runner) -> None:
     # ---- 10. HTML 能承载真实结构 ---------------------------------------
     html = render_html(rm, [], ra, headline="测试", account=acc, generated_at=datetime(2026, 10, 16, 15, 0))
     t.check("真实数据可生成 HTML", "麦门账本" in html)
-    t.check("HTML 含积分板块", "积分账户" in html)
-    t.check("HTML 含套餐拆解", "套餐拆解后的单品榜" in html)
+    t.check("HTML 含积分板块", "你的积分" in html)
+    t.check("HTML 含套餐拆解", "把套餐拆开" in html)
 
 
 # ==========================================================================
@@ -812,8 +812,8 @@ def test_engineering_guards(t: Runner) -> None:
     t.eq("补全只调用 query-order 一个工具", set(stub.tools), {"query-order"})
     t.eq("补全时正确传入 orderId", stub.arguments[0], {"orderId": "X000"})
     t.check(
-        "达到上限时给出明确提示",
-        any("已达上限" in w for w in warnings),
+        "达到上限时给出清楚的人话提示",
+        any("只补齐了前" in w and "没算进去" in w for w in warnings),
         f"warnings={warnings[:3]}",
     )
 
@@ -892,6 +892,55 @@ def test_engineering_guards(t: Runner) -> None:
         t.check("HTML 产物为 LF 行尾", b"\r\n" not in html_path.read_bytes())
         t.check("JSON 产物为 LF 行尾", b"\r\n" not in json_path.read_bytes())
         t.check("JSON 产物以换行结尾", json_path.read_bytes().endswith(b"\n"))
+
+    # ---- 10. 面向用户的文案必须说人话 ------------------------------------
+    # 用户不需要知道 order-list / JSON-RPC / --offline 是什么东西。
+    # 这些词出现在提示语或报告里，只会让人觉得"这工具看不懂"。
+    jargon = (
+        "order-list",
+        "query-order",
+        "query-my-coupons",
+        "available-coupons",
+        "query-store-coupons",
+        "query-meals",
+        "query-my-account",
+        "campaign-calendar",
+        "auto-bind-coupons",
+        "tools/list",
+        "streamablehttp",
+        "JSON-RPC",
+        "--offline",
+        "Token",
+        "MCP",
+    )
+    offenders: list[str] = []
+    for rel in ("mcledger/mcp_client.py", "mcledger/cli.py"):
+        for no, line in enumerate((ROOT / rel).read_text(encoding="utf-8").splitlines(), 1):
+            if "warnings.append" not in line and "warnings.extend" not in line:
+                continue
+            offenders += [f"{rel}:{no} 含「{word}」" for word in jargon if word in line]
+    t.eq("用户可见提示里没有内部术语", offenders, [])
+
+    footer = report_src.split("<footer>")[1].split("</footer>")[0]
+    t.eq("报告页脚里没有内部术语", [word for word in jargon if word in footer], [])
+    t.check(
+        "报告正文不提命令行参数",
+        "--offline" not in report_src,
+        "打开 HTML 的人不知道命令行参数是什么",
+    )
+
+    # ---- 11. 简报必须带上调用方传入的积分数据 ----------------------------
+    # 这条是回归守卫：曾经 render_markdown_summary 被调用时漏传了 account，
+    # 结果积分板块永远不出现，而且不报错。
+    probe_metrics = compute_metrics(
+        parse_orders([{"orderId": "M1", "realTotalAmount": "10", "beType": "1"}])
+    )
+    probe_account = parse_account({"availablePoint": "88", "expiredPoint": "12"})
+    probe_md = render_markdown_summary(
+        probe_metrics, [], run_audit([], probe_metrics, [], probe_account), account=probe_account
+    )
+    t.check("Markdown 简报会显示积分", "你的积分" in probe_md, "传了 account 就必须显示")
+    t.check("Markdown 简报会显示过期积分", "12" in probe_md)
 
 
 # ==========================================================================

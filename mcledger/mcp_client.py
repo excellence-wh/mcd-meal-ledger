@@ -358,6 +358,14 @@ COUPON_SOURCES: dict[str, str] = {
     "query-store-coupons": "store",  # 当前门店专属券（需 storeCode+orderType+beType）
 }
 
+# 给用户看的名字。提示语里绝不出现 available-coupons 这类接口名 ——
+# 用户不知道那是什么，只会觉得"这软件看不懂"。
+_SOURCE_LABELS: dict[str, str] = {
+    "available": "麦麦省里可领的券",
+    "my": "你账户里的券",
+    "store": "这家店专属的券",
+}
+
 # beType 渠道编码（来自官方 inputSchema）：1-到店取餐 2-麦乐送 5-得来速 6-团餐
 DEFAULT_BE_TYPE = 1
 DEFAULT_ORDER_TYPE = 1
@@ -396,10 +404,10 @@ def _fetch_orders(client: ToolCaller, page_size: int, max_pages: int) -> tuple[l
         try:
             call = client.call_tool("order-list", {"pageNo": page, "pageSize": page_size})
         except MCPError as exc:
-            warnings.append(f"order-list 第 {page} 页失败：{exc}")
+            warnings.append(f"读取历史订单失败（{exc}）")
             break
         if call.is_error:
-            warnings.append(f"order-list 返回业务错误：{call.text[:160]}")
+            warnings.append(f"读取历史订单时出错：{call.text[:160]}")
             break
 
         rows = rows_of(call.raw)
@@ -460,8 +468,8 @@ def _enrich_orders(
         if attempted >= limit:
             remaining = len(orders) - attempted
             warnings.append(
-                f"订单补全已达上限 {limit} 单，剩余 {remaining} 单未拉取详情，"
-                "相关订单的原价与优惠金额缺失，优惠审计可能不完整"
+                f"订单太多了：只补齐了前 {limit} 笔的优惠明细，"
+                f"剩下的 {remaining} 笔没算进去，账单审计会不完整"
             )
             break
         if not isinstance(order, dict):
@@ -473,7 +481,7 @@ def _enrich_orders(
         try:
             call = client.call_tool("query-order", {"orderId": str(order_id)})
         except MCPError as exc:
-            warnings.append(f"query-order({str(order_id)[:16]}…) 失败：{exc}")
+            warnings.append(f"读取某笔订单的明细失败（{str(order_id)[:16]}…）：{exc}")
             continue
         detail = unwrap(call.raw)
         if not isinstance(detail, dict) or call.is_error:
@@ -533,7 +541,7 @@ def fetch_bundle(
     try:
         bundle.tools_available = client.list_tools()
     except MCPError as exc:
-        bundle.warnings.append(f"tools/list 失败：{exc}")
+        bundle.warnings.append(f"没能确认服务可用的功能：{exc}")
 
     # 1) 历史订单
     orders, order_warnings = _fetch_orders(client, page_size, order_pages)
@@ -549,7 +557,7 @@ def fetch_bundle(
         try:
             client.call_tool("auto-bind-coupons", {})
         except MCPError as exc:
-            bundle.warnings.append(f"auto-bind-coupons 失败：{exc}")
+            bundle.warnings.append(f"自动领券没成功（{exc}）")
 
     order_type_code, be_type_code = _dominant_channel_code(orders)
     effective_store = store_code or next(
@@ -565,13 +573,15 @@ def fetch_bundle(
             # 官方 schema 要求这三个参数全部必填，缺一个就返回 400
             args = {"storeCode": effective_store, "orderType": order_type_code, "beType": be_type_code}
             if not effective_store:
-                bundle.warnings.append("缺少门店编码，跳过门店券查询")
+                bundle.warnings.append("没认出你在哪家店，这次先不查门店专属券")
                 continue
         try:
             call = client.call_tool(tool, args)
             bundle.coupons_raw.append({"source": COUPON_SOURCES[tool], "payload": call.raw})
         except MCPError as exc:
-            bundle.warnings.append(f"{tool} 失败：{exc}")
+            bundle.warnings.append(
+                f"读取「{_SOURCE_LABELS.get(COUPON_SOURCES[tool], '优惠券')}」失败（{exc}）"
+            )
 
     # 4) 菜单（同样需要 storeCode + orderType + beType）
     if effective_store:
@@ -581,22 +591,22 @@ def fetch_bundle(
                 {"storeCode": effective_store, "orderType": order_type_code, "beType": be_type_code},
             ).raw
         except MCPError as exc:
-            bundle.warnings.append(f"query-meals 失败：{exc}")
+            bundle.warnings.append(f"读取菜单失败（{exc}）")
     else:
-        bundle.warnings.append("缺少门店编码，跳过菜单查询")
+        bundle.warnings.append("没认出你在哪家店，这次先不读菜单")
 
     # 5) 积分账户
     try:
         bundle.account_raw = client.call_tool("query-my-account", {}).raw
     except MCPError as exc:
-        bundle.warnings.append(f"query-my-account 失败：{exc}")
+        bundle.warnings.append(f"读取积分失败（{exc}）")
 
     # 6) 活动日历
     if include_campaigns:
         try:
             bundle.campaigns_raw = client.call_tool("campaign-calendar", {}).raw
         except MCPError as exc:
-            bundle.warnings.append(f"campaign-calendar 失败：{exc}")
+            bundle.warnings.append(f"读取近期活动失败（{exc}）")
 
     return bundle
 

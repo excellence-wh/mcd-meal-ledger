@@ -182,7 +182,7 @@ def _component_ranking(metrics: Metrics, limit: int = 6) -> str:
             f'<div class="q">{item.qty} 份</div></div>'
         )
     return (
-        '<div class="charttitle" style="margin-top:20px">套餐拆解后的单品榜</div>'
+        '<div class="charttitle" style="margin-top:20px">把套餐拆开，你实际吃到的是</div>'
         '<div style="font-size:12.5px;color:#9A8B72;margin-bottom:8px">'
         f"共 {metrics.combo_orders} 份套餐被拆开统计，这样才看得清你实际在吃什么</div>" + "".join(rows)
     )
@@ -199,7 +199,7 @@ def _promotions_card(titles: list[str] | None) -> str:
         for t in titles
     )
     return (
-        '<div class="card"><h2>近期活动</h2>'
+        '<div class="card"><h2>最近有哪些活动</h2>'
         '<div style="font-size:12.5px;color:#9A8B72;margin-bottom:10px">'
         "来自麦麦日历，说明当下有哪些活动可以和你的券搭配着用</div>"
         f"{chips}</div>"
@@ -219,30 +219,23 @@ def _points_card(account: AccountPoints | None) -> str:
         return ""
 
     stats = [
-        _stat("可用积分", f"{available:g}", f"累计获得 {accumulative:g} {currency}"),
+        _stat("现在还有", f"{available:g} 分", f"{currency}，一共攒过 {accumulative:g} 分"),
         _stat(
-            "即将过期",
-            f"{at_risk:g}",
-            "近期到期，不用即作废",
+            "快过期了",
+            f"{at_risk:g} 分",
+            "再不花就没了" if at_risk > 0 else "暂时没有快到期的",
             "accent" if at_risk > 0 else "",
         ),
         _stat(
-            "已过期作废",
-            f"{expired:g}",
-            "已实现的净损失，无法追回",
+            "已经浪费掉",
+            f"{expired:g} 分",
+            "过期就找不回来了" if expired > 0 else "一分都没浪费",
             "accent" if expired > 0 else "",
         ),
     ]
-    note = ""
-    if expired > 0:
-        note = (
-            f'<div class="warn">你的账户里已经有 <b>{expired:g}</b> 积分过期作废了。'
-            "积分属于会自然损耗的资产 —— 放着不用，就是在无声地亏。</div>"
-        )
-    elif at_risk > 0:
-        note = f'<div class="warn">有 <b>{at_risk:g}</b> 积分即将到期，建议优先核销。</div>'
-
-    return f'<div class="card"><h2>积分账户</h2><div class="grid g4">{"".join(stats)}</div>{note}</div>'
+    # 这里不再重复「积分过期」的提醒 —— 下面的账单板块已经专门讲了，
+    # 同一件事说两遍只会让报告显得啰嗦。
+    return f'<div class="card"><h2>你的积分</h2><div class="grid g4">{"".join(stats)}</div></div>'
 
 
 def _period_text(metrics: Metrics) -> str:
@@ -259,7 +252,7 @@ def render_html(
     audit: AuditResult,
     *,
     headline: str = "",
-    source: str = "麦当劳 MCP",
+    source: str = "你的麦当劳账户",
     warnings: list[str] | None = None,
     generated_at: datetime | None = None,
     account: AccountPoints | None = None,
@@ -281,11 +274,13 @@ def render_html(
         if points:
             body += points
         if finding_html:
-            body += f'<div class="card"><h2>账单审计</h2>{finding_html}</div>'
+            body += f'<div class="card"><h2>你的账单，钱漏在哪</h2>{finding_html}</div>'
         body += (
-            '<div class="card"><div class="empty">未取到历史订单。'
-            "可能原因：账号下暂无可查询的历史订单，或 Token 对应账户不同。<br>"
-            "可先用 --offline 查看样例年报的效果。</div></div>"
+            '<div class="card"><div class="empty">'
+            "这次没读到你的历史订单，所以只给出了账户层面的检查结果。<br>"
+            "常见原因：这个账号还没有麦当劳点单记录，"
+            "或者登录的账号和你平时点单用的不是同一个。"
+            "</div></div>"
         )
         return _wrap(body, generated_at, source)
 
@@ -304,7 +299,7 @@ def render_html(
             f"整体集中在 <b>{metrics.peak_daypart}</b>。"
         )
         weekday_html = (
-            '<div class="charttitle">星期分布</div>' + weekday_series_svg(metrics.weekday)
+            '<div class="charttitle">星期几点得多</div>' + weekday_series_svg(metrics.weekday)
         )
     else:
         time_insight = "订单数据未携带下单时间，时段洞察不可用。"
@@ -313,9 +308,9 @@ def render_html(
     missed_html = ""
     if audit.estimated_missed >= 0.5:
         missed_html = _stat(
-            "估算可省回",
+            "本来还能再省",
             money(audit.estimated_missed),
-            "按你自己的平均折扣率估算",
+            "按你平时的省钱水平估算",
             "accent",
         )
 
@@ -328,41 +323,46 @@ def render_html(
 </div>
 
 <div class="card">
-  <h2>核心数字</h2>
+  <h2>先看几个数</h2>
   <div class="grid g4">
     {_stat(
-        "订单总数",
+        "一共点了几单",
         f"{metrics.total_orders} 单",
-        f"覆盖 {metrics.active_days} 个下单日，首单至今 {metrics.span_days} 天",
+        f"有 {metrics.active_days} 天点过，最早一单距今 {metrics.span_days} 天",
     )}
-    {_stat("累计实付", money(metrics.total_paid), f"原价合计 {money(metrics.total_gross)}")}
-    {_stat("累计省下", money(metrics.total_saved), f"整体折扣率 {metrics.save_rate * 100:.1f}%", "gold")}
+    {_stat("一共花了", money(metrics.total_paid), f"按原价算要 {money(metrics.total_gross)}")}
     {_stat(
-        "平均客单价",
+        "省下了",
+        money(metrics.total_saved),
+        f"相当于每花 100 元省 {metrics.save_rate * 100:.0f} 元",
+        "gold",
+    )}
+    {_stat(
+        "平均每单",
         money(metrics.avg_order_value),
-        f"平均每单 {metrics.avg_items_per_order:.1f} 份餐品",
+        f"平均每单点 {metrics.avg_items_per_order:.1f} 样",
     )}
     {missed_html}
   </div>
 </div>
 
 <div class="card">
-  <h2>你的麦门人格</h2>
+  <h2>你是哪一种麦门食客</h2>
   {persona_html}
 </div>
 
 <div class="card">
-  <h2>消费节奏</h2>
+  <h2>你什么时候点麦当劳</h2>
   <div class="fd" style="font-size:13.5px;color:#4A4A4A">{time_insight}</div>
-  <div class="charttitle">月度消费趋势</div>
+  <div class="charttitle">每个月花了多少</div>
   {monthly_series_svg(metrics.monthly)}
-  <div class="charttitle">24 小时下单分布</div>
+  <div class="charttitle">一天里什么时候点</div>
   {hourly_series_svg(metrics.hourly)}
   {weekday_html}
 </div>
 
 <div class="card">
-  <h2>常点榜单</h2>
+  <h2>你点得最多的是</h2>
   {_item_ranking(metrics)}
   {_component_ranking(metrics)}
 </div>
@@ -372,27 +372,27 @@ def render_html(
 {_promotions_card(promotions)}
 
 <div class="card">
-  <h2>账单审计</h2>
+  <h2>你的账单，钱漏在哪</h2>
   <div class="graderow">
     <div class="grade">{_esc(audit.grade)}</div>
     <div class="gt">
-      <b>优惠利用率 {audit.coupon_utilization * 100:.0f}%</b>
-      {metrics.discounted_orders}/{metrics.total_orders} 单享受到了优惠
+      <b>有 {audit.coupon_utilization * 100:.0f}% 的订单用上了优惠</b>
+      {metrics.discounted_orders} 单用上了，{metrics.free_orders} 单是原价买的
     </div>
   </div>
   {finding_html}
 </div>
 
 <footer>
-  本报告由「麦门账本」基于麦当劳 MCP 返回的数据在本地计算生成，全部统计过程可复现。<br>
-  数据来源：麦当劳 MCP 服务（order-list / query-my-coupons 等）。<br>
+  这份报告读的是你自己的麦当劳消费记录，所有统计都在你自己电脑上完成，不会外传。<br>
   本项目为麦当劳程序员创意开发大赛参赛作品，非麦当劳官方产品。<br>
-  餐品信息、价格及供应状态以麦当劳官方渠道实时结果为准；「估算可省回」为基于你自身历史折扣水平的推算，仅供参考。
+  餐品信息和价格请以麦当劳门店的实时情况为准。<br>
+  「估算可省回」是按你自己平时享受到的折扣水平倒推的，只是个大概，不等于一定能省到这么多。
 </footer>
 """
     if warnings:
         body += (
-            '<div class="warn">取数提示：'
+            '<div class="warn">说明：'
             + _esc("；".join(warnings[:4]))
             + "</div>"
         )
@@ -438,7 +438,7 @@ def render_markdown_summary(
                 f"- ⚠️ 账户已有 **{account.expired:g} 积分过期作废**（已实现损失）"
             )
         if audit.findings:
-            empty += ["", "### 账单审计", ""]
+            empty += ["", "### 你的账单，钱漏在哪", ""]
             empty += [f"- **{f.title}** — {f.detail}" for f in audit.findings]
         return "\n".join(empty)
 
@@ -447,7 +447,7 @@ def render_markdown_summary(
         lines += [f"> {headline}", ""]
 
     lines += [
-        "### 核心数字",
+        "### 先看几个数",
         f"- 订单总数：**{metrics.total_orders} 单**（覆盖 {metrics.active_days} 个下单日）",
         f"- 累计实付：**{money(metrics.total_paid)}**（原价 {money(metrics.total_gross)}）",
         f"- 累计省下：**{money(metrics.total_saved)}**，整体折扣率 {metrics.save_rate * 100:.1f}%",
@@ -456,27 +456,27 @@ def render_markdown_summary(
     ]
 
     if personas:
-        lines += ["### 麦门人格", ""]
+        lines += ["### 你是哪一种麦门食客", ""]
         for persona in personas:
             lines.append(f"- {persona.emoji} **{persona.title}** — {persona.tagline}")
             lines.append(f"  - 依据：{persona.evidence}")
         lines.append("")
 
     if metrics.top_items:
-        lines += ["### 常点榜单", ""]
+        lines += ["### 你点得最多的是", ""]
         for index, item in enumerate(metrics.top_items[:5], start=1):
             lines.append(f"{index}. {item.name} —— {item.qty} 份 / {money(item.spend)}")
         lines.append("")
 
     if metrics.top_components:
-        lines += ["### 套餐拆解后的单品榜", ""]
+        lines += ["### 把套餐拆开，你实际吃到的是", ""]
         for index, item in enumerate(metrics.top_components[:5], start=1):
             lines.append(f"{index}. {item.name} —— {item.qty} 份")
         lines.append("")
 
     if account is not None and (account.available or account.expired):
         lines += [
-            "### 积分账户",
+            "### 你的积分",
             f"- 可用积分：**{account.available:g}**",
             f"- 即将过期：{account.at_risk:g}",
             f"- 已过期作废：**{account.expired:g}**",
@@ -484,7 +484,8 @@ def render_markdown_summary(
         ]
 
     lines += [
-        f"### 账单审计（优惠利用率 {audit.coupon_utilization * 100:.0f}%，等级 {audit.grade}）",
+        f"### 你的账单，钱漏在哪"
+        f"（{audit.coupon_utilization * 100:.0f}% 的订单用上了优惠，评级 {audit.grade}）",
         "",
     ]
     if audit.findings:
