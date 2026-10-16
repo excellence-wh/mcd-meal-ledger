@@ -1,0 +1,4558 @@
+[
+  {
+    "orderId": "MC202601060001",
+    "orderTime": "2026-01-06 18:41:12",
+    "orderType": "麦乐送",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      }
+    ],
+    "totalAmount": 10.0,
+    "payAmount": 8.2,
+    "discountAmount": 1.8,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202601080002",
+    "orderTime": "2026-01-08 11:41:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 9.1,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      }
+    ],
+    "totalAmount": 32.6,
+    "payAmount": 26.73,
+    "discountAmount": 5.87,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202601080003",
+    "orderTime": "2026-01-08 10:11:12",
+    "orderType": "麦乐送",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      }
+    ],
+    "totalAmount": 13.0,
+    "payAmount": 13.0,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202601100004",
+    "orderTime": "2026-01-10 12:58:00",
+    "orderType": "到店取餐",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      },
+      {
+        "productName": "中杯美式",
+        "productCode": "MC90507",
+        "quantity": 1,
+        "unitPrice": 9.1,
+        "categoryName": "咖啡",
+        "calories": 5
+      }
+    ],
+    "totalAmount": 21.1,
+    "payAmount": 12.97,
+    "discountAmount": 8.13,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      },
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202601100005",
+    "orderTime": "2026-01-10 14:35:12",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中杯美式",
+        "productCode": "MC90507",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "咖啡",
+        "calories": 5
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 2,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 64.0,
+    "payAmount": 57.0,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202601110006",
+    "orderTime": "2026-01-11 09:17:30",
+    "orderType": "得来速",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      }
+    ],
+    "totalAmount": 23.0,
+    "payAmount": 23.0,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202601110007",
+    "orderTime": "2026-01-11 09:11:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "麦香鱼",
+        "productCode": "MC18481",
+        "quantity": 1,
+        "unitPrice": 16.5,
+        "categoryName": "汉堡",
+        "calories": 336
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 17.8,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      },
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      }
+    ],
+    "totalAmount": 66.3,
+    "payAmount": 59.3,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202601240008",
+    "orderTime": "2026-01-24 14:03:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 3.5,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "中杯拿铁",
+        "productCode": "MC25185",
+        "quantity": 1,
+        "unitPrice": 17.5,
+        "categoryName": "咖啡",
+        "calories": 116
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 69.0,
+    "payAmount": 62.0,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202601260009",
+    "orderTime": "2026-01-26 09:24:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 15.5,
+        "categoryName": "小食",
+        "calories": 419
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "大可乐",
+        "productCode": "MC55490",
+        "quantity": 1,
+        "unitPrice": 8.0,
+        "categoryName": "饮料",
+        "calories": 194
+      }
+    ],
+    "totalAmount": 40.5,
+    "payAmount": 33.92,
+    "discountAmount": 6.58,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202601300010",
+    "orderTime": "2026-01-30 19:17:12",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 8.4,
+        "categoryName": "饮料",
+        "calories": 179
+      }
+    ],
+    "totalAmount": 30.9,
+    "payAmount": 26.72,
+    "discountAmount": 4.18,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202601310011",
+    "orderTime": "2026-01-31 11:52:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "饮料",
+        "calories": 179
+      }
+    ],
+    "totalAmount": 25.0,
+    "payAmount": 16.63,
+    "discountAmount": 8.37,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      },
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602040012",
+    "orderTime": "2026-02-04 22:52:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      }
+    ],
+    "totalAmount": 53.5,
+    "payAmount": 37.55,
+    "discountAmount": 15.95,
+    "couponList": [
+      {
+        "couponName": "麦咖啡第二杯半价"
+      },
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602060013",
+    "orderTime": "2026-02-06 18:24:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 16.4,
+        "categoryName": "汉堡",
+        "calories": 445
+      }
+    ],
+    "totalAmount": 50.4,
+    "payAmount": 43.4,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602070014",
+    "orderTime": "2026-02-07 11:35:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      }
+    ],
+    "totalAmount": 23.5,
+    "payAmount": 19.0,
+    "discountAmount": 4.5,
+    "couponList": [
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602080015",
+    "orderTime": "2026-02-08 18:47:00",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      },
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      }
+    ],
+    "totalAmount": 47.0,
+    "payAmount": 40.0,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602090016",
+    "orderTime": "2026-02-09 12:52:00",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      }
+    ],
+    "totalAmount": 29.5,
+    "payAmount": 20.71,
+    "discountAmount": 8.79,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      },
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602090017",
+    "orderTime": "2026-02-09 11:03:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 2,
+        "unitPrice": 9.4,
+        "categoryName": "小食",
+        "calories": 228
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 9.4,
+        "categoryName": "甜品",
+        "calories": 287
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 15.5,
+        "categoryName": "小食",
+        "calories": 419
+      }
+    ],
+    "totalAmount": 61.7,
+    "payAmount": 35.93,
+    "discountAmount": 25.77,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      },
+      {
+        "couponName": "中薯条买一送一"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602100018",
+    "orderTime": "2026-02-10 08:24:12",
+    "orderType": "麦乐送",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      }
+    ],
+    "totalAmount": 31.0,
+    "payAmount": 20.72,
+    "discountAmount": 10.28,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      },
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602160019",
+    "orderTime": "2026-02-16 17:58:12",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 22.5,
+    "payAmount": 18.45,
+    "discountAmount": 4.05,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602200020",
+    "orderTime": "2026-02-20 13:35:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 10.8,
+        "categoryName": "小食",
+        "calories": 419
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      },
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "饮料",
+        "calories": 179
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 74.8,
+    "payAmount": 70.28,
+    "discountAmount": 4.52,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602280021",
+    "orderTime": "2026-02-28 12:11:12",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      }
+    ],
+    "totalAmount": 5.0,
+    "payAmount": 4.1,
+    "discountAmount": 0.9,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202602280022",
+    "orderTime": "2026-02-28 01:24:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 16.4,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "中杯美式",
+        "productCode": "MC90507",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "咖啡",
+        "calories": 5
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      }
+    ],
+    "totalAmount": 39.4,
+    "payAmount": 34.69,
+    "discountAmount": 4.71,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202603030023",
+    "orderTime": "2026-03-03 22:47:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 2,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 59.5,
+    "payAmount": 59.5,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202603050024",
+    "orderTime": "2026-03-05 10:11:30",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      }
+    ],
+    "totalAmount": 16.5,
+    "payAmount": 16.5,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202603060025",
+    "orderTime": "2026-03-06 18:52:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "大可乐",
+        "productCode": "MC55490",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "饮料",
+        "calories": 194
+      },
+      {
+        "productName": "麦香鱼",
+        "productCode": "MC18481",
+        "quantity": 1,
+        "unitPrice": 16.5,
+        "categoryName": "汉堡",
+        "calories": 336
+      }
+    ],
+    "totalAmount": 38.0,
+    "payAmount": 25.23,
+    "discountAmount": 12.77,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      },
+      {
+        "couponName": "1+1随心配12.9元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202603090026",
+    "orderTime": "2026-03-09 19:28:12",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "饮料",
+        "calories": 179
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "中杯拿铁",
+        "productCode": "MC25185",
+        "quantity": 1,
+        "unitPrice": 17.5,
+        "categoryName": "咖啡",
+        "calories": 116
+      }
+    ],
+    "totalAmount": 34.5,
+    "payAmount": 22.17,
+    "discountAmount": 12.33,
+    "couponList": [
+      {
+        "couponName": "1+1随心配12.9元"
+      },
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202603100027",
+    "orderTime": "2026-03-10 10:41:00",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      },
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      }
+    ],
+    "totalAmount": 25.5,
+    "payAmount": 19.8,
+    "discountAmount": 5.7,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202603130028",
+    "orderTime": "2026-03-13 16:52:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "大可乐",
+        "productCode": "MC55490",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "饮料",
+        "calories": 194
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 9.1,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      }
+    ],
+    "totalAmount": 84.6,
+    "payAmount": 84.6,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202603170029",
+    "orderTime": "2026-03-17 17:47:12",
+    "orderType": "到店取餐",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 16.4,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      }
+    ],
+    "totalAmount": 21.4,
+    "payAmount": 17.55,
+    "discountAmount": 3.85,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202603190030",
+    "orderTime": "2026-03-19 17:03:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      }
+    ],
+    "totalAmount": 30.5,
+    "payAmount": 25.01,
+    "discountAmount": 5.49,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202603200031",
+    "orderTime": "2026-03-20 15:41:12",
+    "orderType": "到店取餐",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      }
+    ],
+    "totalAmount": 30.0,
+    "payAmount": 20.27,
+    "discountAmount": 9.73,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      },
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202603210032",
+    "orderTime": "2026-03-21 23:28:00",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "麦香鱼",
+        "productCode": "MC18481",
+        "quantity": 1,
+        "unitPrice": 16.5,
+        "categoryName": "汉堡",
+        "calories": 336
+      }
+    ],
+    "totalAmount": 16.5,
+    "payAmount": 9.7,
+    "discountAmount": 6.8,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      },
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202603250033",
+    "orderTime": "2026-03-25 22:47:00",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      }
+    ],
+    "totalAmount": 35.0,
+    "payAmount": 20.68,
+    "discountAmount": 14.32,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      },
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604020034",
+    "orderTime": "2026-04-02 12:11:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 9.1,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "中杯美式",
+        "productCode": "MC90507",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "咖啡",
+        "calories": 5
+      }
+    ],
+    "totalAmount": 58.6,
+    "payAmount": 35.77,
+    "discountAmount": 22.83,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      },
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604020035",
+    "orderTime": "2026-04-02 19:03:12",
+    "orderType": "麦乐送",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      }
+    ],
+    "totalAmount": 17.0,
+    "payAmount": 17.0,
+    "discountAmount": 0.0,
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202604030036",
+    "orderTime": "2026-04-03 09:52:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "大可乐",
+        "productCode": "MC55490",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "饮料",
+        "calories": 194
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 2,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      }
+    ],
+    "totalAmount": 38.5,
+    "payAmount": 24.47,
+    "discountAmount": 14.03,
+    "couponList": [
+      {
+        "couponName": "1+1随心配12.9元"
+      },
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604030037",
+    "orderTime": "2026-04-03 10:52:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "中杯拿铁",
+        "productCode": "MC25185",
+        "quantity": 1,
+        "unitPrice": 17.5,
+        "categoryName": "咖啡",
+        "calories": 116
+      }
+    ],
+    "totalAmount": 65.5,
+    "payAmount": 62.16,
+    "discountAmount": 3.34,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604040038",
+    "orderTime": "2026-04-04 13:11:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      }
+    ],
+    "totalAmount": 50.5,
+    "payAmount": 30.26,
+    "discountAmount": 20.24,
+    "couponList": [
+      {
+        "couponName": "1+1随心配12.9元"
+      },
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604040039",
+    "orderTime": "2026-04-04 20:35:00",
+    "orderType": "得来速",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 22.5,
+    "payAmount": 15.14,
+    "discountAmount": 7.36,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      },
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604050040",
+    "orderTime": "2026-04-05 22:17:00",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      }
+    ],
+    "totalAmount": 60.5,
+    "payAmount": 53.5,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604090041",
+    "orderTime": "2026-04-09 11:11:30",
+    "orderType": "得来速",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 8.4,
+        "categoryName": "饮料",
+        "calories": 179
+      }
+    ],
+    "totalAmount": 13.4,
+    "payAmount": 10.39,
+    "discountAmount": 3.01,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604110042",
+    "orderTime": "2026-04-11 12:11:12",
+    "orderType": "到店取餐",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      }
+    ],
+    "totalAmount": 35.5,
+    "payAmount": 23.24,
+    "discountAmount": 12.26,
+    "couponList": [
+      {
+        "couponName": "麦咖啡第二杯半价"
+      },
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604110043",
+    "orderTime": "2026-04-11 11:58:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 50.0,
+    "payAmount": 45.71,
+    "discountAmount": 4.29,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604120044",
+    "orderTime": "2026-04-12 12:24:30",
+    "orderType": "麦乐送",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      }
+    ],
+    "totalAmount": 5.0,
+    "payAmount": 4.1,
+    "discountAmount": 0.9,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202604130045",
+    "orderTime": "2026-04-13 08:24:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中杯拿铁",
+        "productCode": "MC25185",
+        "quantity": 1,
+        "unitPrice": 17.5,
+        "categoryName": "咖啡",
+        "calories": 116
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "饮料",
+        "calories": 179
+      }
+    ],
+    "totalAmount": 42.5,
+    "payAmount": 38.8,
+    "discountAmount": 3.7,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604170046",
+    "orderTime": "2026-04-17 12:58:30",
+    "orderType": "得来速",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 33.0,
+    "payAmount": 29.36,
+    "discountAmount": 3.64,
+    "couponList": [
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604230047",
+    "orderTime": "2026-04-23 12:11:12",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      }
+    ],
+    "totalAmount": 41.5,
+    "payAmount": 27.31,
+    "discountAmount": 14.19,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      },
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604280048",
+    "orderTime": "2026-04-28 16:17:30",
+    "orderType": "到店取餐",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      }
+    ],
+    "totalAmount": 26.0,
+    "payAmount": 19.99,
+    "discountAmount": 6.01,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202604280049",
+    "orderTime": "2026-04-28 12:35:00",
+    "orderType": "麦乐送",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 2,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      }
+    ],
+    "totalAmount": 26.0,
+    "payAmount": 18.44,
+    "discountAmount": 7.56,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      },
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202604300050",
+    "orderTime": "2026-04-30 08:11:00",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      }
+    ],
+    "totalAmount": 30.5,
+    "payAmount": 27.13,
+    "discountAmount": 3.37,
+    "couponList": [
+      {
+        "couponName": "1+1随心配12.9元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202605050051",
+    "orderTime": "2026-05-05 12:28:00",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      }
+    ],
+    "totalAmount": 51.5,
+    "payAmount": 44.81,
+    "discountAmount": 6.69,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202605080052",
+    "orderTime": "2026-05-08 14:47:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      }
+    ],
+    "totalAmount": 63.5,
+    "payAmount": 63.5,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202605080053",
+    "orderTime": "2026-05-08 10:03:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 15.5,
+        "categoryName": "小食",
+        "calories": 419
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 2,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      }
+    ],
+    "totalAmount": 42.5,
+    "payAmount": 24.74,
+    "discountAmount": 17.76,
+    "couponList": [
+      {
+        "couponName": "麦咖啡第二杯半价"
+      },
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202605090054",
+    "orderTime": "2026-05-09 09:24:30",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      }
+    ],
+    "totalAmount": 49.0,
+    "payAmount": 42.0,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202605130055",
+    "orderTime": "2026-05-13 18:28:12",
+    "orderType": "麦乐送",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 44.5,
+    "payAmount": 37.5,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202605150056",
+    "orderTime": "2026-05-15 11:17:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      }
+    ],
+    "totalAmount": 90.0,
+    "payAmount": 84.29,
+    "discountAmount": 5.71,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202605180057",
+    "orderTime": "2026-05-18 12:47:30",
+    "orderType": "麦乐送",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 3.5,
+        "categoryName": "甜品",
+        "calories": 132
+      }
+    ],
+    "totalAmount": 3.5,
+    "payAmount": 2.45,
+    "discountAmount": 1.05,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202605220058",
+    "orderTime": "2026-05-22 01:28:12",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 2,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 15.5,
+        "categoryName": "小食",
+        "calories": 419
+      }
+    ],
+    "totalAmount": 62.5,
+    "payAmount": 55.5,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202605220059",
+    "orderTime": "2026-05-22 13:03:30",
+    "orderType": "得来速",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      }
+    ],
+    "totalAmount": 36.5,
+    "payAmount": 26.07,
+    "discountAmount": 10.43,
+    "couponList": [
+      {
+        "couponName": "1+1随心配12.9元"
+      },
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202605250060",
+    "orderTime": "2026-05-25 10:11:12",
+    "orderType": "得来速",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "大可乐",
+        "productCode": "MC55490",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "饮料",
+        "calories": 194
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 17.8,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 15.5,
+        "categoryName": "小食",
+        "calories": 419
+      }
+    ],
+    "totalAmount": 54.8,
+    "payAmount": 50.71,
+    "discountAmount": 4.09,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202605250061",
+    "orderTime": "2026-05-25 16:24:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 48.5,
+    "payAmount": 32.11,
+    "discountAmount": 16.39,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      },
+      {
+        "couponName": "中薯条买一送一"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202605280062",
+    "orderTime": "2026-05-28 09:11:30",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 2,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 99.5,
+    "payAmount": 67.98,
+    "discountAmount": 31.52,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      },
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202605290063",
+    "orderTime": "2026-05-29 09:17:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 58.0,
+    "payAmount": 58.0,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202605310064",
+    "orderTime": "2026-05-31 17:28:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 48.5,
+    "payAmount": 48.5,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202606020065",
+    "orderTime": "2026-06-02 12:35:30",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "饮料",
+        "calories": 179
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      }
+    ],
+    "totalAmount": 38.5,
+    "payAmount": 26.29,
+    "discountAmount": 12.21,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      },
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202606040066",
+    "orderTime": "2026-06-04 12:17:12",
+    "orderType": "得来速",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      }
+    ],
+    "totalAmount": 17.0,
+    "payAmount": 12.44,
+    "discountAmount": 4.56,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202606050067",
+    "orderTime": "2026-06-05 18:24:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "麦香鱼",
+        "productCode": "MC18481",
+        "quantity": 1,
+        "unitPrice": 16.5,
+        "categoryName": "汉堡",
+        "calories": 336
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 2,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      }
+    ],
+    "totalAmount": 60.0,
+    "payAmount": 54.09,
+    "discountAmount": 5.91,
+    "couponList": [
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202606060068",
+    "orderTime": "2026-06-06 20:28:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 9.1,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      }
+    ],
+    "totalAmount": 32.6,
+    "payAmount": 20.08,
+    "discountAmount": 12.52,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      },
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202606080069",
+    "orderTime": "2026-06-08 13:47:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 17.8,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 22.8,
+    "payAmount": 19.45,
+    "discountAmount": 3.35,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202606100070",
+    "orderTime": "2026-06-10 17:41:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "大可乐",
+        "productCode": "MC55490",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "饮料",
+        "calories": 194
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      },
+      {
+        "productName": "中杯拿铁",
+        "productCode": "MC25185",
+        "quantity": 1,
+        "unitPrice": 17.5,
+        "categoryName": "咖啡",
+        "calories": 116
+      }
+    ],
+    "totalAmount": 42.5,
+    "payAmount": 28.9,
+    "discountAmount": 13.6,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      },
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202606150071",
+    "orderTime": "2026-06-15 17:52:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 15.5,
+        "categoryName": "小食",
+        "calories": 419
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      }
+    ],
+    "totalAmount": 78.0,
+    "payAmount": 78.0,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202606190072",
+    "orderTime": "2026-06-19 11:52:12",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 47.5,
+    "payAmount": 33.26,
+    "discountAmount": 14.24,
+    "couponList": [
+      {
+        "couponName": "巨无霸单品直降3元"
+      },
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202606190073",
+    "orderTime": "2026-06-19 15:41:30",
+    "orderType": "得来速",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      }
+    ],
+    "totalAmount": 35.5,
+    "payAmount": 35.5,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202606250074",
+    "orderTime": "2026-06-25 22:17:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 30.5,
+    "payAmount": 25.01,
+    "discountAmount": 5.49,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202606260075",
+    "orderTime": "2026-06-26 20:47:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 15.5,
+        "categoryName": "小食",
+        "calories": 419
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 38.0,
+    "payAmount": 34.13,
+    "discountAmount": 3.87,
+    "couponList": [
+      {
+        "couponName": "1+1随心配12.9元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202606290076",
+    "orderTime": "2026-06-29 10:35:00",
+    "orderType": "麦乐送",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "中杯美式",
+        "productCode": "MC90507",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "咖啡",
+        "calories": 5
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      }
+    ],
+    "totalAmount": 44.5,
+    "payAmount": 44.5,
+    "discountAmount": 0.0,
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202607010077",
+    "orderTime": "2026-07-01 11:52:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      }
+    ],
+    "totalAmount": 17.5,
+    "payAmount": 17.5,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202607030078",
+    "orderTime": "2026-07-03 23:17:00",
+    "orderType": "麦乐送",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      }
+    ],
+    "totalAmount": 13.0,
+    "payAmount": 8.77,
+    "discountAmount": 4.23,
+    "couponList": [
+      {
+        "couponName": "1+1随心配12.9元"
+      },
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202607030079",
+    "orderTime": "2026-07-03 09:28:12",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      }
+    ],
+    "totalAmount": 23.5,
+    "payAmount": 20.48,
+    "discountAmount": 3.02,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202607070080",
+    "orderTime": "2026-07-07 12:41:30",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "大可乐",
+        "productCode": "MC55490",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "饮料",
+        "calories": 194
+      },
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 58.5,
+    "payAmount": 58.5,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202607070081",
+    "orderTime": "2026-07-07 17:17:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "大可乐",
+        "productCode": "MC55490",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "饮料",
+        "calories": 194
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      }
+    ],
+    "totalAmount": 65.5,
+    "payAmount": 38.0,
+    "discountAmount": 27.5,
+    "couponList": [
+      {
+        "couponName": "巨无霸单品直降3元"
+      },
+      {
+        "couponName": "1+1随心配12.9元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202607080082",
+    "orderTime": "2026-07-08 19:52:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 2,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      }
+    ],
+    "totalAmount": 26.0,
+    "payAmount": 18.51,
+    "discountAmount": 7.49,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      },
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202607090083",
+    "orderTime": "2026-07-09 20:17:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      }
+    ],
+    "totalAmount": 30.5,
+    "payAmount": 25.21,
+    "discountAmount": 5.29,
+    "couponList": [
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202607090084",
+    "orderTime": "2026-07-09 17:35:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中杯美式",
+        "productCode": "MC90507",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "咖啡",
+        "calories": 5
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      },
+      {
+        "productName": "中杯拿铁",
+        "productCode": "MC25185",
+        "quantity": 1,
+        "unitPrice": 17.5,
+        "categoryName": "咖啡",
+        "calories": 116
+      }
+    ],
+    "totalAmount": 55.0,
+    "payAmount": 33.46,
+    "discountAmount": 21.54,
+    "couponList": [
+      {
+        "couponName": "1+1随心配12.9元"
+      },
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202607100085",
+    "orderTime": "2026-07-10 19:58:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      },
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      }
+    ],
+    "totalAmount": 25.5,
+    "payAmount": 19.81,
+    "discountAmount": 5.69,
+    "couponList": [
+      {
+        "couponName": "1+1随心配12.9元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202607110086",
+    "orderTime": "2026-07-11 22:58:30",
+    "orderType": "到店取餐",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      },
+      {
+        "productName": "中杯美式",
+        "productCode": "MC90507",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "咖啡",
+        "calories": 5
+      }
+    ],
+    "totalAmount": 34.0,
+    "payAmount": 34.0,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202607140087",
+    "orderTime": "2026-07-14 12:17:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中杯美式",
+        "productCode": "MC90507",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "咖啡",
+        "calories": 5
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 9.4,
+        "categoryName": "甜品",
+        "calories": 287
+      }
+    ],
+    "totalAmount": 22.4,
+    "payAmount": 17.47,
+    "discountAmount": 4.93,
+    "couponList": [
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202607180088",
+    "orderTime": "2026-07-18 18:52:00",
+    "orderType": "到店取餐",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 15.7,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "麦香鱼",
+        "productCode": "MC18481",
+        "quantity": 1,
+        "unitPrice": 16.5,
+        "categoryName": "汉堡",
+        "calories": 336
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      }
+    ],
+    "totalAmount": 58.7,
+    "payAmount": 54.48,
+    "discountAmount": 4.22,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202607230089",
+    "orderTime": "2026-07-23 23:35:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      },
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      }
+    ],
+    "totalAmount": 33.0,
+    "payAmount": 33.0,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202607280090",
+    "orderTime": "2026-07-28 23:03:12",
+    "orderType": "到店取餐",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      }
+    ],
+    "totalAmount": 28.5,
+    "payAmount": 16.53,
+    "discountAmount": 11.97,
+    "couponList": [
+      {
+        "couponName": "巨无霸单品直降3元"
+      },
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202607290091",
+    "orderTime": "2026-07-29 18:03:12",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "饮料",
+        "calories": 179
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      }
+    ],
+    "totalAmount": 65.5,
+    "payAmount": 38.71,
+    "discountAmount": 26.79,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      },
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202607300092",
+    "orderTime": "2026-07-30 08:47:30",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "大可乐",
+        "productCode": "MC55490",
+        "quantity": 1,
+        "unitPrice": 8.0,
+        "categoryName": "饮料",
+        "calories": 194
+      },
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "饮料",
+        "calories": 179
+      }
+    ],
+    "totalAmount": 20.0,
+    "payAmount": 14.11,
+    "discountAmount": 5.89,
+    "couponList": [
+      {
+        "couponName": "巨无霸单品直降3元"
+      },
+      {
+        "couponName": "新客立减8元"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202608030093",
+    "orderTime": "2026-08-03 14:17:30",
+    "orderType": "麦乐送",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 70.0,
+    "payAmount": 70.0,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202608050094",
+    "orderTime": "2026-08-05 16:03:00",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 3.5,
+        "categoryName": "甜品",
+        "calories": 132
+      }
+    ],
+    "totalAmount": 3.5,
+    "payAmount": 2.87,
+    "discountAmount": 0.63,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202608050095",
+    "orderTime": "2026-08-05 18:24:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 2,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 2,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      }
+    ],
+    "totalAmount": 83.5,
+    "payAmount": 48.77,
+    "discountAmount": 34.73,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      },
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202608080096",
+    "orderTime": "2026-08-08 12:58:30",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      }
+    ],
+    "totalAmount": 59.0,
+    "payAmount": 52.0,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202608140097",
+    "orderTime": "2026-08-14 10:03:00",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "饮料",
+        "calories": 179
+      }
+    ],
+    "totalAmount": 12.0,
+    "payAmount": 12.0,
+    "discountAmount": 0.0,
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202608150098",
+    "orderTime": "2026-08-15 12:24:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 15.5,
+        "categoryName": "小食",
+        "calories": 419
+      }
+    ],
+    "totalAmount": 50.5,
+    "payAmount": 47.34,
+    "discountAmount": 3.16,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202608150099",
+    "orderTime": "2026-08-15 21:28:30",
+    "orderType": "到店取餐",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      },
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      }
+    ],
+    "totalAmount": 58.0,
+    "payAmount": 58.0,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202608180100",
+    "orderTime": "2026-08-18 17:58:12",
+    "orderType": "到店取餐",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      }
+    ],
+    "totalAmount": 41.5,
+    "payAmount": 41.5,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202608190101",
+    "orderTime": "2026-08-19 19:41:12",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "吉士蛋麦满分",
+        "productCode": "MC57819",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "早餐",
+        "calories": 302
+      }
+    ],
+    "totalAmount": 11.5,
+    "payAmount": 9.43,
+    "discountAmount": 2.07,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202608200102",
+    "orderTime": "2026-08-20 18:24:00",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      }
+    ],
+    "totalAmount": 30.5,
+    "payAmount": 30.5,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202608210103",
+    "orderTime": "2026-08-21 16:24:12",
+    "orderType": "得来速",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 2,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      }
+    ],
+    "totalAmount": 71.5,
+    "payAmount": 71.5,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202608270104",
+    "orderTime": "2026-08-27 20:52:30",
+    "orderType": "得来速",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 15.5,
+        "categoryName": "小食",
+        "calories": 419
+      },
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 15.7,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 17.8,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 75.0,
+    "payAmount": 69.7,
+    "discountAmount": 5.3,
+    "couponList": [
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202608280105",
+    "orderTime": "2026-08-28 17:52:30",
+    "orderType": "到店取餐",
+    "storeName": "望京SOHO店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      },
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      }
+    ],
+    "totalAmount": 26.5,
+    "payAmount": 18.88,
+    "discountAmount": 7.62,
+    "couponList": [
+      {
+        "couponName": "麦咖啡第二杯半价"
+      },
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202608280106",
+    "orderTime": "2026-08-28 09:47:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "饮料",
+        "calories": 179
+      },
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      }
+    ],
+    "totalAmount": 24.0,
+    "payAmount": 17.14,
+    "discountAmount": 6.86,
+    "couponList": [
+      {
+        "couponName": "中薯条买一送一"
+      },
+      {
+        "couponName": "新客立减8元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202609030107",
+    "orderTime": "2026-09-03 21:41:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 7.0,
+        "categoryName": "饮料",
+        "calories": 155
+      }
+    ],
+    "totalAmount": 38.0,
+    "payAmount": 33.0,
+    "discountAmount": 5.0,
+    "couponList": [
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202609070108",
+    "orderTime": "2026-09-07 19:28:00",
+    "orderType": "得来速",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "麦香鱼",
+        "productCode": "MC18481",
+        "quantity": 1,
+        "unitPrice": 16.5,
+        "categoryName": "汉堡",
+        "calories": 336
+      }
+    ],
+    "totalAmount": 72.5,
+    "payAmount": 67.75,
+    "discountAmount": 4.75,
+    "couponList": [
+      {
+        "couponName": "巨无霸单品直降3元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202609070109",
+    "orderTime": "2026-09-07 11:11:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      },
+      {
+        "productName": "大薯条",
+        "productCode": "MC24023",
+        "quantity": 1,
+        "unitPrice": 15.5,
+        "categoryName": "小食",
+        "calories": 419
+      }
+    ],
+    "totalAmount": 32.5,
+    "payAmount": 26.65,
+    "discountAmount": 5.85,
+    "couponList": [
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202609080110",
+    "orderTime": "2026-09-08 15:24:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中杯拿铁",
+        "productCode": "MC25185",
+        "quantity": 1,
+        "unitPrice": 17.5,
+        "categoryName": "咖啡",
+        "calories": 116
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 7.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "大可乐",
+        "productCode": "MC55490",
+        "quantity": 1,
+        "unitPrice": 11.5,
+        "categoryName": "饮料",
+        "calories": 194
+      }
+    ],
+    "totalAmount": 36.0,
+    "payAmount": 29.92,
+    "discountAmount": 6.08,
+    "couponList": [
+      {
+        "couponName": "1+1随心配12.9元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202609140111",
+    "orderTime": "2026-09-14 09:17:30",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      }
+    ],
+    "totalAmount": 23.5,
+    "payAmount": 16.08,
+    "discountAmount": 7.42,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      },
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ],
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC202609180112",
+    "orderTime": "2026-09-18 10:03:30",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 22.5,
+    "payAmount": 18.13,
+    "discountAmount": 4.37,
+    "couponList": [
+      {
+        "couponName": "麦咖啡第二杯半价"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202609260113",
+    "orderTime": "2026-09-26 21:47:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 2,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "满杯百香果",
+        "productCode": "MC92160",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "饮料",
+        "calories": 179
+      }
+    ],
+    "totalAmount": 69.0,
+    "payAmount": 69.0,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202609260114",
+    "orderTime": "2026-09-26 14:11:12",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 23.5,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "香芋派",
+        "productCode": "MC82701",
+        "quantity": 1,
+        "unitPrice": 7.5,
+        "categoryName": "甜品",
+        "calories": 252
+      },
+      {
+        "productName": "中可乐",
+        "productCode": "MC72895",
+        "quantity": 1,
+        "unitPrice": 10.0,
+        "categoryName": "饮料",
+        "calories": 155
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 1,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 66.5,
+    "payAmount": 42.08,
+    "discountAmount": 24.42,
+    "couponList": [
+      {
+        "couponName": "麦咖啡第二杯半价"
+      },
+      {
+        "couponName": "1+1随心配12.9元"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202609270115",
+    "orderTime": "2026-09-27 11:58:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "奥利奥麦旋风",
+        "productCode": "MC47512",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "甜品",
+        "calories": 287
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 9.1,
+        "categoryName": "早餐",
+        "calories": 393
+      }
+    ],
+    "totalAmount": 22.6,
+    "payAmount": 22.6,
+    "discountAmount": 0.0
+  },
+  {
+    "orderId": "MC202609300116",
+    "orderTime": "2026-09-30 20:35:30",
+    "orderType": "麦乐送",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "板烧鸡腿堡",
+        "productCode": "MC56604",
+        "quantity": 1,
+        "unitPrice": 16.4,
+        "categoryName": "汉堡",
+        "calories": 445
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      }
+    ],
+    "totalAmount": 56.9,
+    "payAmount": 49.9,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202610020117",
+    "orderTime": "2026-10-02 13:35:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "麦辣鸡腿堡",
+        "productCode": "MC61280",
+        "quantity": 1,
+        "unitPrice": 22.5,
+        "categoryName": "汉堡",
+        "calories": 519
+      },
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 2,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      }
+    ],
+    "totalAmount": 86.5,
+    "payAmount": 79.5,
+    "discountAmount": 7.0,
+    "couponList": [
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202610070118",
+    "orderTime": "2026-10-07 13:28:00",
+    "orderType": "得来速",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "巨无霸",
+        "productCode": "MC52927",
+        "quantity": 2,
+        "unitPrice": 25.5,
+        "categoryName": "汉堡",
+        "calories": 495
+      },
+      {
+        "productName": "双层吉士汉堡",
+        "productCode": "MC11610",
+        "quantity": 1,
+        "unitPrice": 17.0,
+        "categoryName": "汉堡",
+        "calories": 437
+      }
+    ],
+    "totalAmount": 68.0,
+    "payAmount": 41.36,
+    "discountAmount": 26.64,
+    "couponList": [
+      {
+        "couponName": "到店取餐满25减5"
+      },
+      {
+        "couponName": "任意消费满35减7"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202610070119",
+    "orderTime": "2026-10-07 11:52:30",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "productName": "热香饼",
+        "productCode": "MC55773",
+        "quantity": 1,
+        "unitPrice": 12.0,
+        "categoryName": "早餐",
+        "calories": 331
+      },
+      {
+        "productName": "原味圆筒冰淇淋",
+        "productCode": "MC75954",
+        "quantity": 1,
+        "unitPrice": 5.0,
+        "categoryName": "甜品",
+        "calories": 132
+      },
+      {
+        "productName": "猪柳蛋麦满分",
+        "productCode": "MC64206",
+        "quantity": 2,
+        "unitPrice": 13.0,
+        "categoryName": "早餐",
+        "calories": 393
+      },
+      {
+        "productName": "麦乐鸡（5块）",
+        "productCode": "MC66194",
+        "quantity": 1,
+        "unitPrice": 13.5,
+        "categoryName": "小食",
+        "calories": 228
+      }
+    ],
+    "totalAmount": 56.5,
+    "payAmount": 36.98,
+    "discountAmount": 19.52,
+    "couponList": [
+      {
+        "couponName": "新客立减8元"
+      },
+      {
+        "couponName": "到店取餐满25减5"
+      }
+    ]
+  },
+  {
+    "orderId": "MC202610080120",
+    "orderTime": "2026-10-08 11:52:30",
+    "orderType": "麦乐送",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "productName": "中薯条",
+        "productCode": "MC61061",
+        "quantity": 1,
+        "unitPrice": 13.0,
+        "categoryName": "小食",
+        "calories": 337
+      }
+    ],
+    "totalAmount": 13.0,
+    "payAmount": 13.0,
+    "discountAmount": 0.0,
+    "deliveryFee": 9.0
+  },
+  {
+    "orderId": "MC-DIRTY-0001",
+    "orderTime": "2026-09-18 12:40:00",
+    "orderType": "到店取餐",
+    "storeName": "国贸店",
+    "items": [
+      {
+        "name": "巨无霸",
+        "qty": 1,
+        "price": "¥25.5元"
+      },
+      {
+        "name": "中薯条",
+        "qty": 1,
+        "price": "13"
+      }
+    ],
+    "totalAmount": "¥38.50",
+    "payAmount": "31.50",
+    "discountAmount": "7"
+  },
+  {
+    "orderNo": "MC-DIRTY-0002",
+    "businessTime": 1770000000000,
+    "channel": "delivery",
+    "store": {
+      "name": "望京SOHO店"
+    },
+    "productList": [
+      {
+        "mealName": "板烧鸡腿堡",
+        "num": 2,
+        "price": 23.5
+      }
+    ],
+    "actualAmount": 41.0,
+    "totalDiscount": 6.0
+  },
+  {
+    "orderId": "MC-DIRTY-0003",
+    "orderTime": "2026-10-02 19:15:00",
+    "orderType": "得来速",
+    "storeName": "五道口店",
+    "items": [
+      {
+        "name": "麦辣鸡腿堡",
+        "qty": 1,
+        "price": 22.5
+      }
+    ],
+    "totalAmount": 22.5
+  }
+]

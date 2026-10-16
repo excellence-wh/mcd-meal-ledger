@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="generator" content="mcd-meal-ledger 1.0.0">
+<title>麦门账本 · 我的麦当劳消费年报</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB",
+    "Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+  background:#FFF6E5;color:#2B2B2B;line-height:1.6;
+  -webkit-font-smoothing:antialiased;padding:32px 16px;
+}
+.wrap{max-width:760px;margin:0 auto}
+.card{background:#fff;border-radius:20px;padding:28px;
+  box-shadow:0 6px 24px rgba(150,110,40,.10);margin-bottom:18px}
+.hero{
+  background:linear-gradient(135deg,#DA291C 0%,#B71C12 55%,#7A1009 100%);
+  color:#fff;border-radius:24px;padding:34px 30px;margin-bottom:18px;
+  position:relative;overflow:hidden
+}
+.hero::after{
+  content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;
+  border-radius:50%;background:rgba(255,199,44,.22)
+}
+.brand{font-size:13px;letter-spacing:3px;opacity:.85;text-transform:uppercase}
+.hero h1{font-size:32px;font-weight:800;margin:8px 0 10px;letter-spacing:-.5px}
+.hero .sub{font-size:15px;opacity:.92}
+.hero .headline{
+  margin-top:18px;padding:14px 16px;border-radius:14px;
+  background:rgba(255,255,255,.15);font-size:15px;font-weight:600;
+  backdrop-filter:blur(4px)
+}
+h2{font-size:17px;font-weight:800;margin-bottom:16px;
+  display:flex;align-items:center;gap:9px;color:#1F1F1F}
+h2::before{content:"";width:5px;height:19px;border-radius:3px;
+  background:linear-gradient(180deg,#FFC72C,#DA291C);display:inline-block}
+.grid{display:grid;gap:12px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(148px,1fr))}
+.stat{background:#FFFBF2;border:1px solid #F2E4C9;border-radius:14px;padding:16px}
+.stat .k{font-size:12px;color:#9A8B72;font-weight:600;letter-spacing:.4px}
+.stat .v{font-size:25px;font-weight:800;margin-top:6px;color:#1F1F1F;
+  font-variant-numeric:tabular-nums}
+.stat .v.accent{color:#DA291C}
+.stat .v.gold{color:#C77E00}
+.stat .n{font-size:11.5px;color:#A2947C;margin-top:3px}
+.persona{display:flex;gap:14px;padding:15px;border-radius:14px;
+  background:#FFFBF2;border:1px solid #F2E4C9;margin-bottom:11px}
+.persona .emo{font-size:29px;line-height:1.1}
+.persona .t{font-weight:800;font-size:15.5px}
+.persona .tag{font-size:13px;color:#7A6C55;margin:2px 0 7px}
+.persona .ev{font-size:12.5px;color:#4A4A4A;background:#fff;
+  border-left:3px solid #FFC72C;border-radius:0 8px 8px 0;padding:7px 11px}
+.rank{display:flex;align-items:center;gap:11px;padding:9px 0;
+  border-bottom:1px dashed #F0E4CC}
+.rank:last-child{border-bottom:none}
+.rank .i{width:23px;height:23px;border-radius:7px;background:#FFC72C;color:#5A3A00;
+  font-size:12px;font-weight:800;display:flex;align-items:center;
+  justify-content:center;flex:none}
+.rank .n{flex:1;font-size:14px;font-weight:600}
+.rank .q{font-size:12.5px;color:#9A8B72;font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:#FFE9A8;overflow:hidden;
+  margin-top:5px;max-width:190px}
+.bar span{display:block;height:100%;border-radius:3px;
+  background:linear-gradient(90deg,#FFC72C,#DA291C)}
+.finding{border-radius:14px;padding:15px;margin-bottom:11px;border:1px solid}
+.finding.alert{background:#FFF3F1;border-color:#F8CFC7}
+.finding.notice{background:#FFFBF0;border-color:#F5E3B8}
+.finding.tip{background:#F5FAF2;border-color:#D8EBCE}
+.finding .ft{font-weight:800;font-size:14.5px;display:flex;
+  justify-content:space-between;gap:10px;align-items:baseline}
+.finding .fd{font-size:13px;color:#4A4A4A;margin-top:7px}
+.finding .fa{font-size:12.5px;color:#7A6C55;margin-top:8px;
+  padding-left:11px;border-left:2px solid #D9C9A8}
+.finding .amt{font-size:13px;font-weight:800;color:#DA291C;white-space:nowrap}
+.grade{display:inline-flex;align-items:center;justify-content:center;
+  width:46px;height:46px;border-radius:14px;background:#DA291C;color:#fff;
+  font-size:23px;font-weight:900;margin-right:12px}
+.graderow{display:flex;align-items:center;margin-bottom:16px}
+.graderow .gt{font-size:13.5px;color:#7A6C55}
+.graderow .gt b{display:block;font-size:15px;color:#1F1F1F;font-weight:800}
+.charttitle{font-size:12.5px;font-weight:700;color:#8A7A63;
+  margin:16px 0 5px;letter-spacing:.3px}
+footer{font-size:12px;color:#A2947C;text-align:center;padding:20px 10px 8px;
+  line-height:1.8}
+.warn{font-size:12.5px;color:#9A6B00;background:#FFF8E3;border:1px solid #F2E0AF;
+  border-radius:10px;padding:10px 13px;margin-top:14px}
+.empty{text-align:center;color:#A2947C;padding:36px 10px;font-size:14px}
+@media print{body{background:#fff;padding:0}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="brand">McDonald's Meal Ledger</div>
+  <h1>麦门账本</h1>
+  <div class="sub">2026-01-06 ~ 2026-10-08 · 数据来自本地脱敏样例</div>
+  <div class="headline">123 单、¥4,177.01、省下 ¥871.49 —— ⏳ 资深麦门老友</div>
+</div>
+
+<div class="card">
+  <h2>核心数字</h2>
+  <div class="grid g4">
+    <div class="stat"><div class="k">订单总数</div><div class="v">123 单</div><div class="n">覆盖 98 个下单日，首单至今 275 天</div></div>
+    <div class="stat"><div class="k">累计实付</div><div class="v">¥4,177.01</div><div class="n">原价合计 ¥5,048.50</div></div>
+    <div class="stat"><div class="k">累计省下</div><div class="v gold">¥871.49</div><div class="n">整体折扣率 17.3%</div></div>
+    <div class="stat"><div class="k">平均客单价</div><div class="v">¥33.96</div><div class="n">平均每单 2.8 份餐品</div></div>
+    <div class="stat"><div class="k">估算可省回</div><div class="v accent">¥241.38</div><div class="n">按你自己的平均折扣率估算</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>你的麦门人格</h2>
+  <div class="persona"><div class="emo">⏳</div><div><div class="t">资深麦门老友</div><div class="tag">时间够长，数据够厚，故事也够多</div><div class="ev">横跨 275 天留下 123 笔记录，是实打实的老主顾</div></div></div><div class="persona"><div class="emo">🔥</div><div><div class="t">连击王</div><div class="tag">连续下单的纪录，是你和麦门的默契</div><div class="ev">最长连续 5 天没断过（截至 2026-02-10）</div></div></div><div class="persona"><div class="emo">🍦</div><div><div class="t">甜品治愈系</div><div class="tag">正餐只是前戏，甜筒才是正题</div><div class="ev">甜品类占全部餐品的 18%，是稳定的情绪补给</div></div></div>
+</div>
+
+<div class="card">
+  <h2>消费节奏</h2>
+  <div class="fd" style="font-size:13.5px;color:#4A4A4A">你的高频时段是 <b>12:00</b> 前后，最爱在 <b>周五</b> 下单，整体集中在 <b>午餐</b>。</div>
+  <div class="charttitle">月度消费趋势</div>
+  <svg viewBox="0 0 640 180" width="100%" height="180" role="img" aria-label="月度消费趋势"><defs><linearGradient id="mcdBar" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFC72C"/><stop offset="100%" stop-color="#DA291C"/></linearGradient></defs><rect x="22.0" y="83.0" width="34.3" height="67.0" rx="5" fill="url(#mcdBar)"/><text x="39.2" y="77.0" text-anchor="middle" font-size="10" fill="#8a7a63">339</text><text x="39.2" y="168.0" text-anchor="middle" font-size="11" fill="#6b5c46">1月</text><rect x="84.4" y="73.8" width="34.3" height="76.2" rx="5" fill="url(#mcdBar)"/><text x="101.6" y="67.8" text-anchor="middle" font-size="10" fill="#8a7a63">386</text><text x="101.6" y="168.0" text-anchor="middle" font-size="11" fill="#6b5c46">2月</text><rect x="146.8" y="86.6" width="34.3" height="63.4" rx="5" fill="url(#mcdBar)"/><text x="164.0" y="80.6" text-anchor="middle" font-size="10" fill="#8a7a63">321</text><text x="164.0" y="168.0" text-anchor="middle" font-size="11" fill="#6b5c46">3月</text><rect x="209.2" y="54.7" width="34.3" height="95.3" rx="5" fill="url(#mcdBar)"/><text x="226.4" y="48.7" text-anchor="middle" font-size="10" fill="#8a7a63">483</text><text x="226.4" y="168.0" text-anchor="middle" font-size="11" fill="#6b5c46">4月</text><rect x="271.6" y="24.0" width="34.3" height="126.0" rx="5" fill="url(#mcdBar)"/><text x="288.8" y="18.0" text-anchor="middle" font-size="10" fill="#8a7a63">638</text><text x="288.8" y="168.0" text-anchor="middle" font-size="11" fill="#6b5c46">5月</text><rect x="334.0" y="68.7" width="34.3" height="81.3" rx="5" fill="url(#mcdBar)"/><text x="351.2" y="62.7" text-anchor="middle" font-size="10" fill="#8a7a63">412</text><text x="351.2" y="168.0" text-anchor="middle" font-size="11" fill="#6b5c46">6月</text><rect x="396.4" y="61.4" width="34.3" height="88.6" rx="5" fill="url(#mcdBar)"/><text x="413.6" y="55.4" text-anchor="middle" font-size="10" fill="#8a7a63">449</text><text x="413.6" y="168.0" text-anchor="middle" font-size="11" fill="#6b5c46">7月</text><rect x="458.8" y="41.5" width="34.3" height="108.5" rx="5" fill="url(#mcdBar)"/><text x="476.0" y="35.5" text-anchor="middle" font-size="10" fill="#8a7a63">550</text><text x="476.0" y="168.0" text-anchor="middle" font-size="11" fill="#6b5c46">8月</text><rect x="521.2" y="69.7" width="34.3" height="80.3" rx="5" fill="url(#mcdBar)"/><text x="538.4" y="63.7" text-anchor="middle" font-size="10" fill="#8a7a63">407</text><text x="538.4" y="168.0" text-anchor="middle" font-size="11" fill="#6b5c46">9月</text><rect x="583.6" y="111.8" width="34.3" height="38.2" rx="5" fill="url(#mcdBar)"/><text x="600.8" y="105.8" text-anchor="middle" font-size="10" fill="#8a7a63">193</text><text x="600.8" y="168.0" text-anchor="middle" font-size="11" fill="#6b5c46">10月</text></svg>
+  <div class="charttitle">24 小时下单分布</div>
+  <svg viewBox="0 0 640 150" width="100%" height="150" role="img" aria-label="24小时下单分布"><rect x="12.9" y="122.5" width="16.1" height="1.5" rx="2.5" fill="#FFC72C"/><text x="21.0" y="140.0" text-anchor="middle" font-size="10" fill="#8a7a63">0</text><rect x="38.9" y="112.4" width="16.1" height="11.6" rx="2.5" fill="#FFC72C"/><rect x="64.9" y="118.2" width="16.1" height="5.8" rx="2.5" fill="#FFC72C"/><rect x="90.9" y="122.5" width="16.1" height="1.5" rx="2.5" fill="#FFC72C"/><text x="99.0" y="140.0" text-anchor="middle" font-size="10" fill="#8a7a63">3</text><rect x="116.9" y="122.5" width="16.1" height="1.5" rx="2.5" fill="#FFC72C"/><rect x="142.9" y="122.5" width="16.1" height="1.5" rx="2.5" fill="#FFC72C"/><rect x="168.9" y="122.5" width="16.1" height="1.5" rx="2.5" fill="#FFC72C"/><text x="177.0" y="140.0" text-anchor="middle" font-size="10" fill="#8a7a63">6</text><rect x="194.9" y="122.5" width="16.1" height="1.5" rx="2.5" fill="#FFC72C"/><rect x="220.9" y="100.9" width="16.1" height="23.1" rx="2.5" fill="#FFC72C"/><rect x="246.9" y="66.2" width="16.1" height="57.8" rx="2.5" fill="#FFC72C"/><text x="255.0" y="140.0" text-anchor="middle" font-size="10" fill="#8a7a63">9</text><rect x="272.9" y="72.0" width="16.1" height="52.0" rx="2.5" fill="#FFC72C"/><rect x="298.9" y="48.9" width="16.1" height="75.1" rx="2.5" fill="#FFC72C"/><rect x="324.9" y="20.0" width="16.1" height="104.0" rx="2.5" fill="#DA291C"/><text x="333.0" y="140.0" text-anchor="middle" font-size="10" fill="#8a7a63">12</text><rect x="350.9" y="89.3" width="16.1" height="34.7" rx="2.5" fill="#FFC72C"/><rect x="376.9" y="95.1" width="16.1" height="28.9" rx="2.5" fill="#FFC72C"/><rect x="402.9" y="106.7" width="16.1" height="17.3" rx="2.5" fill="#FFC72C"/><text x="411.0" y="140.0" text-anchor="middle" font-size="10" fill="#8a7a63">15</text><rect x="428.9" y="95.1" width="16.1" height="28.9" rx="2.5" fill="#FFC72C"/><rect x="454.9" y="66.2" width="16.1" height="57.8" rx="2.5" fill="#FFC72C"/><rect x="480.9" y="66.2" width="16.1" height="57.8" rx="2.5" fill="#FFC72C"/><text x="489.0" y="140.0" text-anchor="middle" font-size="10" fill="#8a7a63">18</text><rect x="506.9" y="77.8" width="16.1" height="46.2" rx="2.5" fill="#FFC72C"/><rect x="532.9" y="89.3" width="16.1" height="34.7" rx="2.5" fill="#FFC72C"/><rect x="558.9" y="106.7" width="16.1" height="17.3" rx="2.5" fill="#FFC72C"/><text x="567.0" y="140.0" text-anchor="middle" font-size="10" fill="#8a7a63">21</text><rect x="584.9" y="89.3" width="16.1" height="34.7" rx="2.5" fill="#FFC72C"/><rect x="610.9" y="100.9" width="16.1" height="23.1" rx="2.5" fill="#FFC72C"/></svg>
+  <div class="charttitle">星期分布</div><svg viewBox="0 0 640 150" width="100%" height="150" role="img" aria-label="星期分布"><rect x="30.3" y="65.1" width="44.6" height="58.9" rx="4" fill="#FFC72C"/><text x="52.6" y="60.1" text-anchor="middle" font-size="10" fill="#8a7a63">17</text><text x="52.6" y="141.0" text-anchor="middle" font-size="11" fill="#6b5c46">周一</text><rect x="119.4" y="72.0" width="44.6" height="52.0" rx="4" fill="#FFC72C"/><text x="141.7" y="67.0" text-anchor="middle" font-size="10" fill="#8a7a63">15</text><text x="141.7" y="141.0" text-anchor="middle" font-size="11" fill="#6b5c46">周二</text><rect x="208.6" y="78.9" width="44.6" height="45.1" rx="4" fill="#FFC72C"/><text x="230.9" y="73.9" text-anchor="middle" font-size="10" fill="#8a7a63">13</text><text x="230.9" y="141.0" text-anchor="middle" font-size="11" fill="#6b5c46">周三</text><rect x="297.7" y="54.7" width="44.6" height="69.3" rx="4" fill="#FFC72C"/><text x="320.0" y="49.7" text-anchor="middle" font-size="10" fill="#8a7a63">20</text><text x="320.0" y="141.0" text-anchor="middle" font-size="11" fill="#6b5c46">周四</text><rect x="386.9" y="20.0" width="44.6" height="104.0" rx="4" fill="#DA291C"/><text x="409.1" y="15.0" text-anchor="middle" font-size="10" fill="#8a7a63">30</text><text x="409.1" y="141.0" text-anchor="middle" font-size="11" fill="#6b5c46">周五</text><rect x="476.0" y="51.2" width="44.6" height="72.8" rx="4" fill="#FFC72C"/><text x="498.3" y="46.2" text-anchor="middle" font-size="10" fill="#8a7a63">21</text><text x="498.3" y="141.0" text-anchor="middle" font-size="11" fill="#6b5c46">周六</text><rect x="565.1" y="99.7" width="44.6" height="24.3" rx="4" fill="#FFC72C"/><text x="587.4" y="94.7" text-anchor="middle" font-size="10" fill="#8a7a63">7</text><text x="587.4" y="141.0" text-anchor="middle" font-size="11" fill="#6b5c46">周日</text></svg>
+</div>
+
+<div class="card">
+  <h2>常点榜单</h2>
+  <div class="rank"><div class="i">1</div><div style="flex:1"><div class="n">巨无霸</div><div class="bar"><span style="width:100%"></span></div></div><div class="q">38 份 · ¥938.20</div></div><div class="rank"><div class="i">2</div><div style="flex:1"><div class="n">中薯条</div><div class="bar"><span style="width:84%"></span></div></div><div class="q">32 份 · ¥412.10</div></div><div class="rank"><div class="i">3</div><div style="flex:1"><div class="n">原味圆筒冰淇淋</div><div class="bar"><span style="width:82%"></span></div></div><div class="q">31 份 · ¥150.50</div></div><div class="rank"><div class="i">4</div><div style="flex:1"><div class="n">板烧鸡腿堡</div><div class="bar"><span style="width:74%"></span></div></div><div class="q">28 份 · ¥629.60</div></div><div class="rank"><div class="i">5</div><div style="flex:1"><div class="n">麦辣鸡腿堡</div><div class="bar"><span style="width:63%"></span></div></div><div class="q">24 份 · ¥526.40</div></div><div class="rank"><div class="i">6</div><div style="flex:1"><div class="n">中可乐</div><div class="bar"><span style="width:61%"></span></div></div><div class="q">23 份 · ¥224.00</div></div>
+</div>
+
+<div class="card">
+  <h2>账单审计</h2>
+  <div class="graderow">
+    <div class="grade">A</div>
+    <div class="gt">
+      <b>优惠利用率 79%</b>
+      97/123 单享受到了优惠
+    </div>
+  </div>
+  <div class="finding alert"><div class="ft"><span>26 单没用任何优惠</span><span class="amt">≈ ¥241.38</span></div><div class="fd">这 26 单合计实付 ¥1,095.20，而你其余订单的平均折扣率是 22.0%。若按你自己的这个水平，这部分本可省约 ¥241.38（估算）。</div><div class="fa">建议：下次点单前先跑一次麦麦省一键领券，再让助手比价下单。</div></div><div class="finding notice"><div class="ft"><span>有 6 张券可领但未领取</span></div><div class="fd">麦麦省当前有 6 张券处于可领取状态。券躺在券池里不会自己跳到你的账户，需要在点餐前领取才会生效。</div><div class="fa">建议：用 auto-bind-coupons 一键领取全部可用券。</div></div><div class="finding notice"><div class="ft"><span>4 张券 7 天内到期</span></div><div class="fd">「满40减10、中薯条买一送一、麦乐送满39免配送费」 等 4 张即将失效，过期即作废、无法找回。</div><div class="fa">建议：优先在近期点单中核销这些券。</div></div><div class="finding tip"><div class="ft"><span>最大一笔原价单：¥84.60</span><span class="amt">≈ ¥18.65</span></div><div class="fd">2026-03-13 16:52 在「国贸店」的这笔订单未使用任何优惠，按你的平均折扣水平估算多花约 ¥18.65。</div><div class="fa">建议：大额订单优先考虑用券，优惠绝对值也最大。</div></div><div class="finding tip"><div class="ft"><span>配送费累计 ¥189.00</span></div><div class="fd">外送订单累计支付配送费 ¥189.00。到店取餐与得来速不计配送费，部分满额订单也可减免。</div><div class="fa">建议：非必要外送时，比较一下到店取餐的实际差价。</div></div>
+</div>
+
+<footer>
+  本报告由「麦门账本」基于麦当劳 MCP 返回的数据在本地计算生成，全部统计过程可复现。<br>
+  数据来源：麦当劳 MCP 服务（order-list / query-my-coupons 等）。<br>
+  本项目为麦当劳程序员创意开发大赛参赛作品，非麦当劳官方产品。<br>
+  餐品信息、价格及供应状态以麦当劳官方渠道实时结果为准；「估算可省回」为基于你自身历史折扣水平的推算，仅供参考。
+</footer>
+<div class="warn">取数提示：当前为离线样例模式，数据为脱敏假数据</div>
+<div style="text-align:center;font-size:11.5px;color:#B5A88F;padding-bottom:24px">
+生成时间 2026-10-16 14:28 · 数据来源 本地脱敏样例
+</div>
+</div>
+</body>
+</html>

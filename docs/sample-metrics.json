@@ -1,0 +1,3039 @@
+{
+  "source": "本地脱敏样例",
+  "orders": [
+    {
+      "orderId": "MC202601060001",
+      "createdAt": "2026-01-06T18:41:12",
+      "channel": "delivery",
+      "store": "望京SOHO店",
+      "gross": 10.0,
+      "paid": 8.2,
+      "saved": 1.8,
+      "items": [
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202601080003",
+      "createdAt": "2026-01-08T10:11:12",
+      "channel": "delivery",
+      "store": "五道口店",
+      "gross": 13.0,
+      "paid": 13.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202601080002",
+      "createdAt": "2026-01-08T11:41:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 32.6,
+      "paid": 26.73,
+      "saved": 5.87,
+      "items": [
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 9.1
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202601100004",
+      "createdAt": "2026-01-10T12:58:00",
+      "channel": "dine_in",
+      "store": "五道口店",
+      "gross": 21.1,
+      "paid": 12.97,
+      "saved": 8.13,
+      "items": [
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "中杯美式",
+          "qty": 1,
+          "paid": 9.1
+        }
+      ]
+    },
+    {
+      "orderId": "MC202601100005",
+      "createdAt": "2026-01-10T14:35:12",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 64.0,
+      "paid": 57.0,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "中杯美式",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "巨无霸",
+          "qty": 2,
+          "paid": 51.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202601110007",
+      "createdAt": "2026-01-11T09:11:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 66.3,
+      "paid": 59.3,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "麦香鱼",
+          "qty": 1,
+          "paid": 16.5
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 17.8
+        },
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202601110006",
+      "createdAt": "2026-01-11T09:17:30",
+      "channel": "drive_thru",
+      "store": "国贸店",
+      "gross": 23.0,
+      "paid": 23.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202601240008",
+      "createdAt": "2026-01-24T14:03:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 69.0,
+      "paid": 62.0,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 3.5
+        },
+        {
+          "name": "中杯拿铁",
+          "qty": 1,
+          "paid": 17.5
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202601260009",
+      "createdAt": "2026-01-26T09:24:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 40.5,
+      "paid": 33.92,
+      "saved": 6.58,
+      "items": [
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 15.5
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "大可乐",
+          "qty": 1,
+          "paid": 8.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202601300010",
+      "createdAt": "2026-01-30T19:17:12",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 30.9,
+      "paid": 26.72,
+      "saved": 4.18,
+      "items": [
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        },
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 8.4
+        }
+      ]
+    },
+    {
+      "orderId": "MC202601310011",
+      "createdAt": "2026-01-31T11:52:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 25.0,
+      "paid": 16.63,
+      "saved": 8.37,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC-DIRTY-0002",
+      "createdAt": "2026-02-02T02:40:00",
+      "channel": "delivery",
+      "store": "望京SOHO店",
+      "gross": 47.0,
+      "paid": 41.0,
+      "saved": 6.0,
+      "items": [
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 2,
+          "paid": 47.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602040012",
+      "createdAt": "2026-02-04T22:52:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 53.5,
+      "paid": 37.55,
+      "saved": 15.95,
+      "items": [
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602060013",
+      "createdAt": "2026-02-06T18:24:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 50.4,
+      "paid": 43.4,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 16.4
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602070014",
+      "createdAt": "2026-02-07T11:35:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 23.5,
+      "paid": 19.0,
+      "saved": 4.5,
+      "items": [
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602080015",
+      "createdAt": "2026-02-08T18:47:00",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 47.0,
+      "paid": 40.0,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602090017",
+      "createdAt": "2026-02-09T11:03:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 61.7,
+      "paid": 35.93,
+      "saved": 25.77,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 2,
+          "paid": 18.8
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 9.4
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 15.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602090016",
+      "createdAt": "2026-02-09T12:52:00",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 29.5,
+      "paid": 20.71,
+      "saved": 8.79,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602100018",
+      "createdAt": "2026-02-10T08:24:12",
+      "channel": "delivery",
+      "store": "望京SOHO店",
+      "gross": 31.0,
+      "paid": 20.72,
+      "saved": 10.28,
+      "items": [
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602160019",
+      "createdAt": "2026-02-16T17:58:12",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 22.5,
+      "paid": 18.45,
+      "saved": 4.05,
+      "items": [
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602200020",
+      "createdAt": "2026-02-20T13:35:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 74.8,
+      "paid": 70.28,
+      "saved": 4.52,
+      "items": [
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 10.8
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602280022",
+      "createdAt": "2026-02-28T01:24:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 39.4,
+      "paid": 34.69,
+      "saved": 4.71,
+      "items": [
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 16.4
+        },
+        {
+          "name": "中杯美式",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202602280021",
+      "createdAt": "2026-02-28T12:11:12",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 5.0,
+      "paid": 4.1,
+      "saved": 0.9,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603030023",
+      "createdAt": "2026-03-03T22:47:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 59.5,
+      "paid": 59.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 2,
+          "paid": 27.0
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603050024",
+      "createdAt": "2026-03-05T10:11:30",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 16.5,
+      "paid": 16.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603060025",
+      "createdAt": "2026-03-06T18:52:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 38.0,
+      "paid": 25.23,
+      "saved": 12.77,
+      "items": [
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "大可乐",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "麦香鱼",
+          "qty": 1,
+          "paid": 16.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603090026",
+      "createdAt": "2026-03-09T19:28:12",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 34.5,
+      "paid": 22.17,
+      "saved": 12.33,
+      "items": [
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "中杯拿铁",
+          "qty": 1,
+          "paid": 17.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603100027",
+      "createdAt": "2026-03-10T10:41:00",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 25.5,
+      "paid": 19.8,
+      "saved": 5.7,
+      "items": [
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603130028",
+      "createdAt": "2026-03-13T16:52:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 84.6,
+      "paid": 84.6,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "大可乐",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 9.1
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603170029",
+      "createdAt": "2026-03-17T17:47:12",
+      "channel": "dine_in",
+      "store": "五道口店",
+      "gross": 21.4,
+      "paid": 17.55,
+      "saved": 3.85,
+      "items": [
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 16.4
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603190030",
+      "createdAt": "2026-03-19T17:03:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 30.5,
+      "paid": 25.01,
+      "saved": 5.49,
+      "items": [
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603200031",
+      "createdAt": "2026-03-20T15:41:12",
+      "channel": "dine_in",
+      "store": "五道口店",
+      "gross": 30.0,
+      "paid": 20.27,
+      "saved": 9.73,
+      "items": [
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603210032",
+      "createdAt": "2026-03-21T23:28:00",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 16.5,
+      "paid": 9.7,
+      "saved": 6.8,
+      "items": [
+        {
+          "name": "麦香鱼",
+          "qty": 1,
+          "paid": 16.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202603250033",
+      "createdAt": "2026-03-25T22:47:00",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 35.0,
+      "paid": 20.68,
+      "saved": 14.32,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604020034",
+      "createdAt": "2026-04-02T12:11:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 58.6,
+      "paid": 35.77,
+      "saved": 22.83,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 9.1
+        },
+        {
+          "name": "中杯美式",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604020035",
+      "createdAt": "2026-04-02T19:03:12",
+      "channel": "delivery",
+      "store": "望京SOHO店",
+      "gross": 17.0,
+      "paid": 17.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604030036",
+      "createdAt": "2026-04-03T09:52:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 38.5,
+      "paid": 24.47,
+      "saved": 14.03,
+      "items": [
+        {
+          "name": "大可乐",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 2,
+          "paid": 27.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604030037",
+      "createdAt": "2026-04-03T10:52:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 65.5,
+      "paid": 62.16,
+      "saved": 3.34,
+      "items": [
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "中杯拿铁",
+          "qty": 1,
+          "paid": 17.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604040038",
+      "createdAt": "2026-04-04T13:11:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 50.5,
+      "paid": 30.26,
+      "saved": 20.24,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604040039",
+      "createdAt": "2026-04-04T20:35:00",
+      "channel": "drive_thru",
+      "store": "五道口店",
+      "gross": 22.5,
+      "paid": 15.14,
+      "saved": 7.36,
+      "items": [
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604050040",
+      "createdAt": "2026-04-05T22:17:00",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 60.5,
+      "paid": 53.5,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604090041",
+      "createdAt": "2026-04-09T11:11:30",
+      "channel": "drive_thru",
+      "store": "国贸店",
+      "gross": 13.4,
+      "paid": 10.39,
+      "saved": 3.01,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 8.4
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604110043",
+      "createdAt": "2026-04-11T11:58:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 50.0,
+      "paid": 45.71,
+      "saved": 4.29,
+      "items": [
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604110042",
+      "createdAt": "2026-04-11T12:11:12",
+      "channel": "dine_in",
+      "store": "五道口店",
+      "gross": 35.5,
+      "paid": 23.24,
+      "saved": 12.26,
+      "items": [
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604120044",
+      "createdAt": "2026-04-12T12:24:30",
+      "channel": "delivery",
+      "store": "五道口店",
+      "gross": 5.0,
+      "paid": 4.1,
+      "saved": 0.9,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604130045",
+      "createdAt": "2026-04-13T08:24:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 42.5,
+      "paid": 38.8,
+      "saved": 3.7,
+      "items": [
+        {
+          "name": "中杯拿铁",
+          "qty": 1,
+          "paid": 17.5
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604170046",
+      "createdAt": "2026-04-17T12:58:30",
+      "channel": "drive_thru",
+      "store": "望京SOHO店",
+      "gross": 33.0,
+      "paid": 29.36,
+      "saved": 3.64,
+      "items": [
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604230047",
+      "createdAt": "2026-04-23T12:11:12",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 41.5,
+      "paid": 27.31,
+      "saved": 14.19,
+      "items": [
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604280049",
+      "createdAt": "2026-04-28T12:35:00",
+      "channel": "delivery",
+      "store": "望京SOHO店",
+      "gross": 26.0,
+      "paid": 18.44,
+      "saved": 7.56,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 2,
+          "paid": 26.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604280048",
+      "createdAt": "2026-04-28T16:17:30",
+      "channel": "dine_in",
+      "store": "五道口店",
+      "gross": 26.0,
+      "paid": 19.99,
+      "saved": 6.01,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202604300050",
+      "createdAt": "2026-04-30T08:11:00",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 30.5,
+      "paid": 27.13,
+      "saved": 3.37,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605050051",
+      "createdAt": "2026-05-05T12:28:00",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 51.5,
+      "paid": 44.81,
+      "saved": 6.69,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605080053",
+      "createdAt": "2026-05-08T10:03:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 42.5,
+      "paid": 24.74,
+      "saved": 17.76,
+      "items": [
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 15.5
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 2,
+          "paid": 10.0
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605080052",
+      "createdAt": "2026-05-08T14:47:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 63.5,
+      "paid": 63.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605090054",
+      "createdAt": "2026-05-09T09:24:30",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 49.0,
+      "paid": 42.0,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605130055",
+      "createdAt": "2026-05-13T18:28:12",
+      "channel": "delivery",
+      "store": "望京SOHO店",
+      "gross": 44.5,
+      "paid": 37.5,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605150056",
+      "createdAt": "2026-05-15T11:17:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 90.0,
+      "paid": 84.29,
+      "saved": 5.71,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605180057",
+      "createdAt": "2026-05-18T12:47:30",
+      "channel": "delivery",
+      "store": "望京SOHO店",
+      "gross": 3.5,
+      "paid": 2.45,
+      "saved": 1.05,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 3.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605220058",
+      "createdAt": "2026-05-22T01:28:12",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 62.5,
+      "paid": 55.5,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 2,
+          "paid": 34.0
+        },
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 15.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605220059",
+      "createdAt": "2026-05-22T13:03:30",
+      "channel": "drive_thru",
+      "store": "五道口店",
+      "gross": 36.5,
+      "paid": 26.07,
+      "saved": 10.43,
+      "items": [
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605250060",
+      "createdAt": "2026-05-25T10:11:12",
+      "channel": "drive_thru",
+      "store": "国贸店",
+      "gross": 54.8,
+      "paid": 50.71,
+      "saved": 4.09,
+      "items": [
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "大可乐",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 17.8
+        },
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 15.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605250061",
+      "createdAt": "2026-05-25T16:24:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 48.5,
+      "paid": 32.11,
+      "saved": 16.39,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605280062",
+      "createdAt": "2026-05-28T09:11:30",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 99.5,
+      "paid": 67.98,
+      "saved": 31.52,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 2,
+          "paid": 51.0
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605290063",
+      "createdAt": "2026-05-29T09:17:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 58.0,
+      "paid": 58.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202605310064",
+      "createdAt": "2026-05-31T17:28:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 48.5,
+      "paid": 48.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606020065",
+      "createdAt": "2026-06-02T12:35:30",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 38.5,
+      "paid": 26.29,
+      "saved": 12.21,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606040066",
+      "createdAt": "2026-06-04T12:17:12",
+      "channel": "drive_thru",
+      "store": "五道口店",
+      "gross": 17.0,
+      "paid": 12.44,
+      "saved": 4.56,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606050067",
+      "createdAt": "2026-06-05T18:24:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 60.0,
+      "paid": 54.09,
+      "saved": 5.91,
+      "items": [
+        {
+          "name": "麦香鱼",
+          "qty": 1,
+          "paid": 16.5
+        },
+        {
+          "name": "中可乐",
+          "qty": 2,
+          "paid": 20.0
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606060068",
+      "createdAt": "2026-06-06T20:28:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 32.6,
+      "paid": 20.08,
+      "saved": 12.52,
+      "items": [
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 9.1
+        },
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606080069",
+      "createdAt": "2026-06-08T13:47:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 22.8,
+      "paid": 19.45,
+      "saved": 3.35,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 17.8
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606100070",
+      "createdAt": "2026-06-10T17:41:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 42.5,
+      "paid": 28.9,
+      "saved": 13.6,
+      "items": [
+        {
+          "name": "大可乐",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "中杯拿铁",
+          "qty": 1,
+          "paid": 17.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606150071",
+      "createdAt": "2026-06-15T17:52:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 78.0,
+      "paid": 78.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 15.5
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606190072",
+      "createdAt": "2026-06-19T11:52:12",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 47.5,
+      "paid": 33.26,
+      "saved": 14.24,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606190073",
+      "createdAt": "2026-06-19T15:41:30",
+      "channel": "drive_thru",
+      "store": "国贸店",
+      "gross": 35.5,
+      "paid": 35.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606250074",
+      "createdAt": "2026-06-25T22:17:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 30.5,
+      "paid": 25.01,
+      "saved": 5.49,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606260075",
+      "createdAt": "2026-06-26T20:47:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 38.0,
+      "paid": 34.13,
+      "saved": 3.87,
+      "items": [
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 15.5
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202606290076",
+      "createdAt": "2026-06-29T10:35:00",
+      "channel": "delivery",
+      "store": "望京SOHO店",
+      "gross": 44.5,
+      "paid": 44.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "中杯美式",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607010077",
+      "createdAt": "2026-07-01T11:52:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 17.5,
+      "paid": 17.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607030079",
+      "createdAt": "2026-07-03T09:28:12",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 23.5,
+      "paid": 20.48,
+      "saved": 3.02,
+      "items": [
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607030078",
+      "createdAt": "2026-07-03T23:17:00",
+      "channel": "delivery",
+      "store": "望京SOHO店",
+      "gross": 13.0,
+      "paid": 8.77,
+      "saved": 4.23,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607070080",
+      "createdAt": "2026-07-07T12:41:30",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 58.5,
+      "paid": 58.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "大可乐",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607070081",
+      "createdAt": "2026-07-07T17:17:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 65.5,
+      "paid": 38.0,
+      "saved": 27.5,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "大可乐",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607080082",
+      "createdAt": "2026-07-08T19:52:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 26.0,
+      "paid": 18.51,
+      "saved": 7.49,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 2,
+          "paid": 26.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607090084",
+      "createdAt": "2026-07-09T17:35:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 55.0,
+      "paid": 33.46,
+      "saved": 21.54,
+      "items": [
+        {
+          "name": "中杯美式",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        },
+        {
+          "name": "中杯拿铁",
+          "qty": 1,
+          "paid": 17.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607090083",
+      "createdAt": "2026-07-09T20:17:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 30.5,
+      "paid": 25.21,
+      "saved": 5.29,
+      "items": [
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607100085",
+      "createdAt": "2026-07-10T19:58:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 25.5,
+      "paid": 19.81,
+      "saved": 5.69,
+      "items": [
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607110086",
+      "createdAt": "2026-07-11T22:58:30",
+      "channel": "dine_in",
+      "store": "五道口店",
+      "gross": 34.0,
+      "paid": 34.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "中杯美式",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607140087",
+      "createdAt": "2026-07-14T12:17:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 22.4,
+      "paid": 17.47,
+      "saved": 4.93,
+      "items": [
+        {
+          "name": "中杯美式",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 9.4
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607180088",
+      "createdAt": "2026-07-18T18:52:00",
+      "channel": "dine_in",
+      "store": "五道口店",
+      "gross": 58.7,
+      "paid": 54.48,
+      "saved": 4.22,
+      "items": [
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 15.7
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "麦香鱼",
+          "qty": 1,
+          "paid": 16.5
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607230089",
+      "createdAt": "2026-07-23T23:35:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 33.0,
+      "paid": 33.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607280090",
+      "createdAt": "2026-07-28T23:03:12",
+      "channel": "dine_in",
+      "store": "五道口店",
+      "gross": 28.5,
+      "paid": 16.53,
+      "saved": 11.97,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607290091",
+      "createdAt": "2026-07-29T18:03:12",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 65.5,
+      "paid": 38.71,
+      "saved": 26.79,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202607300092",
+      "createdAt": "2026-07-30T08:47:30",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 20.0,
+      "paid": 14.11,
+      "saved": 5.89,
+      "items": [
+        {
+          "name": "大可乐",
+          "qty": 1,
+          "paid": 8.0
+        },
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608030093",
+      "createdAt": "2026-08-03T14:17:30",
+      "channel": "delivery",
+      "store": "望京SOHO店",
+      "gross": 70.0,
+      "paid": 70.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608050094",
+      "createdAt": "2026-08-05T16:03:00",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 3.5,
+      "paid": 2.87,
+      "saved": 0.63,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 3.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608050095",
+      "createdAt": "2026-08-05T18:24:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 83.5,
+      "paid": 48.77,
+      "saved": 34.73,
+      "items": [
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        },
+        {
+          "name": "巨无霸",
+          "qty": 2,
+          "paid": 51.0
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 2,
+          "paid": 10.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608080096",
+      "createdAt": "2026-08-08T12:58:30",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 59.0,
+      "paid": 52.0,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608140097",
+      "createdAt": "2026-08-14T10:03:00",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 12.0,
+      "paid": 12.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608150098",
+      "createdAt": "2026-08-15T12:24:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 50.5,
+      "paid": 47.34,
+      "saved": 3.16,
+      "items": [
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 15.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608150099",
+      "createdAt": "2026-08-15T21:28:30",
+      "channel": "dine_in",
+      "store": "五道口店",
+      "gross": 58.0,
+      "paid": 58.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608180100",
+      "createdAt": "2026-08-18T17:58:12",
+      "channel": "dine_in",
+      "store": "五道口店",
+      "gross": 41.5,
+      "paid": 41.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608190101",
+      "createdAt": "2026-08-19T19:41:12",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 11.5,
+      "paid": 9.43,
+      "saved": 2.07,
+      "items": [
+        {
+          "name": "吉士蛋麦满分",
+          "qty": 1,
+          "paid": 11.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608200102",
+      "createdAt": "2026-08-20T18:24:00",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 30.5,
+      "paid": 30.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608210103",
+      "createdAt": "2026-08-21T16:24:12",
+      "channel": "drive_thru",
+      "store": "望京SOHO店",
+      "gross": 71.5,
+      "paid": 71.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 2,
+          "paid": 51.0
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608270104",
+      "createdAt": "2026-08-27T20:52:30",
+      "channel": "drive_thru",
+      "store": "国贸店",
+      "gross": 75.0,
+      "paid": 69.7,
+      "saved": 5.3,
+      "items": [
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 15.5
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 15.7
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 17.8
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608280106",
+      "createdAt": "2026-08-28T09:47:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 24.0,
+      "paid": 17.14,
+      "saved": 6.86,
+      "items": [
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202608280105",
+      "createdAt": "2026-08-28T17:52:30",
+      "channel": "dine_in",
+      "store": "望京SOHO店",
+      "gross": 26.5,
+      "paid": 18.88,
+      "saved": 7.62,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202609030107",
+      "createdAt": "2026-09-03T21:41:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 38.0,
+      "paid": 33.0,
+      "saved": 5.0,
+      "items": [
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 7.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202609070109",
+      "createdAt": "2026-09-07T11:11:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 32.5,
+      "paid": 26.65,
+      "saved": 5.85,
+      "items": [
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "大薯条",
+          "qty": 1,
+          "paid": 15.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202609070108",
+      "createdAt": "2026-09-07T19:28:00",
+      "channel": "drive_thru",
+      "store": "五道口店",
+      "gross": 72.5,
+      "paid": 67.75,
+      "saved": 4.75,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        },
+        {
+          "name": "麦香鱼",
+          "qty": 1,
+          "paid": 16.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202609080110",
+      "createdAt": "2026-09-08T15:24:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 36.0,
+      "paid": 29.92,
+      "saved": 6.08,
+      "items": [
+        {
+          "name": "中杯拿铁",
+          "qty": 1,
+          "paid": 17.5
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 7.0
+        },
+        {
+          "name": "大可乐",
+          "qty": 1,
+          "paid": 11.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202609140111",
+      "createdAt": "2026-09-14T09:17:30",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 23.5,
+      "paid": 16.08,
+      "saved": 7.42,
+      "items": [
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202609180112",
+      "createdAt": "2026-09-18T10:03:30",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 22.5,
+      "paid": 18.13,
+      "saved": 4.37,
+      "items": [
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC-DIRTY-0001",
+      "createdAt": "2026-09-18T12:40:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 38.5,
+      "paid": 31.5,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        },
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202609260114",
+      "createdAt": "2026-09-26T14:11:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 66.5,
+      "paid": 42.08,
+      "saved": 24.42,
+      "items": [
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 23.5
+        },
+        {
+          "name": "香芋派",
+          "qty": 1,
+          "paid": 7.5
+        },
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "巨无霸",
+          "qty": 1,
+          "paid": 25.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202609260113",
+      "createdAt": "2026-09-26T21:47:12",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 69.0,
+      "paid": 69.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "中可乐",
+          "qty": 1,
+          "paid": 10.0
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 2,
+          "paid": 47.0
+        },
+        {
+          "name": "满杯百香果",
+          "qty": 1,
+          "paid": 12.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202609270115",
+      "createdAt": "2026-09-27T11:58:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 22.6,
+      "paid": 22.6,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "奥利奥麦旋风",
+          "qty": 1,
+          "paid": 13.5
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 9.1
+        }
+      ]
+    },
+    {
+      "orderId": "MC202609300116",
+      "createdAt": "2026-09-30T20:35:30",
+      "channel": "delivery",
+      "store": "国贸店",
+      "gross": 56.9,
+      "paid": 49.9,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "板烧鸡腿堡",
+          "qty": 1,
+          "paid": 16.4
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202610020117",
+      "createdAt": "2026-10-02T13:35:00",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 86.5,
+      "paid": 79.5,
+      "saved": 7.0,
+      "items": [
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 1,
+          "paid": 13.0
+        },
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        },
+        {
+          "name": "巨无霸",
+          "qty": 2,
+          "paid": 51.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC-DIRTY-0003",
+      "createdAt": "2026-10-02T19:15:00",
+      "channel": "drive_thru",
+      "store": "五道口店",
+      "gross": 22.5,
+      "paid": 22.5,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "麦辣鸡腿堡",
+          "qty": 1,
+          "paid": 22.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202610070119",
+      "createdAt": "2026-10-07T11:52:30",
+      "channel": "dine_in",
+      "store": "国贸店",
+      "gross": 56.5,
+      "paid": 36.98,
+      "saved": 19.52,
+      "items": [
+        {
+          "name": "热香饼",
+          "qty": 1,
+          "paid": 12.0
+        },
+        {
+          "name": "原味圆筒冰淇淋",
+          "qty": 1,
+          "paid": 5.0
+        },
+        {
+          "name": "猪柳蛋麦满分",
+          "qty": 2,
+          "paid": 26.0
+        },
+        {
+          "name": "麦乐鸡（5块）",
+          "qty": 1,
+          "paid": 13.5
+        }
+      ]
+    },
+    {
+      "orderId": "MC202610070118",
+      "createdAt": "2026-10-07T13:28:00",
+      "channel": "drive_thru",
+      "store": "国贸店",
+      "gross": 68.0,
+      "paid": 41.36,
+      "saved": 26.64,
+      "items": [
+        {
+          "name": "巨无霸",
+          "qty": 2,
+          "paid": 51.0
+        },
+        {
+          "name": "双层吉士汉堡",
+          "qty": 1,
+          "paid": 17.0
+        }
+      ]
+    },
+    {
+      "orderId": "MC202610080120",
+      "createdAt": "2026-10-08T11:52:30",
+      "channel": "delivery",
+      "store": "五道口店",
+      "gross": 13.0,
+      "paid": 13.0,
+      "saved": 0.0,
+      "items": [
+        {
+          "name": "中薯条",
+          "qty": 1,
+          "paid": 13.0
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "totalOrders": 123,
+    "totalPaid": 4177.01,
+    "totalSaved": 871.49,
+    "saveRate": 0.1726,
+    "avgOrderValue": 33.96
+  },
+  "personas": [
+    {
+      "title": "资深麦门老友",
+      "evidence": "横跨 275 天留下 123 笔记录，是实打实的老主顾",
+      "score": 3.0
+    },
+    {
+      "title": "连击王",
+      "evidence": "最长连续 5 天没断过（截至 2026-02-10）",
+      "score": 1.0
+    },
+    {
+      "title": "甜品治愈系",
+      "evidence": "甜品类占全部餐品的 18%，是稳定的情绪补给",
+      "score": 0.1808
+    }
+  ],
+  "audit": {
+    "grade": "A",
+    "couponUtilization": 0.7886,
+    "estimatedMissed": 241.38,
+    "findings": [
+      {
+        "level": "alert",
+        "title": "26 单没用任何优惠",
+        "amount": 241.38
+      },
+      {
+        "level": "notice",
+        "title": "有 6 张券可领但未领取",
+        "amount": 0.0
+      },
+      {
+        "level": "notice",
+        "title": "4 张券 7 天内到期",
+        "amount": 0.0
+      },
+      {
+        "level": "tip",
+        "title": "最大一笔原价单：¥84.60",
+        "amount": 18.65
+      },
+      {
+        "level": "tip",
+        "title": "配送费累计 ¥189.00",
+        "amount": 0.0
+      }
+    ]
+  }
+}

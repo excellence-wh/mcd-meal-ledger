@@ -1,0 +1,33 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# ---- 真实数据保护（重要）----
+# fixtures/live/ 存放从 MCP 拉取的真实订单快照，
+# 里面包含你的真实消费记录，绝对不能进仓库。
+fixtures/live/
+fixtures/*.live.json
+
+# ---- 个人产出 ----
+docs/mine.html
+docs/*-mine.html
+docs/*-private.html
+
+# ---- 密钥 / 环境 ----
+.env
+.env.*
+*.local.json
+!.mcp.json
+~/.workbuddy/credentials*
+
+# ---- 编辑器 / 系统 ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
