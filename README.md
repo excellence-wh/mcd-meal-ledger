@@ -9,7 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies: 0](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](#为什么零依赖)
-[![Tests: 167](https://img.shields.io/badge/tests-167%20passed-success.svg)](./scripts/selftest.py)
+[![Tests: 169](https://img.shields.io/badge/tests-169%20passed-success.svg)](./scripts/selftest.py)
 [![MCP: McDonald's](https://img.shields.io/badge/MCP-mcd.cn-DA291C.svg)](https://open.mcd.cn/mcp)
 
 </div>
@@ -177,7 +177,7 @@ mcd-meal-ledger/
 
 ```bash
 python scripts/selftest.py
-# ✅ 167 passed, 0 failed  (共 167 项)
+# ✅ 169 passed, 0 failed  (共 169 项)
 ```
 
 覆盖五层：
@@ -226,7 +226,7 @@ python scripts/selftest.py
 > 优惠金额，「省了多少」会恒等于 0 —— 审计引擎会**静默失效且不报错**。
 > 本项目为此把逐单补全做成了核心步骤。
 
-完整说明（含**真实联调实测的字段结构**、调用时序图、4 个真实联调问题的排查与修复、
+完整说明（含**真实联调实测的字段结构**、调用时序图、5 个真实联调问题的排查与修复、
 业务价值分析）见 **[MCP_INTEGRATION.md](./MCP_INTEGRATION.md)**。
 
 ---
@@ -234,7 +234,7 @@ python scripts/selftest.py
 ## 已通过真实联调验证
 
 本项目不是"写完就交"，而是**用真实 Token 跑通了全链路**，并因此发现并修复了
-4 个只在真实数据上才会暴露的问题（脱敏样例永远测不出来）：
+5 个只在真实数据上才会暴露的问题（脱敏样例永远测不出来）：
 
 | # | 问题 | 后果 |
 |:-:|---|---|
@@ -242,6 +242,7 @@ python scripts/selftest.py
 | ② | 实付字段实为 `realTotalAmount`，且订单列表不给原价 | **优惠审计静默失效，省下金额恒为 0** |
 | ③ | 服务端不返回 `Mcp-Session-Id` | 每次调用都重复握手，请求量翻倍 |
 | ④ | `query-meals` / `query-store-coupons` 有 3 个必填参数 | 两次调用直接返回 400 |
+| ⑤ | 活动标题实为 `articleDto.title`（`activityTitle` 恒为空） | 活动板块静默变成空白卡片 |
 
 这些问题现已固化为 `scripts/selftest.py` 中的**「真实 MCP 契约测试」**区块，
 用真实报文当夹具，防止回归。

@@ -4,7 +4,7 @@
 调用流程是怎样的、以及每一路调用在业务上解决了什么问题。
 
 **本文档的所有字段结构、参数要求与编码映射均来自 2026-10-16 的真实联调结果
-（使用真实 Token 调用 `mcp.mcd.cn`），不是推测。** 联调期间发现并修复了 4 个
+（使用真实 Token 调用 `mcp.mcd.cn`），不是推测。** 联调期间发现并修复了 5 个
 会导致项目静默失效的问题，见第五节。
 
 ---
@@ -279,15 +279,34 @@ Tool `description`（也出现在错误响应里）：
 }
 ```
 
-**`campaign-calendar`** —— `data.dailyList[].events[].activityTitle`，
-每个日期节点带 `today` 标记。
+**`campaign-calendar`** —— `data.dailyList[].events[]`，每个日期节点带 `today` 标记。
+⚠️ 标题**不在** `activityTitle`（恒为空），而在 `articleDto.title`：
+
+```json
+{
+  "date": "2026-10-16",
+  "today": true,
+  "dateText": "2026年10月16日 今日",
+  "events": [
+    {
+      "activityCode": "45f3", "activityStage": 3, "eventType": 4, "price": "0",
+      "activityTitle": "",                        // ← 恒为空，不能只用这个
+      "articleDto": {
+        "title": "超值𝟗.𝟗元早餐两件套陪你开工啦😋",
+        "highlights": "9.9元超值早餐正式上新!",
+        "buttonText": "立即领券"
+      }
+    }
+  ]
+}
+```
 
 **`query-meals`** —— ⚠️ 只返回 `data.categories[].meals[].code` 与 `tags`，
 **既没有餐品名称，也没有品类名**。
 
 ---
 
-## 五、联调发现并修复的 4 个问题
+## 五、联调发现并修复的 5 个问题
 
 这一节是本项目最有价值的部分 —— 它们都是**只在真实数据上才会暴露**的问题，
 脱敏样例永远测不出来。修复后已固化为 `scripts/selftest.py` 中的
@@ -331,6 +350,18 @@ Tool `description`（也出现在错误响应里）：
 另外顺带发现：`query-my-coupons` 的分页参数是 `page` / `pageSize`（字符串），
 不是 `pageNo`；`order-list` 的 `inputSchema` **没有任何参数**，
 传 `pageNo` / `pageSize` 会被忽略并重复返回同一批数据。
+
+### 问题 ⑤ · 活动标题字段恒为空
+
+| | |
+|---|---|
+| **现象** | `campaign-calendar` 里 `activityTitle` 在真实数据中**恒为空字符串**，真正的标题在 `articleDto.title`（其次是 `articleDto.highlights`） |
+| **后果** | 活动板块静默变成空白 —— 一个"看起来接口调成功了"的空卡片 |
+| **修复** | 标题按 `activityTitle` → `articleDto.title` → `articleDto.highlights` → `activitySubTitle` 依次回退；同时只在 `today = true` 的日期节点里取，避免把「往期回顾」当成当前活动 |
+
+真实数据实测：修复后能从 15 个当日活动中正确抽出标题，例如
+「麦当劳联动G-DRAGON」「超值𝟗.𝟗元早餐两件套陪你开工啦😋」
+「🫐一口爆汁！蓝莓爆爆珠麦旋风上新」。
 
 ### 由问题 ② 派生的两个设计决定
 
@@ -431,7 +462,7 @@ Tool `description`（也出现在错误响应里）：
 
 ## 八、可验证性
 
-- `scripts/selftest.py`：**167 项断言**，含专门的「真实 MCP 契约测试」区块 ——
+- `scripts/selftest.py`：**169 项断言**，含专门的「真实 MCP 契约测试」区块 ——
   用真实联调抓回来的原始报文作为夹具，锁死 `orderProductList` / `realTotalAmount` /
   `beType` 等关键字段名，防止回归。
 - `fixtures/` 内置脱敏样例数据（123 笔订单 + 8 张券），**没有 Token 也能完整跑通全流程**。
@@ -439,7 +470,7 @@ Tool `description`（也出现在错误响应里）：
 - HTML 产物为自包含内联样式与内联 SVG，**不引用任何外部资源**（已断言）。
 
 ```bash
-python scripts/selftest.py              # 167 passed, 0 failed
+python scripts/selftest.py              # 169 passed, 0 failed
 python scripts/run.py --offline         # 离线跑通完整年报
 python scripts/fetch_snapshot.py        # 用真实 Token 抓数据快照
 ```

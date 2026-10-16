@@ -640,6 +640,7 @@ def test_real_mcp_contract(t: Runner) -> None:
     t.eq("缺 couponId 时自动编号", real_coupons[0].coupon_id, "CPN-0000")
 
     # ---- 7b. 活动日历（真实结构：data.dailyList[].events[].activityTitle）----
+    # ⚠️ 真实数据里 activityTitle 恒为空字符串，真标题在 articleDto.title
     real_campaigns = {
         "success": True,
         "code": 200,
@@ -647,26 +648,38 @@ def test_real_mcp_contract(t: Runner) -> None:
             "currentTime": "2026-10-16 14:39:51",
             "dailyList": [
                 {
-                    "date": "2026-10-16",
-                    "today": True,
+                    "date": "2026-10-12",
+                    "today": False,
                     "events": [
-                        {"activityTitle": "1+1随心配", "activityStage": 3},
-                        {"activityTitle": "麦乐送满减", "activityStage": 3},
+                        {"activityTitle": "", "articleDto": {"title": "往期活动不该出现"}}
                     ],
                 },
                 {
-                    "date": "2026-10-17",
-                    "today": False,
-                    "events": [{"activityTitle": "下期活动"}],
+                    "date": "2026-10-16",
+                    "today": True,
+                    "events": [
+                        {"activityTitle": "", "articleDto": {"title": "麦当劳联动G-DRAGON"}},
+                        {"activityTitle": "", "articleDto": {"title": "麦当劳 X PEACEMINUSONE"}},
+                        {"activityTitle": "", "articleDto": {"title": "麦当劳 X PEACEMINUSONE"}},  # 重复
+                        {"activityTitle": "", "articleDto": {"highlights": "仅 highlights 可用"}},
+                        {"activityTitle": "直接给标题的活动"},
+                        {"activityTitle": "", "articleDto": {}},  # 完全无标题，应跳过
+                    ],
                 },
             ],
             "subscribedEvents": [],
         },
     }
     titles = parse_campaign_titles(real_campaigns)
-    t.eq("活动标题被解析", titles, ["1+1随心配", "麦乐送满减"])
-    t.eq("非今日活动不混入", "下期活动" in titles, False)
+    t.eq(
+        "活动标题从 articleDto.title 解析",
+        titles,
+        ["麦当劳联动G-DRAGON", "麦当劳 X PEACEMINUSONE", "仅 highlights 可用", "直接给标题的活动"],
+    )
+    t.eq("往期日期不混入", "往期活动不该出现" in titles, False)
+    t.eq("标题去重", len(titles), len(set(titles)))
     t.eq("空活动不崩溃", parse_campaign_titles(None), [])
+    t.eq("limit 生效", len(parse_campaign_titles(real_campaigns, limit=2)), 2)
 
     # ---- 8. 积分审计结论 -----------------------------------------------
     real_orders = parse_orders([REAL_ORDER_DETAIL["data"], REAL_DISCOUNTED_DETAIL["data"]])

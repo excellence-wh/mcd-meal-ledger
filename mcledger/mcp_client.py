@@ -633,33 +633,52 @@ def parse_account(payload: Any) -> AccountPoints:
     )
 
 
-def parse_campaign_titles(payload: Any, limit: int = 6) -> list[str]:
-    """从 campaign-calendar 里抽出当前/未来活动的标题。"""
+def _event_title(event: dict[str, Any]) -> str:
+    """抽取活动标题。
+
+    ⚠️ 真实联调结论：`activityTitle` 在真实数据里**恒为空字符串**，
+    真正的标题藏在 `articleDto.title`（或 `articleDto.highlights`）里。
+    只读 `activityTitle` 会让整个活动板块静默变成空白。
+    """
+    article = event.get("articleDto")
+    if not isinstance(article, dict):
+        article = {}
+    for candidate in (
+        event.get("activityTitle"),
+        article.get("title"),
+        article.get("highlights"),
+        event.get("activitySubTitle"),
+    ):
+        text = str(candidate or "").strip()
+        if text:
+            return text
+    return ""
+
+
+def parse_campaign_titles(payload: Any, limit: int = 8) -> list[str]:
+    """从 campaign-calendar 里抽出活动标题。
+
+    真实结构：data.dailyList[].events[].articleDto.title，
+    每个日期节点带 `today` 标记。优先取 today 那一天的活动，
+    取不到再退回全部日期。
+    """
     node = _unwrap(payload)
     if not isinstance(node, dict):
         return []
+
+    days = [d for d in (node.get("dailyList") or []) if isinstance(d, dict)]
+    # 有明确的 "今天" 节点时，只看今天 —— 混入「往期回顾」会误导用户
+    today_days = [d for d in days if d.get("today") is True]
+    ordered = today_days if today_days else days
+
     titles: list[str] = []
-    for day in node.get("dailyList") or []:
-        if not isinstance(day, dict) or day.get("today") is False:
-            continue
+    for day in ordered:
         for event in day.get("events") or []:
             if not isinstance(event, dict):
                 continue
-            title = str(event.get("activityTitle") or "").strip()
+            title = _event_title(event)
             if title and title not in titles:
                 titles.append(title)
             if len(titles) >= limit:
                 return titles
-    # 兜底：从全部日期里找
-    if not titles:
-        for day in node.get("dailyList") or []:
-            if not isinstance(day, dict):
-                continue
-            for event in day.get("events") or []:
-                if isinstance(event, dict):
-                    title = str(event.get("activityTitle") or "").strip()
-                    if title and title not in titles:
-                        titles.append(title)
-                    if len(titles) >= limit:
-                        return titles
     return titles
