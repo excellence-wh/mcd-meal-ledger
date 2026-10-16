@@ -13,9 +13,11 @@ env/
 fixtures/live/
 fixtures/*.live.json
 
-# ---- 个人产出 ----
+# ---- 个人产出（含真实消费数据，禁止提交）----
 docs/mine.html
+docs/mine*.json
 docs/*-mine.html
+docs/live-*
 docs/*-private.html
 
 # ---- 密钥 / 环境 ----

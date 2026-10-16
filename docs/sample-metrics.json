@@ -3033,7 +3033,17 @@
         "level": "tip",
         "title": "配送费累计 ¥189.00",
         "amount": 0.0
+      },
+      {
+        "level": "alert",
+        "title": "已有 15 积分过期作废",
+        "amount": 0.0
       }
     ]
+  },
+  "account": {
+    "available": 46.5,
+    "expired": 15.0,
+    "atRisk": 0.0
   }
 }

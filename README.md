@@ -9,7 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies: 0](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](#为什么零依赖)
-[![Tests: 102](https://img.shields.io/badge/tests-102%20passed-success.svg)](./scripts/selftest.py)
+[![Tests: 167](https://img.shields.io/badge/tests-167%20passed-success.svg)](./scripts/selftest.py)
 [![MCP: McDonald's](https://img.shields.io/badge/MCP-mcd.cn-DA291C.svg)](https://open.mcd.cn/mcp)
 
 </div>
@@ -177,15 +177,18 @@ mcd-meal-ledger/
 
 ```bash
 python scripts/selftest.py
-# ✅ 102 passed, 0 failed  (共 102 项)
+# ✅ 167 passed, 0 failed  (共 167 项)
 ```
 
-覆盖四层：
+覆盖五层：
 
 1. **解析层** —— 脏数据（`"¥25.5元"`、毫秒时间戳、缺字段）、三种响应外壳、渠道文案归一化
 2. **统计层** —— 聚合结果与手工核算逐项对齐，空输入不崩溃
 3. **业务层** —— 人格规则判定、审计结论（含「全原价时不虚构金额」这条诚实性断言）
 4. **端到端** —— 离线样例跑通、HTML 产物**同一输入产出完全一致**（可复现性断言）
+5. **真实 MCP 契约** —— 用真实联调报文锁死
+   `orderProductList` / `realTotalAmount` / `beType` 编码映射 / 套餐拆解 / 积分字段，
+   防止未来"优化"别名表时把这些关键字段弄丢
 
 ---
 
@@ -203,22 +206,52 @@ python scripts/selftest.py
 
 ## MCP 接入
 
-本项目调用 **7 个**麦当劳 MCP Tool：
+本项目调用 **8 个**麦当劳 MCP Tool：
 
 | Tool | 用途 |
 |---|---|
-| `order-list` | 历史订单（数据地基） |
-| `query-my-coupons` | 账户已有券 |
+| `order-list` | 历史订单（数据地基，但只给实付金额） |
+| `query-order` | 订单详情（**优惠审计的唯一数据源**：原价 / 优惠金额 / 用券明细） |
 | `available-coupons` | 麦麦省可领取券 |
+| `query-my-coupons` | 账户已有券 |
 | `query-store-coupons` | 门店专属券 |
-| `query-meals` | 门店菜单（分类 / 编码） |
+| `query-meals` | 门店菜单 |
 | `query-my-account` | 积分账户 |
 | `campaign-calendar` | 活动日历 |
 
-> **一个关键经验：券必须从四路查全。** 麦麦省可领券、账户已有券、门店专属券
+> **一个关键经验：券必须从三路查全。** 麦麦省可领券、账户已有券、门店专属券
 > 是三路并集，**少查一路，用户就少省钱**。
+>
+> **另一个关键经验：`order-list` 只返回实付金额。** 不逐单调 `query-order` 补全原价与
+> 优惠金额，「省了多少」会恒等于 0 —— 审计引擎会**静默失效且不报错**。
+> 本项目为此把逐单补全做成了核心步骤。
 
-完整说明（含调用时序图、归一化策略、业务价值分析）见 **[MCP_INTEGRATION.md](./MCP_INTEGRATION.md)**。
+完整说明（含**真实联调实测的字段结构**、调用时序图、4 个真实联调问题的排查与修复、
+业务价值分析）见 **[MCP_INTEGRATION.md](./MCP_INTEGRATION.md)**。
+
+---
+
+## 已通过真实联调验证
+
+本项目不是"写完就交"，而是**用真实 Token 跑通了全链路**，并因此发现并修复了
+4 个只在真实数据上才会暴露的问题（脱敏样例永远测不出来）：
+
+| # | 问题 | 后果 |
+|:-:|---|---|
+| ① | 明细键名实为 `orderProductList` | 订单明细整体解析为空，榜单与画像全部失效 |
+| ② | 实付字段实为 `realTotalAmount`，且订单列表不给原价 | **优惠审计静默失效，省下金额恒为 0** |
+| ③ | 服务端不返回 `Mcp-Session-Id` | 每次调用都重复握手，请求量翻倍 |
+| ④ | `query-meals` / `query-store-coupons` 有 3 个必填参数 | 两次调用直接返回 400 |
+
+这些问题现已固化为 `scripts/selftest.py` 中的**「真实 MCP 契约测试」**区块，
+用真实报文当夹具，防止回归。
+
+真实账号实测产出：
+
+```
+订单 2 单 · 实付 46.50 元 · 优惠利用率 0%
+积分 46.5 可用 · 0 即将过期 · 15 已过期作废
+```
 
 ---
 
@@ -240,6 +273,12 @@ python scripts/selftest.py
 **Q：会替我用掉券或者下单吗？**
 不会。`create-order` / `cancel-order` / `draw-lottery` 等写操作**一律不调用**；
 `auto-bind-coupons`（一键领券）仅在显式传入 `--bind-coupons` 时执行，且会提前提示。
+
+**Q：为什么我的报告显示"省下 ¥0.00"？**
+很可能你的订单确实全部是原价结算的。麦当劳 MCP 的订单列表只返回实付金额，
+本项目会逐单调用详情接口补全原价与优惠金额 —— 只有两边对得上，
+才能算出真实的优惠。如果确实是全原价，报告不会编造一个"本可省"的数字，
+而是直接指出「全部订单均为原价」并告诉你券池里有多少张可领的券。
 
 **Q：报告里的热量数据是营养建议吗？**
 不是。热量只是订单数据的客观陈述，本项目不提供任何医疗或营养建议。

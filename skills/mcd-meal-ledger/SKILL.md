@@ -42,7 +42,7 @@ license: MIT
 **首选方式（推荐）**：调用一键脚本，它内部已经封装好完整调用链。
 
 ```bash
-# 真实数据
+# 真实数据（脚本会自动逐单调 query-order 补全原价与优惠金额）
 MCD_MCP_TOKEN="$MCD_MCP_TOKEN" python scripts/run.py --out docs/mine.html --markdown
 
 # 无 Token 时先看效果
@@ -50,6 +50,14 @@ python scripts/run.py --offline --out docs/demo.html
 ```
 
 脚本会打印一份 Markdown 简报，**把这份简报作为你回答的骨架**。
+
+⚠️ **两条必须知道的取数事实**（真实联调结论）：
+
+1. **`order-list` 只返回实付金额**，不返回原价与优惠。脚本会用 `query-order`
+   逐单补全 —— 不要跳过这一步（`--no-enrich`），否则「省了多少」恒为 0，
+   优惠审计会静默失效。
+2. **券要查三路并集**（麦麦省可领券 + 账户已有券 + 门店专属券），
+   少查一路就会漏报，用户就少省钱。
 
 **备选方式**：如果用户要求交互式探索（例如「只看某一单」「某家门店占比多少」），
 你可以直接调用 MCP Tool，但**统计必须仍然交给代码**：

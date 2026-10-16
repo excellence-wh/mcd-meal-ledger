@@ -25,9 +25,11 @@ if str(ROOT) not in sys.path:
 
 from mcledger.analytics import compute_metrics, money  # noqa: E402
 from mcledger.audit import LEVEL_ALERT, run_audit  # noqa: E402
+from mcledger.mcp_client import parse_account, parse_campaign_titles  # noqa: E402
 from mcledger.models import (  # noqa: E402
     Order,
     OrderItem,
+    classify_item,
     dedupe_orders,
     normalize_channel,
     parse_coupons,
@@ -387,6 +389,332 @@ def test_end_to_end(t: Runner) -> None:
 
 
 # ==========================================================================
+# 5. 真实 MCP 契约测试
+#
+# 下面的报文是 2026-10-16 真实调用 mcp.mcd.cn 抓回来的原样结构。
+# 把它们固化成测试，是为了防止以后有人"优化"别名表时
+# 把 orderProductList / realTotalAmount 这类关键字段弄丢 ——
+# 那会让整份年报静默变成空壳，而且脱敏样例根本测不出来。
+# ==========================================================================
+
+REAL_ORDER_LIST = {
+    "success": True,
+    "code": 200,
+    "message": "请求成功",
+    "data": {
+        "list": [
+            {
+                "orderId": "1030766560000567244392805855",
+                "orderType": "1",
+                "createTime": "2026-01-01 15:47:26",
+                "beType": "1",
+                "beCode": "",
+                "storeCode": "1960183",
+                "storeName": "麦当劳天门万达广场餐厅",
+                "orderStatus": "订单已完成",
+                "orderProductList": [
+                    {
+                        "productCode": "520689",
+                        "productName": "小杯鲜萃咖啡",
+                        "quantity": 1,
+                        "comboItemList": [],
+                    }
+                ],
+                "realTotalAmount": "10",
+            },
+            {
+                "orderId": "1030711850000567244682228887",
+                "orderType": "1",
+                "createTime": "2026-01-01 15:44:16",
+                "beType": "1",
+                "beCode": "",
+                "storeCode": "1960183",
+                "storeName": "麦当劳天门万达广场餐厅",
+                "orderStatus": "订单已完成",
+                "orderProductList": [
+                    {
+                        "productCode": "9900004064",
+                        "productName": "精选单人餐三件套",
+                        "quantity": 1,
+                        "comboItemList": [
+                            {"itemName": "新升级板烧鸡腿堡", "itemQuantity": 1},
+                            {"itemName": "中薯条", "itemQuantity": 1},
+                            {"itemName": "鲜萃冰咖", "itemQuantity": 1},
+                        ],
+                    }
+                ],
+                "realTotalAmount": "36.5",
+            },
+        ]
+    },
+}
+
+REAL_ORDER_DETAIL = {
+    "success": True,
+    "code": 200,
+    "message": "请求成功",
+    "data": {
+        "orderId": "1030711850000567244682228887",
+        "orderStatus": "订单已完成",
+        "status": "40",
+        "storeName": "麦当劳天门万达广场餐厅",
+        "storeAddress": "竟陵陆羽大道与竟东路交汇处万达广场",
+        "orderProductList": [
+            {
+                "productName": "精选单人餐三件套",
+                "quantity": 1,
+                "price": "36.5",
+                "comboItemList": [
+                    {"itemName": "新升级板烧鸡腿堡", "itemQuantity": 1},
+                    {"itemName": "中薯条", "itemQuantity": 1},
+                    {"itemName": "鲜萃冰咖", "itemQuantity": 1},
+                ],
+            }
+        ],
+        "totalAmount": "36.5",
+        "realTotalAmount": "36.5",
+        "totalDiscountAmount": "0",
+        "couponList": [],
+        "createTime": "2026-01-01 15:44:16",
+        "deliveryPrice": "0",
+        "realDeliveryPrice": "0",
+        "productPrice": "36.5",
+        "takeWay": "外带",
+    },
+}
+
+# 带优惠的真实结构变体：验证原价 / 实付 / 优惠 / 券 能被正确拆分
+REAL_DISCOUNTED_DETAIL = {
+    "success": True,
+    "code": 200,
+    "data": {
+        "orderId": "X-DISCOUNT-1",
+        "orderProductList": [
+            {"productName": "巨无霸", "quantity": 1, "price": "25.5", "comboItemList": []},
+            {"productName": "中薯条", "quantity": 1, "price": "13.0", "comboItemList": []},
+        ],
+        "totalAmount": "47.0",
+        "realTotalAmount": "21.9",
+        "totalDiscountAmount": "25.1",
+        "couponList": [{"couponName": "1+1随心配"}],
+        "createTime": "2026-06-18 12:30:00",
+        "beType": "1",
+    },
+}
+
+REAL_ACCOUNT = {
+    "success": True,
+    "code": 200,
+    "data": {
+        "availablePoint": "46.5",
+        "accumulativePoint": "61.5",
+        "currency": "麦享会积分",
+        "currentMouthExpirePoint": "0",
+        "expiredPoint": "15",
+        "frozenPoint": "0",
+        "usedPoint": "0",
+    },
+}
+
+REAL_AVAILABLE_COUPONS = {
+    "success": True,
+    "code": 200,
+    "data": [
+        {
+            "couponName": "中薯条买一送一",
+            "couponImage": "https://img.mcd.cn/cms/images/88890902eaa7a54d.png",
+            "couponStatus": "CAN_GET",
+            "label": "可领取",
+        },
+        {
+            "couponName": "王牌小食拼",
+            "couponStatus": "CAN_GET",
+            "label": "可领取",
+        },
+    ],
+}
+
+
+def test_real_mcp_contract(t: Runner) -> None:
+    # ---- 1. order-list 真实结构 ---------------------------------------
+    orders = parse_orders(REAL_ORDER_LIST)
+    t.eq("真实 order-list 解析出 2 单", len(orders), 2)
+
+    first, combo = orders[0], orders[1]
+    # ⚠️ 回归断言：orderProductList 必须在别名表里，否则明细整体为空
+    t.eq("真实明细键 orderProductList 可解析", len(first.items), 1)
+    t.eq("真实餐品名", first.items[0].name, "小杯鲜萃咖啡")
+    t.eq("真实数量", first.items[0].qty, 1)
+    # ⚠️ 回归断言：realTotalAmount 必须被识别为实付
+    t.close("realTotalAmount 识别为实付", first.paid, 10.0)
+    t.close("仅有实付时原价不虚构", first.gross, 10.0)
+    # ⚠️ 回归断言：beType/orderType 是数字编码，必须能映射
+    t.eq("beType=1 映射为到店取餐", first.channel, "dine_in")
+    t.eq("真实门店名", first.store, "麦当劳天门万达广场餐厅")
+
+    # ---- 2. 套餐拆解 ---------------------------------------------------
+    t.eq("套餐行被识别为套餐", combo.items[0].is_combo, True)
+    t.eq("套餐拆出 3 个子项", len(combo.items[0].components), 3)
+    t.eq(
+        "套餐子项名正确",
+        [c[0] for c in combo.items[0].components],
+        ["新升级板烧鸡腿堡", "中薯条", "鲜萃冰咖"],
+    )
+
+    combo_metrics = compute_metrics(orders)
+    t.eq("套餐订单计数", combo_metrics.combo_orders, 1)
+    t.check("单品榜含套餐拆解结果", len(combo_metrics.top_components) == 3,
+            f"实际 {[c.name for c in combo_metrics.top_components]}")
+    # 咖啡 = 独立的「小杯鲜萃咖啡」1 份 + 套餐拆出的「鲜萃冰咖」1 份
+    t.close("拆解后咖啡品类含量为 2", combo_metrics.category_counts.get("咖啡", 0), 2)
+    t.close("拆解后汉堡品类含量为 1", combo_metrics.category_counts.get("汉堡", 0), 1)
+    t.close("拆解后小食品类含量为 1", combo_metrics.category_counts.get("小食", 0), 1)
+
+    # ---- 3. query-order 真实结构（含原价 / 优惠 / 券）------------------
+    # 注意：真实使用时 detail 会被合并进 order-list 的列表项再统一解析，
+    # 所以这里也走同一条路径，而不是单独解析一个 detail 对象。
+    detail = parse_orders([REAL_ORDER_DETAIL["data"]])[0]
+    t.close("totalAmount 识别为原价", detail.gross, 36.5)
+    t.close("realTotalAmount 识别为实付", detail.paid, 36.5)
+    t.eq("明细行带单价", detail.items[0].unit_price, 36.5)
+
+    disc = parse_orders([REAL_DISCOUNTED_DETAIL["data"]])[0]
+    t.close("有优惠时原价正确", disc.gross, 47.0)
+    t.close("有优惠时实付正确", disc.paid, 21.9)
+    t.close("有优惠时省下正确", disc.saved, 25.1)
+    t.eq("券名被解析", disc.coupons, ["1+1随心配"])
+    t.check("有优惠单被标记", disc.had_discount is True)
+
+    # ---- 3b. 补全合并路径（order-list 行 + query-order 详情）------------
+    # 复现 _enrich_orders 的合并逻辑：详情为主体，从列表项补齐渠道字段。
+    list_row = REAL_ORDER_LIST["data"]["list"][1]
+    detail_data = dict(REAL_ORDER_DETAIL["data"])
+    detail_data["totalAmount"] = "47.0"
+    detail_data["realTotalAmount"] = "21.9"
+    detail_data["totalDiscountAmount"] = "25.1"
+    detail_data["couponList"] = [{"couponName": "1+1随心配"}]
+    merged = dict(detail_data)
+    for key in ("orderType", "beType", "beCode", "storeCode", "storeName", "orderStatus"):
+        if merged.get(key) in (None, "") and list_row.get(key) not in (None, ""):
+            merged[key] = list_row[key]
+
+    m_orders = parse_orders([merged])
+    t.eq("合并后仍能解析为 1 单", len(m_orders), 1)
+    t.close("合并后原价来自详情", m_orders[0].gross, 47.0)
+    t.close("合并后实付来自详情", m_orders[0].paid, 21.9)
+    t.close("合并后省下金额正确", m_orders[0].saved, 25.1)
+    t.eq("合并后渠道来自列表项", m_orders[0].channel, "dine_in")
+    t.eq("合并后门店名保留", m_orders[0].store, "麦当劳天门万达广场餐厅")
+    t.eq("合并后券名保留", m_orders[0].coupons, ["1+1随心配"])
+
+    # ---- 4. 渠道编码映射（官方 inputSchema 定义）-----------------------
+    t.eq("beType=2 麦乐送", normalize_channel(None, be_type="2"), "delivery")
+    t.eq("beType=5 得来速", normalize_channel(None, be_type="5"), "drive_thru")
+    t.eq("beType=6 团餐", normalize_channel(None, be_type="6"), "group")
+    t.eq("orderType=2 兜底为外送", normalize_channel(None, order_type="2"), "delivery")
+    t.eq("beType 优先级高于 orderType", normalize_channel(None, be_type="5", order_type="1"), "drive_thru")
+    t.eq("整数形式的编码也能映射", normalize_channel(None, be_type=1), "dine_in")
+
+    # ---- 5. 品类识别 ---------------------------------------------------
+    t.eq("品类 咖啡", classify_item("小杯鲜萃咖啡"), "咖啡")
+    t.eq("品类 咖啡（冰咖）", classify_item("鲜萃冰咖"), "咖啡")
+    t.eq("品类 汉堡（板烧）", classify_item("新升级板烧鸡腿堡"), "汉堡")
+    t.eq("品类 小食（薯条）", classify_item("中薯条"), "小食")
+    t.eq("品类 甜品（麦旋风）", classify_item("奥利奥麦旋风"), "甜品")
+    t.eq("无法识别归入其他", classify_item("精选单人餐三件套"), "其他")
+
+    # ---- 6. 积分账户 ---------------------------------------------------
+    acc = parse_account(REAL_ACCOUNT)
+    t.close("可用积分", acc.available, 46.5)
+    t.close("累计积分", acc.accumulative, 61.5)
+    t.close("已过期积分", acc.expired, 15.0)
+    t.close("临期风险积分", acc.at_risk, 0.0)
+    t.eq("积分币种", acc.currency, "麦享会积分")
+    t.eq("空账户不崩溃", parse_account(None).available, 0.0)
+
+    # ---- 7. 券解析（真实只有 couponName / couponStatus）-----------------
+    real_coupons = parse_coupons(REAL_AVAILABLE_COUPONS, source="available")
+    t.eq("真实券可解析", len(real_coupons), 2)
+    t.eq("真实券名", real_coupons[0].name, "中薯条买一送一")
+    t.eq("真实券来源", real_coupons[0].source, "available")
+    t.eq("缺 couponId 时自动编号", real_coupons[0].coupon_id, "CPN-0000")
+
+    # ---- 7b. 活动日历（真实结构：data.dailyList[].events[].activityTitle）----
+    real_campaigns = {
+        "success": True,
+        "code": 200,
+        "data": {
+            "currentTime": "2026-10-16 14:39:51",
+            "dailyList": [
+                {
+                    "date": "2026-10-16",
+                    "today": True,
+                    "events": [
+                        {"activityTitle": "1+1随心配", "activityStage": 3},
+                        {"activityTitle": "麦乐送满减", "activityStage": 3},
+                    ],
+                },
+                {
+                    "date": "2026-10-17",
+                    "today": False,
+                    "events": [{"activityTitle": "下期活动"}],
+                },
+            ],
+            "subscribedEvents": [],
+        },
+    }
+    titles = parse_campaign_titles(real_campaigns)
+    t.eq("活动标题被解析", titles, ["1+1随心配", "麦乐送满减"])
+    t.eq("非今日活动不混入", "下期活动" in titles, False)
+    t.eq("空活动不崩溃", parse_campaign_titles(None), [])
+
+    # ---- 8. 积分审计结论 -----------------------------------------------
+    real_orders = parse_orders([REAL_ORDER_DETAIL["data"], REAL_DISCOUNTED_DETAIL["data"]])
+    t.eq("真实订单可进入统计", len(real_orders), 2)
+    rm = compute_metrics(real_orders)
+    ra = run_audit(real_orders, rm, real_coupons, acc)
+    t.close("审计带出已过期积分", ra.account_expired, 15.0)
+    t.check(
+        "已过期积分触发告警",
+        any(f.level == LEVEL_ALERT and "过期" in f.title for f in ra.findings),
+        f"实际结论：{[f.title for f in ra.findings]}",
+    )
+    t.check(
+        "结论含可领未领券",
+        any("可领" in f.title for f in ra.findings),
+        f"实际结论：{[f.title for f in ra.findings]}",
+    )
+
+    # 无订单但有积分问题时，审计结论不能为空
+    empty_audit = run_audit([], compute_metrics([]), [], acc)
+    t.check(
+        "零订单时积分结论仍成立",
+        any("过期" in f.title for f in empty_audit.findings),
+        f"实际 {[f.title for f in empty_audit.findings]}",
+    )
+
+    # ---- 9. 关键回归：若漏掉 realTotalAmount，审计会静默失效 -------------
+    degraded = parse_orders(
+        [
+            {
+                "orderId": "D1",
+                "beType": "1",
+                "createTime": "2026-03-01 12:00:00",
+                "orderProductList": [{"productName": "巨无霸", "quantity": 1}],
+                "realTotalAmount": "25.5",
+            }
+        ]
+    )
+    t.close("未识别 realTotalAmount 会导致实付为 0（本断言用于锁死修复）", degraded[0].paid, 25.5)
+
+    # ---- 10. HTML 能承载真实结构 ---------------------------------------
+    html = render_html(rm, [], ra, headline="测试", account=acc, generated_at=datetime(2026, 10, 16, 15, 0))
+    t.check("真实数据可生成 HTML", "麦门账本" in html)
+    t.check("HTML 含积分板块", "积分账户" in html)
+    t.check("HTML 含套餐拆解", "套餐拆解后的单品榜" in html)
+
+
+# ==========================================================================
 
 
 def main() -> int:
@@ -397,6 +725,7 @@ def main() -> int:
         ("业务层 · 人格", test_personas),
         ("业务层 · 审计", test_audit),
         ("端到端", test_end_to_end),
+        ("真实 MCP 契约", test_real_mcp_contract),
     ):
         before = len(t.failures)
         fn(t)

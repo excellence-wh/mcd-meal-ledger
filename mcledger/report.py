@@ -166,6 +166,84 @@ def _item_ranking(metrics: Metrics, limit: int = 6) -> str:
     return "".join(rows)
 
 
+def _component_ranking(metrics: Metrics, limit: int = 6) -> str:
+    """套餐拆解后的单品榜（数量口径，不含金额 —— 子项没有独立价格）。"""
+    if not metrics.top_components:
+        return ""
+    top_qty = metrics.top_components[0].qty or 1
+    rows: list[str] = []
+    for index, item in enumerate(metrics.top_components[:limit], start=1):
+        pct = item.qty / top_qty * 100
+        rows.append(
+            f'<div class="rank"><div class="i" style="background:#FFE9A8">{index}</div>'
+            f'<div style="flex:1"><div class="n">{_esc(item.name)}</div>'
+            f'<div class="bar"><span style="width:{pct:.0f}%"></span></div></div>'
+            f'<div class="q">{item.qty} 份</div></div>'
+        )
+    return (
+        '<div class="charttitle" style="margin-top:20px">套餐拆解后的单品榜</div>'
+        '<div style="font-size:12.5px;color:#9A8B72;margin-bottom:8px">'
+        f"共 {metrics.combo_orders} 份套餐被拆开统计，这样才看得清你实际在吃什么</div>" + "".join(rows)
+    )
+
+
+def _promotions_card(titles: list[str] | None) -> str:
+    """当前进行中的活动（来自 campaign-calendar）。"""
+    if not titles:
+        return ""
+    chips = "".join(
+        f'<span style="display:inline-block;background:#FFF3D6;border:1px solid #F2E0AF;'
+        f'border-radius:999px;padding:5px 13px;margin:0 8px 8px 0;font-size:12.5px;'
+        f'color:#7A5A00">{_esc(t)}</span>'
+        for t in titles
+    )
+    return (
+        '<div class="card"><h2>近期活动</h2>'
+        '<div style="font-size:12.5px;color:#9A8B72;margin-bottom:10px">'
+        "来自麦麦日历，说明当下有哪些活动可以和你的券搭配着用</div>"
+        f"{chips}</div>"
+    )
+
+
+def _points_card(account: object | None) -> str:
+    """积分板块。积分是会自然损耗的资产，值得单独一块。"""
+    if account is None:
+        return ""
+    available = float(getattr(account, "available", 0.0) or 0.0)
+    at_risk = float(getattr(account, "at_risk", 0.0) or 0.0)
+    expired = float(getattr(account, "expired", 0.0) or 0.0)
+    accumulative = float(getattr(account, "accumulative", 0.0) or 0.0)
+    currency = str(getattr(account, "currency", "") or "积分")
+    if not any((available, at_risk, expired, accumulative)):
+        return ""
+
+    stats = [
+        _stat("可用积分", f"{available:g}", f"累计获得 {accumulative:g} {currency}"),
+        _stat(
+            "即将过期",
+            f"{at_risk:g}",
+            "近期到期，不用即作废",
+            "accent" if at_risk > 0 else "",
+        ),
+        _stat(
+            "已过期作废",
+            f"{expired:g}",
+            "已实现的净损失，无法追回",
+            "accent" if expired > 0 else "",
+        ),
+    ]
+    note = ""
+    if expired > 0:
+        note = (
+            f'<div class="warn">你的账户里已经有 <b>{expired:g}</b> 积分过期作废了。'
+            "积分属于会自然损耗的资产 —— 放着不用，就是在无声地亏。</div>"
+        )
+    elif at_risk > 0:
+        note = f'<div class="warn">有 <b>{at_risk:g}</b> 积分即将到期，建议优先核销。</div>'
+
+    return f'<div class="card"><h2>积分账户</h2><div class="grid g4">{"".join(stats)}</div>{note}</div>'
+
+
 def _period_text(metrics: Metrics) -> str:
     if not metrics.has_time_data or metrics.first_order is None:
         return "时间范围未知"
@@ -183,13 +261,31 @@ def render_html(
     source: str = "麦当劳 MCP",
     warnings: list[str] | None = None,
     generated_at: datetime | None = None,
+    account: object | None = None,
+    promotions: list[str] | None = None,
 ) -> str:
     """生成完整年报 HTML。"""
     generated_at = generated_at or datetime.now()
     warnings = warnings or []
 
     if metrics.total_orders == 0:
-        body = '<div class="card"><div class="empty">还没有拉到订单数据。<br>请检查 MCP Token 或改用 --offline 查看示例。</div></div>'
+        # 订单为空时，积分层面的审计结论依然成立，不能一并丢掉
+        points = _points_card(account)
+        finding_html = "".join(_finding_block(f) for f in audit.findings)
+        body = (
+            '<div class="hero"><div class="brand">McDonald\'s Meal Ledger</div>'
+            '<h1>麦门账本</h1><div class="sub">暂无可统计的订单数据</div>'
+            '<div class="headline">还没有拉到订单记录 —— 但账户层面的审计照样能跑</div></div>'
+        )
+        if points:
+            body += points
+        if finding_html:
+            body += f'<div class="card"><h2>账单审计</h2>{finding_html}</div>'
+        body += (
+            '<div class="card"><div class="empty">未取到历史订单。'
+            "可能原因：账号下暂无可查询的历史订单，或 Token 对应账户不同。<br>"
+            "可先用 --offline 查看样例年报的效果。</div></div>"
+        )
         return _wrap(body, generated_at, source)
 
     persona_html = "".join(_persona_block(p) for p in personas) or (
@@ -259,7 +355,12 @@ def render_html(
 <div class="card">
   <h2>常点榜单</h2>
   {_item_ranking(metrics)}
+  {_component_ranking(metrics)}
 </div>
+
+{_points_card(account)}
+
+{_promotions_card(promotions)}
 
 <div class="card">
   <h2>账单审计</h2>
@@ -318,10 +419,19 @@ def render_markdown_summary(
     audit: AuditResult,
     *,
     headline: str = "",
+    account: object | None = None,
 ) -> str:
     """给 Agent / 终端用的 Markdown 摘要。"""
     if metrics.total_orders == 0:
-        return "## 麦门账本\n\n暂无订单数据。"
+        lines = ["## 麦门账本", "", "暂无订单数据。"]
+        if account is not None and getattr(account, "expired", 0):
+            lines.append(
+                f"- ⚠️ 账户已有 **{getattr(account, 'expired', 0):g} 积分过期作废**（已实现损失）"
+            )
+        if audit.findings:
+            lines += ["", "### 账单审计", ""]
+            lines += [f"- **{f.title}** — {f.detail}" for f in audit.findings]
+        return "\n".join(lines)
 
     lines: list[str] = ["## 麦门账本 · 消费简报", ""]
     if headline:
@@ -329,7 +439,7 @@ def render_markdown_summary(
 
     lines += [
         "### 核心数字",
-        f"- 订单总数：**{metrics.total_orders} 单**（覆盖 {metrics.active_days} 天）",
+        f"- 订单总数：**{metrics.total_orders} 单**（覆盖 {metrics.active_days} 个下单日）",
         f"- 累计实付：**{money(metrics.total_paid)}**（原价 {money(metrics.total_gross)}）",
         f"- 累计省下：**{money(metrics.total_saved)}**，整体折扣率 {metrics.save_rate * 100:.1f}%",
         f"- 平均客单价：**{money(metrics.avg_order_value)}**",
@@ -349,7 +459,27 @@ def render_markdown_summary(
             lines.append(f"{index}. {item.name} —— {item.qty} 份 / {money(item.spend)}")
         lines.append("")
 
-    lines += [f"### 账单审计（优惠利用率 {audit.coupon_utilization * 100:.0f}%，等级 {audit.grade}）", ""]
+    if metrics.top_components:
+        lines += ["### 套餐拆解后的单品榜", ""]
+        for index, item in enumerate(metrics.top_components[:5], start=1):
+            lines.append(f"{index}. {item.name} —— {item.qty} 份")
+        lines.append("")
+
+    if account is not None and (
+        getattr(account, "available", 0) or getattr(account, "expired", 0)
+    ):
+        lines += [
+            "### 积分账户",
+            f"- 可用积分：**{getattr(account, 'available', 0):g}**",
+            f"- 即将过期：{getattr(account, 'at_risk', 0):g}",
+            f"- 已过期作废：**{getattr(account, 'expired', 0):g}**",
+            "",
+        ]
+
+    lines += [
+        f"### 账单审计（优惠利用率 {audit.coupon_utilization * 100:.0f}%，等级 {audit.grade}）",
+        "",
+    ]
     if audit.findings:
         for finding in audit.findings:
             amount = f"（估算 ≈ {money(finding.amount)}）" if finding.amount >= 0.5 else ""

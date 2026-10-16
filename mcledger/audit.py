@@ -49,6 +49,9 @@ class AuditResult:
     expiring_coupons: list[Coupon] = field(default_factory=list)
     stale_top_items: list[tuple[str, int]] = field(default_factory=list)
     total_delivery_fee: float = 0.0
+    account_available: float = 0.0  # 可用积分
+    account_at_risk: float = 0.0  # 即将过期积分（负资产）
+    account_expired: float = 0.0  # 已经过期损失的积分
     findings: list[AuditFinding] = field(default_factory=list)
 
     @property
@@ -110,10 +113,22 @@ def run_audit(
     orders: list[Order],
     metrics: Metrics,
     coupons: list[Coupon] | None = None,
+    account: object | None = None,
 ) -> AuditResult:
-    """执行完整审计。"""
+    """执行完整审计。
+
+    account 可以是 mcp_client.AccountPoints（避免模块循环依赖，这里只做鸭子类型）。
+    """
     result = AuditResult()
+    if account is not None:
+        result.account_available = float(getattr(account, "available", 0.0) or 0.0)
+        result.account_at_risk = float(getattr(account, "at_risk", 0.0) or 0.0)
+        result.account_expired = float(getattr(account, "expired", 0.0) or 0.0)
+
     if not orders:
+        # 没有订单时，积分层面的结论依然有效，不能一并丢掉
+        if result.account_expired > 0 or result.account_at_risk > 0:
+            result.findings = _build_points_findings(result)
         return result
 
     coupons = coupons or []
@@ -141,7 +156,7 @@ def run_audit(
     result.total_delivery_fee = round(sum(o.delivery_fee for o in orders), 2)
 
     # ---- 5. 汇总成 findings --------------------------------------------
-    result.findings = _build_findings(result, orders, metrics)
+    result.findings = _build_findings(result, orders, metrics) + _build_points_findings(result)
     return result
 
 
@@ -166,14 +181,15 @@ def _build_findings(
                 action="下次点单前先跑一次麦麦省一键领券，再让助手比价下单。",
             )
         )
-    elif r.full_price_orders >= 3 and r.baseline_discount_rate == 0:
+    elif r.full_price_orders >= 2 and r.baseline_discount_rate == 0:
         findings.append(
             AuditFinding(
                 level=LEVEL_ALERT,
                 title="全部订单均为原价",
                 detail=(
                     f"{r.full_price_orders} 单全部按原价结算，合计 {money(r.full_price_paid)}，"
-                    "历史记录中查不到任何优惠使用痕迹。"
+                    "历史记录中查不到任何优惠使用痕迹。因为还没有可参照的折扣水平，"
+                    "这里不估算金额 —— 但可领的券是现成的。"
                 ),
                 amount=0.0,
                 action="麦麦省里有可领的券，点餐前先领券是最直接的一步。",
@@ -254,4 +270,55 @@ def _build_findings(
             )
 
     findings.sort(key=lambda f: (f.level != LEVEL_ALERT, f.level != LEVEL_NOTICE, -f.amount))
+    return findings
+
+
+def _build_points_findings(r: AuditResult) -> list[AuditFinding]:
+    """积分层面的审计结论（与订单无关，可独立成立）。
+
+    积分的特殊性在于它会被动失效：放着不用，就在无声地亏。
+    因此「已经过期的积分」是实打实的已实现损失，
+    「即将过期的积分」是待实现的损失 —— 两者都值得单独提示。
+    """
+    findings: list[AuditFinding] = []
+
+    if r.account_expired > 0:
+        findings.append(
+            AuditFinding(
+                level=LEVEL_ALERT,
+                title=f"已有 {r.account_expired:g} 积分过期作废",
+                detail=(
+                    f"账户历史上有 {r.account_expired:g} 积分已经过期失效。"
+                    "积分属于会自然损耗的资产，放着不用就是净损失，且过期后无法追回。"
+                ),
+                amount=0.0,
+                action="在积分到期前到麦麦商城兑换，或用于积分抽奖。",
+            )
+        )
+
+    if r.account_at_risk > 0:
+        findings.append(
+            AuditFinding(
+                level=LEVEL_NOTICE,
+                title=f"{r.account_at_risk:g} 积分即将到期",
+                detail=(
+                    f"当前有 {r.account_at_risk:g} 积分将在最近一两个月内到期，"
+                    f"账户可用积分共 {r.account_available:g}。"
+                ),
+                action="优先核销即将到期的部分，避免重复上次的过期损失。",
+            )
+        )
+    elif r.account_available > 0 and r.account_expired <= 0:
+        findings.append(
+            AuditFinding(
+                level=LEVEL_TIP,
+                title=f"账户有 {r.account_available:g} 可用积分",
+                detail=(
+                    f"当前可用积分 {r.account_available:g}，暂无临期压力。"
+                    "建议定期关注到期时间，避免积累过多后集中失效。"
+                ),
+                amount=0.0,
+                action="到麦麦商城看看积分能换什么，通常存在比放任过期更好的选择。",
+            )
+        )
     return findings

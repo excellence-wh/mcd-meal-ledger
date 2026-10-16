@@ -151,6 +151,26 @@ CHANNEL_LABELS: dict[str, str] = {
     "unknown": "其他",
 }
 
+# ---------------------------------------------------------------------------
+# 渠道编码映射 —— 来自麦当劳 MCP 官方 Tool inputSchema 的 description，
+# 不是猜测。真实接口返回的是数字编码而非中文文案：
+#
+#   beType    1-到店取餐 2-麦乐送到家 5-得来速(DT) 6-企业团餐
+#   orderType 1-到店（含到店自取+得来速车道取餐） 2-外送（含麦乐送+企业团餐）
+#
+# beType 更精确，因此优先使用；orderType 作为兜底。
+# ---------------------------------------------------------------------------
+BE_TYPE_CHANNELS: dict[str, str] = {
+    "1": "dine_in",
+    "2": "delivery",
+    "5": "drive_thru",
+    "6": "group",
+}
+ORDER_TYPE_CHANNELS: dict[str, str] = {
+    "1": "dine_in",
+    "2": "delivery",
+}
+
 _CHANNEL_RULES: tuple[tuple[tuple[str, ...], str], ...] = (
     (("外送", "外卖", "麦乐送", "delivery", "配送"), "delivery"),
     (("得来速", "车道", "drivethru", "drive_thru", "drive-thru"), "drive_thru"),
@@ -159,8 +179,18 @@ _CHANNEL_RULES: tuple[tuple[tuple[str, ...], str], ...] = (
 )
 
 
-def normalize_channel(raw: Any) -> str:
-    """把五花八门的渠道文案映射到 5 个规范值。"""
+def normalize_channel(raw: Any, be_type: Any = None, order_type: Any = None) -> str:
+    """把渠道归一化到 5 个规范值。
+
+    优先级：beType（最精确）> orderType > 中文/英文文案。
+    """
+    for code, source in ((be_type, BE_TYPE_CHANNELS), (order_type, ORDER_TYPE_CHANNELS)):
+        if code is None:
+            continue
+        key = str(code).strip()
+        if key in source:
+            return source[key]
+
     text = str(raw or "").strip().lower()
     if not text:
         return "unknown"
@@ -187,6 +217,7 @@ class OrderItem:
     code: str | None = None
     category: str | None = None
     calories: float | None = None
+    components: list[tuple[str, int]] = field(default_factory=list)  # 套餐拆解出的单品
 
     @property
     def gross(self) -> float:
@@ -202,6 +233,10 @@ class OrderItem:
     def unit_paid(self) -> float:
         """折后单价（用于比价，避免只看总价被份数误导）。"""
         return round(self.paid_amount / self.qty, 2) if self.qty else 0.0
+
+    @property
+    def is_combo(self) -> bool:
+        return bool(self.components)
 
 
 @dataclass
@@ -289,11 +324,102 @@ class Coupon:
 # 解析入口
 # --------------------------------------------------------------------------
 
-_CHANNEL_KEYS = ("channel", "orderChannel", "orderType", "mealType", "deliveryType", "type", "scene")
+_CHANNEL_KEYS = ("channel", "orderChannel", "orderType", "mealType", "deliveryType", "type", "scene", "takeWay")
 _TIME_KEYS = ("createdAt", "createTime", "orderTime", "orderDate", "businessTime", "payTime", "time")
 _STORE_KEYS = ("storeName", "store.name", "store", "shopName", "restaurantName", "storeCode")
 _ID_KEYS = ("orderId", "orderNo", "id", "orderNumber", "tradeNo")
-_ITEM_LIST_KEYS = ("items", "products", "productList", "goodsList", "itemList", "orderItems", "details", "meals")
+
+# ⚠️ orderProductList 是麦当劳 MCP 真实返回的键名。
+# 这个字段漏掉的话，订单明细会整体解析不出来，整份年报会变成空壳 ——
+# 这正是只有真实联调才能发现的问题。
+_ITEM_LIST_KEYS = (
+    "items",
+    "products",
+    "productList",
+    "orderProductList",
+    "goodsList",
+    "itemList",
+    "orderItems",
+    "details",
+    "meals",
+)
+
+_GROSS_KEYS = (
+    "originalAmount",
+    "originAmount",
+    "grossAmount",
+    "originalTotalAmount",
+    "totalAmount",
+    "orderAmount",
+)
+_PAID_KEYS = (
+    "payAmount",
+    "paidAmount",
+    "actualAmount",
+    "realTotalAmount",
+    "realPayAmount",
+    "finalAmount",
+    "realAmount",
+    "paymentAmount",
+)
+_DISCOUNT_KEYS = (
+    "discountAmount",
+    "totalDiscountAmount",
+    "totalDiscount",
+    "savedAmount",
+    "preferentialAmount",
+    "couponAmount",
+)
+_DELIVERY_FEE_KEYS = ("deliveryFee", "shippingFee", "packingFee", "realDeliveryPrice", "deliveryPrice")
+
+
+# ---------------------------------------------------------------------------
+# 品类识别
+#
+# 麦当劳 MCP 的 query-meals 只返回餐品 code 与 tags，**不返回品类名**；
+# query-meal-detail 也只给单个餐品的特制选项。因此订单行里拿不到 category。
+#
+# 所以这里用一组确定性的关键词规则来判定品类：可测试、可复现、可解释，
+# 且完全不依赖模型判断。命中顺序即优先级（越具体的品类越靠前）。
+# ---------------------------------------------------------------------------
+_CATEGORY_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("咖啡", ("咖啡", "拿铁", "美式", "玛奇朵", "卡布", "馥芮白", "澳白", "冰咖", "厚乳")),
+    ("甜品", ("冰淇淋", "甜筒", "圆筒", "麦旋风", "新地", "派", "松饼", "蛋糕", "圣代", "布丁")),
+    ("早餐", ("早餐", "麦满分", "热香饼", "猪柳", "吉士蛋", "粥", "油条")),
+    ("汉堡", ("巨无霸", "汉堡", "堡", "麦辣鸡", "板烧", "麦香鱼", "双吉", "吉士")),
+    ("小食", ("薯条", "鸡块", "麦乐鸡", "鸡翅", "鸡排", "玉米", "沙拉", "拼盘", "薯饼", "小食")),
+    ("饮料", ("可乐", "雪碧", "芬达", "果汁", "茶", "水", "奶昔", "气泡", "百香果", "柠檬")),
+)
+
+
+def classify_item(name: str) -> str:
+    """按关键词确定性判定餐品品类；无法判定时归入「其他」。"""
+    text = str(name or "")
+    for category, keywords in _CATEGORY_RULES:
+        for keyword in keywords:
+            if keyword in text:
+                return category
+    return "其他"
+
+
+def _parse_components(raw: Mapping[str, Any]) -> list[tuple[str, int]]:
+    """拆解套餐子项。
+
+    真实结构：comboItemList: [{"itemName": "中薯条", "itemQuantity": 1}, ...]
+    子项没有独立价格，因此只用于数量榜，不参与金额计算（避免重复计钱）。
+    """
+    combo = raw.get("comboItemList") or raw.get("comboItems") or raw.get("comboList")
+    if not isinstance(combo, Sequence) or isinstance(combo, (str, bytes)):
+        return []
+    parts: list[tuple[str, int]] = []
+    for entry in combo:
+        if not isinstance(entry, Mapping):
+            continue
+        label = pick(entry, "itemName", "name", "productName", "mealName")
+        if not label:
+            continue
+        parts.append((str(label).strip(), to_int(pick(entry, "itemQuantity", "quantity", "qty", "num"), default=1) or 1))
+    return parts
 
 
 def _parse_item(raw: Mapping[str, Any]) -> OrderItem | None:
@@ -301,7 +427,7 @@ def _parse_item(raw: Mapping[str, Any]) -> OrderItem | None:
     if not isinstance(raw, Mapping):
         return None
 
-    name = pick(raw, "name", "productName", "mealName", "itemName", "goodsName", "title")
+    name = str(pick(raw, "name", "productName", "mealName", "itemName", "goodsName", "title") or "").strip()
     if not name:
         return None
 
@@ -322,7 +448,6 @@ def _parse_item(raw: Mapping[str, Any]) -> OrderItem | None:
         "finalPrice",
         "totalPrice",
         "subtotal",
-        "amount",
     )
     if paid_total is None:
         paid_amount = round(unit_price * qty, 2)
@@ -333,13 +458,15 @@ def _parse_item(raw: Mapping[str, Any]) -> OrderItem | None:
     calories = to_float(calories_raw) if calories_raw is not None else None
 
     return OrderItem(
-        name=str(name).strip(),
+        name=name,
         qty=qty,
         unit_price=unit_price,
         paid_amount=paid_amount,
         code=str(pick(raw, "code", "productCode", "mealCode", "sku", "itemCode") or "") or None,
-        category=str(pick(raw, "category", "categoryName", "typeName", "groupName") or "") or None,
+        category=str(pick(raw, "category", "categoryName", "typeName", "groupName") or "")
+        or classify_item(name),
         calories=calories,
+        components=_parse_components(raw),
     )
 
 
@@ -393,32 +520,14 @@ def parse_order(raw: Mapping[str, Any], index: int = 0) -> Order | None:
     # 两种常见的数据形态都能得到正确结果，且偏向"宁可高估原价"——
     # 因为高估原价最多让"省了多少"偏乐观，而低估原价会让用户以为自己没省到钱。
     items_gross = round(sum(item.gross for item in items), 2)
-    provided_gross = to_float(
-        pick(
-            raw,
-            "originalAmount",
-            "originAmount",
-            "grossAmount",
-            "originalTotalAmount",
-            "totalAmount",
-            "orderAmount",
-        )
-    )
+    provided_gross = to_float(pick(raw, *_GROSS_KEYS))
     gross = max(items_gross, provided_gross)
 
     # 实付只认明确的"应付/实付"字段，绝不把订单总额误当实付。
-    provided_paid = pick(
-        raw,
-        "payAmount",
-        "paidAmount",
-        "actualAmount",
-        "finalAmount",
-        "realAmount",
-        "paymentAmount",
-    )
+    provided_paid = pick(raw, *_PAID_KEYS)
     paid = to_float(provided_paid) if provided_paid is not None else 0.0
 
-    discount_raw = pick(raw, "discountAmount", "totalDiscount", "savedAmount", "preferentialAmount", "couponAmount")
+    discount_raw = pick(raw, *_DISCOUNT_KEYS)
     discount = to_float(discount_raw) if discount_raw is not None else 0.0
 
     # 若只有原价、没有实付：用 实付 = 原价 - 优惠 反推。
@@ -440,14 +549,18 @@ def parse_order(raw: Mapping[str, Any], index: int = 0) -> Order | None:
     return Order(
         order_id=order_id,
         created_at=parse_datetime(pick(raw, *_TIME_KEYS)),
-        channel=normalize_channel(pick(raw, *_CHANNEL_KEYS)),
+        channel=normalize_channel(
+            pick(raw, *_CHANNEL_KEYS),
+            be_type=pick(raw, "beType", "be_type"),
+            order_type=pick(raw, "orderType", "order_type"),
+        ),
         store=store_name,
         items=items,
         gross=gross,
         paid=paid,
         discount=discount,
         coupons=_collect_coupon_names(raw),
-        delivery_fee=to_float(pick(raw, "deliveryFee", "shippingFee", "packingFee")),
+        delivery_fee=to_float(pick(raw, *_DELIVERY_FEE_KEYS)),
     )
 
 

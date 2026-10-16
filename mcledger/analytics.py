@@ -15,7 +15,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime
 
-from .models import CHANNEL_LABELS, Order, OrderItem
+from .models import CHANNEL_LABELS, Order, OrderItem, classify_item
 
 WEEKDAY_NAMES = ("周一", "周二", "周三", "周四", "周五", "周六", "周日")
 
@@ -125,10 +125,12 @@ class Metrics:
     weekday: list[int] = field(default_factory=lambda: [0] * 7)
     daypart: dict[str, int] = field(default_factory=dict)
     top_items: list[ItemStat] = field(default_factory=list)
+    top_components: list[ItemStat] = field(default_factory=list)  # 套餐拆解后的单品榜
     channels: list[ChannelStat] = field(default_factory=list)
     stores: list[StoreStat] = field(default_factory=list)
     streaks: StreakInfo = field(default_factory=StreakInfo)
     category_counts: dict[str, int] = field(default_factory=dict)  # 品类 -> 份数
+    combo_orders: int = 0  # 含套餐的订单数
 
     free_orders: int = 0  # 完全没享受任何优惠的单
     discounted_orders: int = 0
@@ -246,12 +248,40 @@ def compute_metrics(orders: list[Order], top_n: int = 12) -> Metrics:
         key=lambda s: (-s.qty, -s.spend, s.name),
     )[:top_n]
 
-    # ---- 品类分布 ----------------------------------------------------
-    # 注意：top_items 被截断了，品类统计必须用全量数据，否则占比会失真。
+    # ---- 品类分布 + 套餐拆解 -------------------------------------------
+    # 注意：top_items 被截断了，品类与套餐统计必须用全量数据，否则占比会失真。
+    #
+    # 套餐处理原则：带 comboItemList 的行（如「精选单人餐三件套」）
+    #   - 拆出的单品进 top_components（用户真正认的是这些名字）；
+    #   - 品类计数用拆解后的单品，**不用**套餐本身，避免重复计数；
+    #   - 金额仍归套餐行，不对子项分摊（子项没有独立价格，硬分摊会造假数）。
+    comp_agg: dict[str, dict[str, float]] = defaultdict(lambda: {"qty": 0.0, "orders": 0})
+
+    def _add_category(label: str, qty: int) -> None:
+        m.category_counts[label] = m.category_counts.get(label, 0) + qty
+
     for order in orders:
+        seen_components: set[str] = set()
         for item in order.items:
-            key = item.category or "未分类"
-            m.category_counts[key] = m.category_counts.get(key, 0) + item.qty
+            if item.components:
+                m.combo_orders += 1
+                for comp_name, comp_qty in item.components:
+                    total_qty = comp_qty * item.qty
+                    comp_agg[comp_name]["qty"] += total_qty
+                    if comp_name not in seen_components:
+                        comp_agg[comp_name]["orders"] += 1
+                        seen_components.add(comp_name)
+                    _add_category(classify_item(comp_name), total_qty)
+            else:
+                _add_category(item.category or "其他", item.qty)
+
+    m.top_components = sorted(
+        (
+            ItemStat(name=name, qty=int(v["qty"]), spend=0.0, orders=int(v["orders"]))
+            for name, v in comp_agg.items()
+        ),
+        key=lambda s: (-s.qty, s.name),
+    )[:top_n]
 
     # ---- 渠道分布 ----------------------------------------------------
     channel_agg: dict[str, list[float]] = defaultdict(lambda: [0, 0.0])
